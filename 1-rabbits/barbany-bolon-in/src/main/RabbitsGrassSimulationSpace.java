@@ -4,6 +4,7 @@ package main;
  * @author 
  */
 
+import uchicago.src.sim.space.Discrete2DSpace;
 import uchicago.src.sim.space.Object2DGrid;
 
 
@@ -60,7 +61,7 @@ public class RabbitsGrassSimulationSpace {
 		return grassSpace;
 	}
 	
-	public Object2DGrid getCurrentAgentSpace(){
+	public Object2DGrid getCurrentRabbitSpace(){
 	    return rabbitSpace;
 	}
 	
