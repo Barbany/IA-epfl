@@ -1,5 +1,6 @@
-*.DS_Store
-/.metadata
-/bin/*
-1-rabbits/barbany-bolon-in/.metadata/*
-1-rabbits/barbany-bolon-in/.DS_Store
+.DS_Store
+**.DS_Store
+1-rabbits/barbany-bolon-in/.metadata/
+1-rabbits/barbany-bolon-in/bin/
+1-rabbits/barbany-bolon-in/.settings/
+
