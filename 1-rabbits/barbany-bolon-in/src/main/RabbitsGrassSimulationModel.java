@@ -3,7 +3,6 @@ package main;
 import java.awt.Color;
 import java.util.ArrayList;
 
-
 import uchicago.src.sim.analysis.BinDataSource;
 import uchicago.src.sim.analysis.DataSource;
 import uchicago.src.sim.analysis.OpenHistogram;
@@ -32,7 +31,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 	private static final int GRIDSIZE = 20;
 	private static final int NUMINITRABBITS = 10;
 	private static final int NUMINITGRASS = 10;
-	private static final int GRASSGROWTHRATE = 50;
+	private static final int GRASSGROWTHRATE = 10;
 	private static final int BIRTHTHRESHOLD = 15;
 	private static final int MAXENERGY = 20;
 
@@ -64,11 +63,11 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			return (double) space.getTotalEnergy();
 		}
 	}
-	
-	class rabbitEnergy implements BinDataSource{
+
+	class rabbitEnergy implements BinDataSource {
 		public double getBinValue(Object o) {
-			RabbitsGrassSimulationAgent cda = (RabbitsGrassSimulationAgent)o;
-			return (double)cda.getEnergy();
+			RabbitsGrassSimulationAgent cda = (RabbitsGrassSimulationAgent) o;
+			return (double) cda.getEnergy();
 		}
 	}
 
@@ -117,7 +116,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		space.addRabbit(rabbit);
 	}
 
-	private int updateRabbits() {
+	private int updateSpace() {
 		int count = 0;
 		for (int i = (rabbitList.size() - 1); i >= 0; i--) {
 			RabbitsGrassSimulationAgent cda = rabbitList.get(i);
@@ -129,6 +128,8 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 				rabbitList.remove(i);
 			}
 		}
+
+		space.spreadGrass(GrassGrowthRate);
 		return count;
 	}
 
@@ -155,9 +156,14 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 					cda.step();
 				}
 
-				int newRabbits = updateRabbits();
+				// Create one new rabbit for each existing one with high energy
+				int newRabbits = updateSpace();
 				for (int i = 0; i < newRabbits; i++) {
-					addNewRabbit();
+					if (rabbitList.size() < GridSize * GridSize) {
+						addNewRabbit();
+					} else {
+						System.out.println("Grid is full of Rabbits: Unable to allocate more");
+					}
 				}
 
 				displaySurf.updateDisplay();
@@ -173,21 +179,21 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		}
 
 		schedule.scheduleActionAtInterval(10, new RabbitGrassCountLiving());
-		
+
 		class RabbitsGrassUpdateEnergyInSpace extends BasicAction {
 			public void execute() {
 				amountOfEnergyInSpace.step();
 			}
 		}
-		
+
 		schedule.scheduleActionAtInterval(10, new RabbitsGrassUpdateEnergyInSpace());
-		
-		class RabbitsGrassUpdateEnergy extends BasicAction{
+
+		class RabbitsGrassUpdateEnergy extends BasicAction {
 			public void execute() {
 				rabbitEnergyDistribution.step();
 			}
 		}
-		
+
 		schedule.scheduleActionAtInterval(10, new RabbitsGrassUpdateEnergy());
 	}
 
@@ -207,7 +213,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 
 		displaySurf.addDisplayableProbeable(displayEnergy, "Grass");
 		displaySurf.addDisplayableProbeable(displayRabbits, "Rabbits");
-		
+
 		amountOfEnergyInSpace.addSequence("Energy in Space", new energyInSpace());
 		rabbitEnergyDistribution.createHistogramItem("Rabbit Energy", rabbitList, new rabbitEnergy());
 
@@ -218,7 +224,8 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		// Parameters to be set by users via the Repast UI slider bar
 		// Do "not" modify the parameters names provided in the skeleton code, you can
 		// add more if you want
-		String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold" , "MaxEnergy"};
+		String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold",
+				"MaxEnergy" };
 		return params;
 	}
 
@@ -247,11 +254,11 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			amountOfEnergyInSpace.dispose();
 		}
 		amountOfEnergyInSpace = null;
-		
+
 		if (rabbitEnergyDistribution != null) {
 			rabbitEnergyDistribution.dispose();
 		}
-		rabbitEnergyDistribution = null;		
+		rabbitEnergyDistribution = null;
 
 		// Create Displays
 		displaySurf = new DisplaySurface(this, "Rabbits Grass model W1");

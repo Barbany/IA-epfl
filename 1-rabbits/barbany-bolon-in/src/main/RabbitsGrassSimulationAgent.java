@@ -90,8 +90,6 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 			newY = ((y - 1) < 0) ? grid.getSizeY() - 1 : y - 1;
 			break;
 		}
-		
-		System.out.printf("New coordinates: %d, %d \n", newX, newY);
 
 		if (tryMove(newX, newY)) {
 			energy += rabbitSpace.eatGrassAt(newX, newY);
