@@ -34,6 +34,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 	private static final int GRASSGROWTHRATE = 10;
 	private static final int BIRTHTHRESHOLD = 15;
 	private static final int MAXENERGY = 20;
+	private static final int MAXGRASSENERGY = 3;
 
 	private int GridSize = GRIDSIZE;
 	private int NumInitRabbits = NUMINITRABBITS;
@@ -41,6 +42,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 	private int GrassGrowthRate = GRASSGROWTHRATE;
 	private int BirthThreshold = BIRTHTHRESHOLD;
 	private int MaxEnergy = MAXENERGY;
+	private int MaxGrassEnergy = MAXGRASSENERGY; 
 
 	private Schedule schedule;
 
@@ -98,7 +100,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 	public void buildModel() {
 		System.out.println("Running BuildModel");
 		space = new RabbitsGrassSimulationSpace(GridSize);
-		space.spreadGrass(NumInitGrass);
+		space.spreadGrass(NumInitGrass, MaxGrassEnergy);
 
 		for (int i = 0; i < NumInitRabbits; i++) {
 			addNewRabbit();
@@ -120,7 +122,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		int count = 0;
 		for (int i = (rabbitList.size() - 1); i >= 0; i--) {
 			RabbitsGrassSimulationAgent cda = rabbitList.get(i);
-			if (cda.getEnergy() > BirthThreshold) {
+			if (cda.getEnergy() >= BirthThreshold) {
 				cda.setEnergy(cda.getEnergy() / 3);
 				count++;
 			} else if (cda.getEnergy() < 1) {
@@ -129,7 +131,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			}
 		}
 
-		space.spreadGrass(GrassGrowthRate);
+		space.spreadGrass(GrassGrowthRate, MaxGrassEnergy);
 		return count;
 	}
 
@@ -202,7 +204,9 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 
 		ColorMap map = new ColorMap();
 
-		map.mapColor(1, Color.green);
+		for(int i=1; i< (MaxGrassEnergy + 1); i++) {
+			map.mapColor(i, 0, i*(1.0 / MaxGrassEnergy), 0);
+		}
 
 		map.mapColor(0, Color.black);
 
@@ -225,7 +229,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		// Do "not" modify the parameters names provided in the skeleton code, you can
 		// add more if you want
 		String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold",
-				"MaxEnergy" };
+				"MaxEnergy", "MaxGrassEnergy" };
 		return params;
 	}
 
@@ -248,17 +252,17 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		if (displaySurf != null) {
 			displaySurf.dispose();
 		}
-		displaySurf = null;
+		//displaySurf = null;
 
 		if (amountOfEnergyInSpace != null) {
 			amountOfEnergyInSpace.dispose();
 		}
-		amountOfEnergyInSpace = null;
+		//amountOfEnergyInSpace = null;
 
 		if (rabbitEnergyDistribution != null) {
 			rabbitEnergyDistribution.dispose();
 		}
-		rabbitEnergyDistribution = null;
+		//rabbitEnergyDistribution = null;
 
 		// Create Displays
 		displaySurf = new DisplaySurface(this, "Rabbits Grass model W1");
@@ -322,5 +326,13 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
+	}
+
+	public int getMaxGrassEnergy() {
+		return MaxGrassEnergy;
+	}
+
+	public void setMaxGrassEnergy(int maxGrassEnergy) {
+		MaxGrassEnergy = maxGrassEnergy;
 	}
 }

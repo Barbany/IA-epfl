@@ -14,6 +14,7 @@ public class RabbitsGrassSimulationSpace {
 	public RabbitsGrassSimulationSpace(int GridSize) {
 		grassSpace = new Object2DGrid(GridSize, GridSize);
 		rabbitSpace = new Object2DGrid(GridSize, GridSize);
+		
 
 		for (int i = 0; i < GridSize; i++) {
 			for (int j = 0; j < GridSize; j++) {
@@ -23,7 +24,7 @@ public class RabbitsGrassSimulationSpace {
 	}
 
 	// Initialize grass in grass space
-	public void spreadGrass(int numInitGrass) {
+	public void spreadGrass(int numInitGrass, int MaxGrassEnergy) {
 
 		int i = 0;
 
@@ -36,11 +37,12 @@ public class RabbitsGrassSimulationSpace {
 			// Get value
 			int currentValue = getGrassAt(x, y);
 
-			// Assign new value - allows to have more than 1 grass
-			if (currentValue == 0) {
-				grassSpace.putObjectAt(x, y, new Integer(1));
-				i++;
-			}
+			int nextVal = new Integer((int)(1 + Math.random() * (MaxGrassEnergy)));
+			// Assign new value - between 1 and maximum grass energy level 
+			grassSpace.putObjectAt(x, y, Math.min(currentValue + nextVal, MaxGrassEnergy) );
+			
+			i++;
+		
 		}
 	}
 
