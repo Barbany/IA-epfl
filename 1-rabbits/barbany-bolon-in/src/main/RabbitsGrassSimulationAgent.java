@@ -9,7 +9,7 @@ import uchicago.src.sim.space.Object2DGrid;
 /**
  * Class that implements the simulation agent for the rabbits grass simulation.
  * 
- * @author
+ * @author Oriol Barbany & Natalie Bolon
  */
 
 public class RabbitsGrassSimulationAgent implements Drawable {
@@ -91,10 +91,15 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 			break;
 		}
 
+		// Eat grass at new move if this was performed
+		// Otherwise check if grass has grown at current point
+		// Note each step, rabbit loses energy even if it doesn't move
 		if (tryMove(newX, newY)) {
 			energy += rabbitSpace.eatGrassAt(newX, newY);
-			energy--;
+		} else {
+			energy += rabbitSpace.eatGrassAt(x, y);
 		}
+		energy--;
 	}
 
 	private boolean tryMove(int newX, int newY) {

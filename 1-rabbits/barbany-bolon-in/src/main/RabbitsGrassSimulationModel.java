@@ -23,7 +23,7 @@ import uchicago.src.sim.util.SimUtilities;
  * This is the first class which needs to be setup in order to run Repast
  * simulation. It manages the entire RePast environment and the simulation.
  *
- * @author
+ * @author Oriol Barbany & Natalie Bolon
  */
 
 public class RabbitsGrassSimulationModel extends SimModelImpl {

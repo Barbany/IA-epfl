@@ -1,7 +1,7 @@
 package main;
 /**
  * Class that implements the simulation space of the rabbits grass simulation.
- * @author 
+ * @author Oriol Barbany & Natalie Bolon
  */
 
 // import uchicago.src.sim.space.Discrete2DSpace;
