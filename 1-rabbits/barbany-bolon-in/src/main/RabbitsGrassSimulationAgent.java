@@ -25,7 +25,7 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 	public RabbitsGrassSimulationAgent(int maxEnergy) {
 		x = -1;
 		y = -1;
-		energy = (int) ((Math.random() * (maxEnergy)));
+		energy = (int) ((Math.random() * (maxEnergy)) + 1);
 		IDNum++; // Set ID of the agent
 		ID = IDNum;
 	}
