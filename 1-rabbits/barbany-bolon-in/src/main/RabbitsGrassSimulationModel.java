@@ -34,7 +34,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 	private static final int GRASSGROWTHRATE = 10;
 	private static final int BIRTHTHRESHOLD = 15;
 	private static final int MAXENERGY = 20;
-	private static final int MAXGRASSENERGY = 3;
+	private static final int MAXGRASSENERGY = 10;
 
 	private int GridSize = GRIDSIZE;
 	private int NumInitRabbits = NUMINITRABBITS;
@@ -62,7 +62,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		}
 
 		public double getSValue() {
-			return (double) space.getTotalEnergy();
+			return (double) space.getTotalGrassEnergy();
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		}
 
 		public double getSValue() {
-			return (double) space.getTotalRabbits();
+			return (double) space.getTotalRabbitsEnergy();
 		}
 	}
 
@@ -229,8 +229,8 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		displaySurf.addDisplayableProbeable(displayEnergy, "Grass");
 		displaySurf.addDisplayableProbeable(displayRabbits, "Rabbits");
 
-		amountOfEnergyInSpace.addSequence("Energy in Space", new energyInSpace());
-		amountOfEnergyInSpace.addSequence("Rabbits in Space", new rabbitsInSpace());
+		amountOfEnergyInSpace.addSequence("Grass' energy", new energyInSpace());
+		amountOfEnergyInSpace.addSequence("Rabbits' energy", new rabbitsInSpace());
 		
 		
 		rabbitEnergyDistribution.createHistogramItem("Rabbit Energy", rabbitList, new rabbitEnergy());

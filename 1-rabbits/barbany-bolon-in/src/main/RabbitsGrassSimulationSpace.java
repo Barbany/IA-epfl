@@ -79,10 +79,11 @@ public class RabbitsGrassSimulationSpace {
 	 * @param y This is the y coordinate
 	 * @return int Amount of rabbits in (x, y)
 	 */
-	public int getRabbitsAt(int x, int y) {
+	public int getRabbitEnergyAt(int x, int y) {
 		int i;
 		if (rabbitSpace.getObjectAt(x, y) != null) {
-			i= 1;
+			RabbitsGrassSimulationAgent agent = (RabbitsGrassSimulationAgent) rabbitSpace.getObjectAt(x, y);
+			i = agent.getEnergy();
 		}else {
 			i = 0;
 		}
@@ -186,7 +187,7 @@ public class RabbitsGrassSimulationSpace {
 	 * of each cell (without considering rabbits on it).
 	 * @return int Total energy at current step
 	 */
-	public int getTotalEnergy() {
+	public int getTotalGrassEnergy() {
 		int totalEnergy = 0;
 		for (int i = 0; i < grassSpace.getSizeX(); i++) {
 			for (int j = 0; j < grassSpace.getSizeY(); j++) {
@@ -203,11 +204,11 @@ public class RabbitsGrassSimulationSpace {
 	 * of each cell.
 	 * @return int Total number of alive rabbits at current step
 	 */
-	public int getTotalRabbits() {
+	public int getTotalRabbitsEnergy() {
 		int totalRabbits = 0;
 		for (int i = 0; i < rabbitSpace.getSizeX(); i++) {
 			for (int j = 0; j < rabbitSpace.getSizeY(); j++) {
-				totalRabbits += getRabbitsAt(i, j);
+				totalRabbits += getRabbitEnergyAt(i, j);
 			}
 		}
 		return totalRabbits;
