@@ -1,12 +1,11 @@
 # IA-epfl
 Repository for the programming exercises of the Intelligent Agents course (CS-430) at EPFL.
 
-* `doc/` Contains the specifications of each exercise
-* The other folders correspond to the code for each of these exercises
+Each folder corresponds to one exercise and inside contains the source code but also the report, especifications and the needed libraries in the folder `lib/`.
 
 ## Configuring Eclipse
 
-Open an existing project with barbany-bolon-in as root.
+Open an existing project with the folder barbany-bolon-**{ex-num}** as root, where **ex_num** depends is the number of the exercise except in the first lab where is **in**.
 
 ### Add external JARs
 
