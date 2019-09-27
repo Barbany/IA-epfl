@@ -65,6 +65,17 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			return (double) space.getTotalEnergy();
 		}
 	}
+	
+	class rabbitsInSpace implements DataSource, Sequence {
+
+		public Object execute() {
+			return new Double(getSValue());
+		}
+
+		public double getSValue() {
+			return (double) space.getTotalRabbits();
+		}
+	}
 
 	class rabbitEnergy implements BinDataSource {
 		public double getBinValue(Object o) {
@@ -87,9 +98,6 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 
 	}
 
-	/**
-	 * Build model, schedule and display and initialize plots
-	 */
 	public void begin() {
 		buildModel();
 		buildSchedule();
@@ -100,10 +108,6 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		rabbitEnergyDistribution.display();
 	}
 
-	/**
-	 * Build he model and add the initial grass and number of rabbits
-	 * Report each of the rabbits
-	 */
 	public void buildModel() {
 		System.out.println("Running BuildModel");
 		space = new RabbitsGrassSimulationSpace(GridSize);
@@ -119,25 +123,12 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		}
 	}
 
-	/**
-	 * Add a new rabbit to the space and the list of current rabbits
-	 */
 	private void addNewRabbit() {
 		RabbitsGrassSimulationAgent rabbit = new RabbitsGrassSimulationAgent(MaxEnergy);
 		rabbitList.add(rabbit);
 		space.addRabbit(rabbit);
 	}
 
-	/**
-	 * For all the rabbits in the map, check if
-	 * a certain rabbit can give birth to new ones and reduce its energy
-	 * to one third of the current one if that is the case. Also check if
-	 * their energy level is 0 and remove them if this happens.
-	 * 
-	 * This function also spreads several units of grass determined by
-	 * the variable GrassGrowthRate.
-	 * @return int Number of rabbits that have to be added
-	 */
 	private int updateSpace() {
 		int count = 0;
 		for (int i = (rabbitList.size() - 1); i >= 0; i--) {
@@ -155,25 +146,18 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		return count;
 	}
 
-	/**
-	 * Count and print the number of living rabbits.
-	 * @return int Number of living rabbits
-	 */
 	private int countLivingAgents() {
-		int livingRabbits = 0;
+		int livingAgents = 0;
 		for (int i = 0; i < rabbitList.size(); i++) {
 			RabbitsGrassSimulationAgent cda = rabbitList.get(i);
 			if (cda.getEnergy() > 0)
-				livingRabbits++;
+				livingAgents++;
 		}
-		System.out.println("Number of living rabbits is: " + livingRabbits);
+		System.out.println("Number of living rabbits is: " + livingAgents);
 
-		return livingRabbits;
+		return livingAgents;
 	}
 
-	/**
-	 * Create schedule with each action to be performed and its period of repetition
-	 */
 	public void buildSchedule() {
 		System.out.println("Running BuildSchedule");
 
@@ -215,7 +199,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 			}
 		}
 
-		schedule.scheduleActionAtInterval(10, new RabbitsGrassUpdateEnergyInSpace());
+		schedule.scheduleActionAtInterval(5, new RabbitsGrassUpdateEnergyInSpace());
 
 		class RabbitsGrassUpdateEnergy extends BasicAction {
 			public void execute() {
@@ -226,9 +210,6 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		schedule.scheduleActionAtInterval(10, new RabbitsGrassUpdateEnergy());
 	}
 
-	/**
-	 * Map values of the map to colors and create displays and plots
-	 */
 	public void buildDisplay() {
 		System.out.println("Running BuildDisplay");
 
@@ -249,19 +230,30 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		displaySurf.addDisplayableProbeable(displayRabbits, "Rabbits");
 
 		amountOfEnergyInSpace.addSequence("Energy in Space", new energyInSpace());
+		amountOfEnergyInSpace.addSequence("Rabbits in Space", new rabbitsInSpace());
+		
+		
 		rabbitEnergyDistribution.createHistogramItem("Rabbit Energy", rabbitList, new rabbitEnergy());
 
 	}
 
-	/**
-	 * Parameters to be set by users via the Repast UI slider bar
-	 * Do "not" modify the parameters names provided here
-	 * @return String[] Array of the names of the initial parameters
-	 */
 	public String[] getInitParam() {
+		// TODO Auto-generated method stub
+		// Parameters to be set by users via the Repast UI slider bar
+		// Do "not" modify the parameters names provided in the skeleton code, you can
+		// add more if you want
 		String[] params = { "GridSize", "NumInitRabbits", "NumInitGrass", "GrassGrowthRate", "BirthThreshold",
 				"MaxEnergy", "MaxGrassEnergy" };
 		return params;
+	}
+
+	public String getName() {
+		return "Rabbits Grass Model";
+	}
+
+	public Schedule getSchedule() {
+		// TODO Auto-generated method stub
+		return schedule;
 	}
 
 	public void setup() {
@@ -274,24 +266,22 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		if (displaySurf != null) {
 			displaySurf.dispose();
 		}
-		displaySurf = null;
+		//displaySurf = null;
 
 		if (amountOfEnergyInSpace != null) {
 			amountOfEnergyInSpace.dispose();
 		}
-		amountOfEnergyInSpace = null;
+		//amountOfEnergyInSpace = null;
 
 		if (rabbitEnergyDistribution != null) {
 			rabbitEnergyDistribution.dispose();
 		}
-		rabbitEnergyDistribution = null;
+		//rabbitEnergyDistribution = null;
 
 		// Create Displays
 		displaySurf = new DisplaySurface(this, "Rabbits Grass model W1");
 		amountOfEnergyInSpace = new OpenSequenceGraph("Amount of Energy In Space", this);
-		
 		// OpenHistogram(title, # of bins, lower bound)
-		// We set lower bound to -1 to allow value 0
 		rabbitEnergyDistribution = new OpenHistogram("Rabbit Energy", 8, -1);
 
 		// Register Displays
@@ -299,16 +289,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		this.registerMediaProducer("Plot", amountOfEnergyInSpace);
 
 	}
-	
-	// Getters and Setters
-	public String getName() {
-		return "Rabbits Grass Model";
-	}
 
-	public Schedule getSchedule() {
-		return schedule;
-	}
-	
 	public int getGridSize() {
 		return GridSize;
 	}

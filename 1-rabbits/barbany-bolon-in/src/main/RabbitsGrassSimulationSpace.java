@@ -71,6 +71,26 @@ public class RabbitsGrassSimulationSpace {
 		}
 		return i;
 	}
+	
+	/**
+	 * Return rabbits in the current space
+	 * (0 if there is no rabbit, 1 if there is one)
+	 * @param x This is the x coordinate
+	 * @param y This is the y coordinate
+	 * @return int Amount of rabbits in (x, y)
+	 */
+	public int getRabbitsAt(int x, int y) {
+		int i;
+		if (rabbitSpace.getObjectAt(x, y) != null) {
+			i= 1;
+		}else {
+			i = 0;
+		}
+			
+		return i;
+	}
+		
+	
 
 	/**
 	 * Check if there is a rabbit in the specified cell
@@ -174,6 +194,23 @@ public class RabbitsGrassSimulationSpace {
 			}
 		}
 		return totalEnergy;
+	}
+	
+	
+	/**
+	 * This method returns the total number of alive rabbits
+	 * in the space. It iterates all the space and collect the rabbits
+	 * of each cell.
+	 * @return int Total number of alive rabbits at current step
+	 */
+	public int getTotalRabbits() {
+		int totalRabbits = 0;
+		for (int i = 0; i < rabbitSpace.getSizeX(); i++) {
+			for (int j = 0; j < rabbitSpace.getSizeY(); j++) {
+				totalRabbits += getRabbitsAt(i, j);
+			}
+		}
+		return totalRabbits;
 	}
 	
 	/**
