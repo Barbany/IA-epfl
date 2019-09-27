@@ -226,13 +226,15 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		Object2DDisplay displayRabbits = new Object2DDisplay(space.getCurrentRabbitSpace());
 		displayRabbits.setObjectList(rabbitList);
 
-		displaySurf.addDisplayableProbeable(displayEnergy, "Grass");
-		displaySurf.addDisplayableProbeable(displayRabbits, "Rabbits");
+		// Main display of grid with grass and rabbits
+		displaySurf.addDisplayable(displayEnergy, "Grass");
+		displaySurf.addDisplayable(displayRabbits, "Rabbits");
 
+		// Plot grass and rabbit's energy
 		amountOfEnergyInSpace.addSequence("Grass' energy", new energyInSpace());
 		amountOfEnergyInSpace.addSequence("Rabbits' energy", new rabbitsInSpace());
 		
-		
+		// Histogram of energy distribution among rabbits
 		rabbitEnergyDistribution.createHistogramItem("Rabbit Energy", rabbitList, new rabbitEnergy());
 
 	}
@@ -252,7 +254,6 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 	}
 
 	public Schedule getSchedule() {
-		// TODO Auto-generated method stub
 		return schedule;
 	}
 
