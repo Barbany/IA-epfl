@@ -11,6 +11,10 @@ public class RabbitsGrassSimulationSpace {
 	private Object2DGrid grassSpace;
 	private Object2DGrid rabbitSpace;
 
+	/**
+	 * Constructor of the class RabbitsGrassSimulationSpace
+	 * @param GridSize Length of any axis of the square grid
+	 */
 	public RabbitsGrassSimulationSpace(int GridSize) {
 		grassSpace = new Object2DGrid(GridSize, GridSize);
 		rabbitSpace = new Object2DGrid(GridSize, GridSize);
@@ -23,12 +27,17 @@ public class RabbitsGrassSimulationSpace {
 		}
 	}
 
-	// Initialize grass in grass space
-	public void spreadGrass(int numInitGrass, int MaxGrassEnergy) {
+	/** Spread grass in space in a random cell and with a random quantity
+	 * of energy in the integers [1, MaxGrassEnergy]. If there is already grass
+	 * in this cell, it will be added and clipped to MaxGrassEnergy.
+	 * @param numGrass This is the number of grass units that will be allocated
+	 * @param MaxGrassEnergy This is the maximum energy of each unit of grass
+	 */
+	public void spreadGrass(int numGrass, int MaxGrassEnergy) {
 
 		int i = 0;
 
-		while (i < numInitGrass) {
+		while (i < numGrass) {
 
 			// Choose coordinates
 			int x = (int) (Math.random() * (grassSpace.getSizeX()));
@@ -46,7 +55,13 @@ public class RabbitsGrassSimulationSpace {
 		}
 	}
 
-	// Return actual grass in the current space
+	/**
+	 * Return energy of grass in the current space
+	 * (0 if there is no grass there)
+	 * @param x This is the x coordinate
+	 * @param y This is the y coordinate
+	 * @return int Amount of energy in (x, y)
+	 */
 	public int getGrassAt(int x, int y) {
 		int i;
 		if (grassSpace.getObjectAt(x, y) != null) {
@@ -57,14 +72,12 @@ public class RabbitsGrassSimulationSpace {
 		return i;
 	}
 
-	public Object2DGrid getCurrentGrassSpace() {
-		return grassSpace;
-	}
-
-	public Object2DGrid getCurrentRabbitSpace() {
-		return rabbitSpace;
-	}
-
+	/**
+	 * Check if there is a rabbit in the specified cell
+	 * @param x This is the x coordinate
+	 * @param y This is the y coordinate
+	 * @return boolean Return true if cell is occupied
+	 */
 	public boolean isCellOccupied(int x, int y) {
 		boolean value = false;
 		if (rabbitSpace.getObjectAt(x, y) != null)
@@ -72,6 +85,15 @@ public class RabbitsGrassSimulationSpace {
 		return value;
 	}
 
+	/**
+	 * Add a new rabbit located in the specified cell. The initial
+	 * location is random and we try a maximum of 10 times the number
+	 * of cells in the space. This is an educated guess that makes
+	 * the probability of no allocation when there is actually space
+	 * very low and avoids an infinite loop when there is no space.
+	 * @param RabbitsGrassSimulationAgent Instance of the agent to be allocated
+	 * @return True if location was possible
+	 */
 	public boolean addRabbit(RabbitsGrassSimulationAgent agent) {
 		boolean value = false;
 		int count = 0;
@@ -92,16 +114,40 @@ public class RabbitsGrassSimulationSpace {
 		return value;
 	}
 
+	/**
+	 * Kill a rabbit located in the specified cell
+	 * @param x This is the x coordinate
+	 * @param y This is the y coordinate
+	 */
 	public void removeRabbitAt(int x, int y) {
 		rabbitSpace.putObjectAt(x, y, null);
 	}
 
+	/**
+	 * This method tries to eat grass at one position
+	 * (either if there is grass or not). In both cases, we 
+	 * get the energy level (that will be 0 in the case that
+	 * there is no grass) and set it to 0.
+	 * @param x This is the x coordinate
+	 * @param y This is the y coordinate
+	 * @return int energy at cell (x, y)
+	 */
 	public int eatGrassAt(int x, int y) {
 		int energy = getGrassAt(x, y);
 		grassSpace.putObjectAt(x, y, new Integer(0));
 		return energy;
 	}
 
+	/**
+	 * This method tries a movement of a rabbit from one cell to another.
+	 * Note that in the case that only NSEW are allowed,
+	 * either x = newX or y = newY but not both or any of them.
+	 * @param x This is the current x coordinate
+	 * @param y This is the current y coordinate
+	 * @param newX This is the possibly future x coordinate
+	 * @param newY This is the possibly future y coordinate
+	 * @return boolean True if movement was legal (new cell not occupied)
+	 */
 	public boolean moveRabbitAt(int x, int y, int newX, int newY) {
 		boolean retVal = false;
 		if (!isCellOccupied(newX, newY)) {
@@ -114,6 +160,12 @@ public class RabbitsGrassSimulationSpace {
 		return retVal;
 	}
 
+	/**
+	 * This method returns the total energy stored in form of grass
+	 * in the space. It iterates all the space and collect the energy
+	 * of each cell (without considering rabbits on it).
+	 * @return int Total energy at current step
+	 */
 	public int getTotalEnergy() {
 		int totalEnergy = 0;
 		for (int i = 0; i < grassSpace.getSizeX(); i++) {
@@ -122,6 +174,20 @@ public class RabbitsGrassSimulationSpace {
 			}
 		}
 		return totalEnergy;
+	}
+	
+	/**
+	 * @return Object2DGrid grassSpace
+	 */
+	public Object2DGrid getCurrentGrassSpace() {
+		return grassSpace;
+	}
+
+	/**
+	 * @return Object2DGrid rabbitSpace
+	 */
+	public Object2DGrid getCurrentRabbitSpace() {
+		return rabbitSpace;
 	}
 
 }

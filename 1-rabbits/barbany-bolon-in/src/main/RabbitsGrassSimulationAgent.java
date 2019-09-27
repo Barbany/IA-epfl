@@ -22,6 +22,11 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 	private int ID;
 	private RabbitsGrassSimulationSpace rabbitSpace;
 
+	/** 
+	 * Constructor of the class RabbitsGrassSimulationAgent
+	 * Assign a unique identifier and a random integer quantity of energy in [1, maxEnergy]
+	 * @param maxEnergy This is the maximum energy that the new rabbit can have
+	 */
 	public RabbitsGrassSimulationAgent(int maxEnergy) {
 		x = -1;
 		y = -1;
@@ -30,52 +35,32 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 		ID = IDNum;
 	}
 
-	public void setRabbitSpace(RabbitsGrassSimulationSpace rabbitSpace) {
-		this.rabbitSpace = rabbitSpace;
-	}
-
-	public void setXY(int newX, int newY) {
-		x = newX;
-		y = newY;
-	}
-
-	public String getID() {
-		return "Rabbit-" + ID;
-	}
-
-	public int getEnergy() {
-		return energy;
-	}
-
-	public void setEnergy(int energy) {
-		this.energy = energy;
-	}
-
+	/**
+	 * Print the unique ID of the Rabbit along with its position and energy
+	 */
 	public void report() {
 		System.out.println(getID() + " at " + x + ", " + y + " has " + getEnergy() + " energy");
 	}
-
-	public int getX() {
-		// TODO Auto-generated method stub
-		return x;
-	}
-
-	public int getY() {
-		// TODO Auto-generated method stub
-		return y;
-	}
-
+	
+	/**
+	 * Draw the rabbit as a white ring with transparent background.
+	 * This is aimed to see if the rabbit is stepping on grass.
+	 */
 	public void draw(SimGraphics G) {
-		G.drawFastRoundRect(Color.white);
-
+		G.drawHollowFastOval(Color.white);
 	}
 
+	/**
+	 * Perform next movement considering the torus structure of the grid
+	 * Eat grass at new move if this was performed.
+	 * Otherwise check if grass has grown at current point.
+	 * Note each step, rabbit loses energy even if it doesn't move
+	 */
 	public void step() {
 		int newX = x;
 		int newY = y;
 		Object2DGrid grid = rabbitSpace.getCurrentRabbitSpace();
 
-		// Perform next movement considering the torus structure of the grid
 		switch ((int) Math.floor(Math.random() * 4)) {
 		case 0:
 			newX = (x + 1) % grid.getSizeX();
@@ -91,9 +76,6 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 			break;
 		}
 
-		// Eat grass at new move if this was performed
-		// Otherwise check if grass has grown at current point
-		// Note each step, rabbit loses energy even if it doesn't move
 		if (tryMove(newX, newY)) {
 			energy += rabbitSpace.eatGrassAt(newX, newY);
 		} else {
@@ -102,8 +84,65 @@ public class RabbitsGrassSimulationAgent implements Drawable {
 		energy--;
 	}
 
+	/**
+	 * Try a move
+	 * @param newX This is the possibly new x coordinate
+	 * @param newY This is the possibly new y coordinate
+	 * @return boolean True if movement was performed
+	 */
 	private boolean tryMove(int newX, int newY) {
 		return rabbitSpace.moveRabbitAt(x, y, newX, newY);
+	}
+
+	/**
+	 * @param rabbitSpace Is the RabbitsGrassSimulationSpace where rabbits are
+	 */
+	public void setRabbitSpace(RabbitsGrassSimulationSpace rabbitSpace) {
+		this.rabbitSpace = rabbitSpace;
+	}
+
+	/**
+	 * @param newX
+	 * @param newY
+	 */
+	public void setXY(int newX, int newY) {
+		x = newX;
+		y = newY;
+	}
+
+	/**
+	 * @return String Agent name: "Rabbit-ID", where ID is the unique identifier
+	 */
+	public String getID() {
+		return "Rabbit-" + ID;
+	}
+
+	/**
+	 * @return Amount of energy that the rabbit has
+	 */
+	public int getEnergy() {
+		return energy;
+	}
+
+	/**
+	 * @param energy Set the energy that the agent will have
+	 */
+	public void setEnergy(int energy) {
+		this.energy = energy;
+	}
+	
+	/**
+	 * @return int Get the x coordinate where agent is located
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
+	 * @return int Get the y coordinate where agent is located
+	 */
+	public int getY() {
+		return y;
 	}
 
 }
