@@ -4,12 +4,31 @@
 \usepackage{textcomp}
 \usepackage[top=0.8in, bottom=0.8in, left=0.8in, right=0.8in]{geometry}
 % Add other packages here %
+\usepackage{color}
 
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
+\usepackage{listings}
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$ $},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
 
 % Put your group number and names in the author field %
 \title{\bf Excercise 1.\\ Implementing a first Application in RePast: A Rabbits Grass Simulation.}
-\author{Group \textnumero: Student 1, Student 2}
+\author{Group \textnumero 54: Oriol Barbany Mayor, Natalie Bolón Brun}
 
 \begin{document}
 \maketitle
@@ -19,33 +38,89 @@
 \subsection{Assumptions}
 % Describe the assumptions of your world model and implementation (e.g. is the grass amount bounded in each cell) %
 
+In this section we explain the main assumptions taken into account in the model. This affects the behaviour of both our agents, the rabbits, and the environment, which in this case controls the grass available in the system. In the following sections we will expose the two of them separately.
+
+\subsubsection{Assumptions on the \textbf{agents}}
+
+\begin{itemize}
+    \item \textbf{Initial energy: }The initial energy of a rabbit, either when is born or when the simulation is initiated, is given by a random integer between 1 and the parameter of maximum initial energy named as \texttt{MaxEnergy}.
+    
+    \item \textbf{Birth of a new rabbit: }When a given rabbit achieves an energy level equal to the variable \texttt{BirthThreshold}, it gives birth to a new rabbit. This process results in a loss of energy leaving the parent agent with one third of its energy before giving birth. We took this approach in order to avoid that a rabbit gives birth in two consecutive steps thus provoking an exponential growth in population.
+    
+    \item \textbf{Position of rabbits: }When a new rabbit is introduced in the space, it can only be placed in a cell where there is currently no other rabbit. In the extreme case that the current space is completely full, the system will not allow the rabbits to move and/or reproduce anymore.
+    
+    \item \textbf{Movement: }Rabbits can move in the four cardinal points as stated in the project description. If a rabbit tries to move to a cell where there is currently another rabbit, the movement will be blocked and it will remain in its current place. 
+    
+    \item \textbf{Energy: }Rabbits can either gain or lose energy. For each time step a rabbit tries to move in any direction with or without success, its energy decreases by one unit. This latter case is considered in order to avoid reaching a regime where the map could be full of the same rabbits for infinitely many time.
+    
+    If the rabbit moves to a cell where there is grass, its energy will increase by the energetic value of the grass in that position. If the energy of an agent is 0 it will die, meaning that it will be removed from the system and it won't appear on the next step. Additionally, if its energy is equal or bigger that the birth threshold, it will give birth to a new rabbit as stated before.
+    
+\end{itemize}
+
+\subsubsection{Assumptions on the \textbf{environment}}
+
+\begin{itemize}
+    \item \textbf{Initial grass energy: }The initial energy of each unit of new grass will be determined by a random integer between 1 and the parameter of maximum initial energy for grass named as \texttt{MaxGrassEnergy}.
+    
+    \item \textbf{Position of grass: }When a new unit of grass is introduced in the space, it will be positioned in a random cell of the grid. If a cell already contains grass, their energetic values will be added and clipped to the maximum energy of the grass. Otherwise, the value of the cell will equal the energy of the grass.
+    
+    \item \textbf{Grass spread: }The parameter \texttt{GrassGrowthRate} determines the number of cells which will be filled with grass at each step. Note that this is not necessarily equal to the number of new cells of grass for the above assumption.
+    
+    \item \textbf{Torus space: }As stated in the problem description, the space is a torus. We will discuss its meaning in terms of implementation in section \ref{sec:imp-remarks}.
+\end{itemize}{}
+
+
 \subsection{Implementation Remarks}
 % Provide important details about your implementation, such as handling of boundary conditions %
+
+\subsubsection{Torus space}
+\label{sec:imp-remarks}
+At each step, we generate a proposal of a movement in NSEW randomly. We implement this by generating a random integer in $[1,4]$. On the one hand, when we have an ascending move in say axis $x$, we apply the modulus operator: \texttt{newX = (x + 1) \% grid.getSizeX();}. On the other hand, when the movement is descending we check if we reached a negative cell and if that's the case, we appear from the other side: \texttt{newX = ((x - 1) < 0) ? grid.getSizeX() - 1 : x - 1;}. Note that previous examples are respectively the same for the $y$ axis.
+
+\subsubsection{Representation of grass' energy}
+In order to represent the level of energy that each unit of grass has, we create a bijection from an integer representing such energy to a green color with luminance proportional to it. Put differently, the brighter the green in a cell is, the more energy the grass has there. We thus have \texttt{MaxGrassEnergy} many green tonalities.
+
+\subsubsection{Representation of the rabbits}
+Rabbits are drawn using the library \texttt{uchicago.src.sim.gui.SimGraphics}, and specifically with the function \texttt{drawHollowFastOval} in white color. We chose this as it only draws a white ring and the transparent background allows to see whether the rabbit is stepping on grass or not.
 
 \section{Results}
 % In this section, you study and describe how different variables (e.g. birth threshold, grass growth rate etc.) or combinations of variables influence the results. Different experiments with diffrent settings are described below with your observations and analysis
 
 \subsection{Experiment 1}
+Default parameters. 
 
 \subsubsection{Setting}
-
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Parameter} & \begin{tabular}[c]{@{}c@{}}Birth\\ Threshold\end{tabular} & \begin{tabular}[c]{@{}c@{}}Grass \\ Growth Rate\end{tabular} & \begin{tabular}[c]{@{}c@{}}Grid \\ Size\end{tabular} & \begin{tabular}[c]{@{}c@{}}Max \\ Energy\end{tabular} & \begin{tabular}[c]{@{}c@{}}Max Grass\\ Energy\end{tabular} & \begin{tabular}[c]{@{}c@{}}Num Init \\ Rabbits\end{tabular} & \begin{tabular}[c]{@{}c@{}}Num Init\\ Grass\end{tabular} \\ \hline
+\textbf{Value} & 15 & 10 & 20 & 20 & 3 & 10 & 10 \\ \hline
+\end{tabular}
+\caption{Parameters used by default}
+\label{tab:exp1}
+\end{table}
 \subsubsection{Observations}
 % Elaborate on the observed results %
+Given the previous parameters, the population of rabbits extinguishes at an early stage of the simulation. They available grass is not enough energetic and dense in space to allow the rabbits to survive and reproduce. On the other hand, grass continues to grow and the environment reaches its maximum energetic level in around 250 steps. 
 
 \subsection{Experiment 2}
-
+Influence of \texttt{MaxGrassEnergy}
 \subsubsection{Setting}
+%% TODO: change table and only mention the changed parameter with respect to the defaults settings. 
 
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Parameter} & \begin{tabular}[c]{@{}c@{}}Birth\\ Threshold\end{tabular} & \begin{tabular}[c]{@{}c@{}}Grass \\ Growth Rate\end{tabular} & \begin{tabular}[c]{@{}c@{}}Grid \\ Size\end{tabular} & \begin{tabular}[c]{@{}c@{}}Max \\ Energy\end{tabular} & \begin{tabular}[c]{@{}c@{}}Max Grass\\ Energy\end{tabular} & \begin{tabular}[c]{@{}c@{}}Num Init \\ Rabbits\end{tabular} & \begin{tabular}[c]{@{}c@{}}Num Init\\ Grass\end{tabular} \\ \hline
+\textbf{Value} & 15 & 10 & 20 & 20 & - & 10 & 10 \\ \hline
+\end{tabular}
+\caption{Parameters used for evaluating the influence of \texttt{MaxGrassEnergy}}
+\label{tab:exp2}
+\end{table}
 \subsubsection{Observations}
-% Elaborate on the observed results %
 
-\vdots
 
-\subsection{Experiment n}
-
-\subsubsection{Setting}
-
-\subsubsection{Observations}
-% Elaborate on the observed results %
 
 \end{document}
