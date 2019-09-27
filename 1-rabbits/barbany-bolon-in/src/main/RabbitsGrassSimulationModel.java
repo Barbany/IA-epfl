@@ -86,7 +86,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 
 	public static void main(String[] args) {
 
-		System.out.println("Rabbit skeleton");
+		System.out.println("Rabbit Grass Simulation Model");
 
 		SimInit init = new SimInit();
 		RabbitsGrassSimulationModel model = new RabbitsGrassSimulationModel();
