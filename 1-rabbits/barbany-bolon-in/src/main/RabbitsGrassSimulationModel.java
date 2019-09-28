@@ -258,7 +258,7 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 	}
 
 	public void setup() {
-		System.out.println("Running setup");
+		//System.out.println("Running setup");
 		space = null;
 		rabbitList = new ArrayList<RabbitsGrassSimulationAgent>();
 		schedule = new Schedule(1);
@@ -267,17 +267,17 @@ public class RabbitsGrassSimulationModel extends SimModelImpl {
 		if (displaySurf != null) {
 			displaySurf.dispose();
 		}
-		//displaySurf = null;
+		displaySurf = null;
 
 		if (amountOfEnergyInSpace != null) {
 			amountOfEnergyInSpace.dispose();
 		}
-		//amountOfEnergyInSpace = null;
+		amountOfEnergyInSpace = null;
 
 		if (rabbitEnergyDistribution != null) {
 			rabbitEnergyDistribution.dispose();
 		}
-		//rabbitEnergyDistribution = null;
+		rabbitEnergyDistribution = null;
 
 		// Create Displays
 		displaySurf = new DisplaySurface(this, "Rabbits Grass model W1");
