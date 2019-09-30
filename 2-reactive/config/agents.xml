@@ -4,7 +4,7 @@
 	<!-- A list of agents and their behavior classes -->
 	
 	<!-- #### REACTIVE AGENTS ### -->
-	<agent name="reactive-random">
+	<agent name="reactive-rla">
 		<set class-path="bin/"/>
 		<set class-name="template.ReactiveTemplate"/>
 		<set discount-factor=".85"/>
