@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<history configuration="config/reactive.xml">
+	<agents>
+		<agent name="reactive-random">
+			<vehicle name="Vehicle 1"/>
+		</agent>
+	</agents>
+	<rounds>
+		<round id="1">
+			<tasks>
+				<task id="0" pickup="Marseille" delivery="Bordeaux" weight="3" reward="66042"/>
+				<task id="1" pickup="Genève" delivery="Strasbourg" weight="3" reward="83601"/>
+				<task id="2" pickup="Le Havre" delivery="Brest" weight="3" reward="56409"/>
+				<task id="3" pickup="Paris" delivery="Lyon" weight="3" reward="78340"/>
+				<task id="4" pickup="Marseille" delivery="Bordeaux" weight="3" reward="66042"/>
+				<task id="5" pickup="Le Havre" delivery="Monaco" weight="3" reward="27987"/>
+				<task id="6" pickup="Marseille" delivery="Bordeaux" weight="3" reward="66042"/>
+				<task id="7" pickup="Strasbourg" delivery="Monaco" weight="3" reward="48005"/>
+				<task id="8" pickup="Paris" delivery="Le Havre" weight="3" reward="96787"/>
+				<task id="9" pickup="Bordeaux" delivery="Lyon" weight="3" reward="70005"/>
+			</tasks>
+			<events>
+				<event id="0" time="0" vehicle="Vehicle 1" move="Bordeaux"/>
+				<event id="1" time="2654545322" vehicle="Vehicle 1" move="Marseille"/>
+			</events>
+		</round>
+	</rounds>
+	<statistics>
+		<stat rank="1" agent="reactive-random">
+			<total-tasks value="0"/>
+			<total-distance value="1230.0"/>
+			<total-cost value="6150"/>
+			<total-reward value="0"/>
+			<total-profit value="-6150"/>
+		</stat>
+	</statistics>
+</history>
