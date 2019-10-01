@@ -84,7 +84,7 @@ Rabbits are drawn using the library \texttt{uchicago.src.sim.gui.SimGraphics}, a
 \subsection{Experiment 1}
 \subsubsection{Setting}
 
-Default parameters are shown in Table \ref{tab:exp1}
+Default parameters are shown in Table \ref{tab:exp1}.
 
 \subsubsection{Observations}
 
@@ -109,7 +109,7 @@ Default parameters are shown in Table \ref{tab:exp1}
 \end{minipage}{}
 \hfill
 \begin{minipage}[]{0.75\textwidth}
-Given the previous parameters, we see that the population of rabbits increases from the initial value until reaching a value around which it oscillates. The grass quantity evolves similarly, increasing its energetic content until a point around which it oscillated. Both variables behave symmetrically interchanging energy while maintaining the energy of the system constant.   
+Given the previous parameters, we see that the population of rabbits increases from the initial value until reaching a value around which it oscillates. The grass quantity evolves similarly, increasing its energetic content until a point around which it oscillates. Both variables behave symmetrically interchanging energy while maintaining the energy of the system constant.   
 \end{minipage}{}
 
 \end{minipage}{}
@@ -119,7 +119,7 @@ Given the previous parameters, we see that the population of rabbits increases f
 Influence of \texttt{BirthThreshold} and \texttt{GridSize}. Remaining parameters keep their default values. Both parameters are modified independently and result in the same behaviour.
 
 \subsubsection{Observations}
-We can distinguish 3 cases: for $\texttt{BirthThreshold} \leq 5$, the population of rabbits explodes and may reach the maximum capacity of the system. Most of the rabbits have low energetic content while a few ones accumulate a great amount of energy. For $5 < \texttt{BirthThreshold} \leq 35$, the population of rabbits increases but the energetic content of the system remains mostly concentrated on the grass. Energy along rabbits is distributed following a normal distribution with mean lower than the birth threshold. Finally, for $35 < \texttt{BirthThreshold}$, the population stabilizes around a value and its energetic content is greater than the grass system. The population of rabbits is constituted of individuals with very high energetic content. Cases 2 and 3 are shown in Figure \ref{fig:exp1}
+We can distinguish 3 cases: for $\texttt{BirthThreshold} \leq 5$, the population of rabbits explodes and may reach the maximum capacity of the system. Most of the rabbits have low energetic content while a few ones accumulate a great amount of energy. For $5 < \texttt{BirthThreshold} \leq 35$, the population of rabbits increases but the energetic content of the system remains mostly concentrated on the grass. Energy along rabbits is distributed following a normal distribution with mean lower than the birth threshold. Finally, for $35 < \texttt{BirthThreshold}$, the population stabilizes around a value and its energetic content is greater than the grass system. The population of rabbits is constituted of individuals with very high energetic content. Cases 2 and 3 are shown in Figure \ref{fig:exp1}.
 
 \begin{minipage}[]{\textwidth}
 
@@ -130,15 +130,16 @@ We can distinguish 3 cases: for $\texttt{BirthThreshold} \leq 5$, the population
 \hfill
 \begin{minipage}[]{\textwidth}
 \includegraphics[width=\textwidth]{1-rabbits/Images-report/evolution-50.png}
-\end{minipage}{}
-\label{fig:exp1}
 \captionof{figure}{From top to bottom: \texttt{BirthThreshold}= 20 and 50}
+\label{fig:exp1}
+\end{minipage}{}
+
 \end{minipage}{}
 \hfill
 \begin{minipage}[]{0.35\textwidth}
  \includegraphics[width=\textwidth]{1-rabbits/Images-report/rabbit-energy-150.png}
- \label{fig:exp2}
 \captionof{figure}{\texttt{GrassGrowthRate}=60. Step = 150. Alive rabbits = 298}
+\label{fig:exp2}
 \end{minipage}{}
 
 \end{minipage}{}
@@ -150,15 +151,13 @@ Influence of \texttt{MaxGrassEnergy}, \texttt{MaxEnergy} and \texttt{GrassGrowth
 
 \subsubsection{Observations}
 
-For $\texttt{MaxGrassEnergy} \leq 3$ the population of rabbits extinguishes at an early stage of the simulation since the available grass is not energetic enough to allow the continuation of the spicy. Grass continues growing until reaching its maximum energetic level in around 250 steps. For $\texttt{MaxGrassEnergy} > 3$ the population survives. Once reached this state, the energy is distributed among grass and rabbits forcing a symmetric behaviour of these two values around the equilibrium.
+For $\texttt{MaxGrassEnergy} \leq 3$ the population of rabbits extinguishes at an early stage of the simulation since the available grass is not energetic enough to allow the continuation of the species. Grass continues growing until reaching its maximum energetic level in around 250 steps. For $\texttt{MaxGrassEnergy} > 3$ the population survives. Once reached this state, the energy is distributed among grass and rabbits forcing a symmetric behaviour of these two values around the equilibrium.
 
 Initially, the energetic content of the grass is higher than the one of the rabbits. As we increase the studied parameter, this gap becomes smaller until the point when \texttt{MaxGrassEnergy} equals \texttt{MaxEnergy} when both groups stabilize around a point with similar energetic content.
 
 Modifying \texttt{MaxEnergy} has the same effect as \texttt{MaxGrassEnergy} but in this case, if the parameter keeps increasing, the energetic gap grows and the rabbits become the group holding the greatest amount of energy in the system. 
 
 Modifying \texttt{GrassGrowthRate} effects in the same way. As we increase the parameter the gap of energetic content between grass and rabbits' populations increases. The population of rabbits increases but the energy of each individual remains low (under 10u) as seen in Figure \ref{fig:exp2}.
-
-
 
 \subsection{Experiment 4} 
 \subsubsection{Setting}
