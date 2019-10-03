@@ -21,6 +21,7 @@ public class ReactiveTemplate implements ReactiveBehavior {
 	private Agent myAgent;
 	private double[][][] Q;
 	private double[] V;
+	private double[] P_nopacket;
 
 	@Override
 	public void setup(Topology topology, TaskDistribution td, Agent agent) {
@@ -36,13 +37,24 @@ public class ReactiveTemplate implements ReactiveBehavior {
 		this.myAgent = agent;
 		
 		// Run Offline Q-Learning
-		reinforce(topology, td);
+		// Given that there's only one vehicle, get first (and unique) element of list
+		reinforce(topology, td, agent.vehicles().get(0));
 	}
 	
-	public void reinforce(Topology topology, TaskDistribution td) {
+	public void reinforce(Topology topology, TaskDistribution td, Vehicle v) {
+		// Compute probability of no having tasks at each city (so T(s,a,s') sums up to one for each s)
+		for (City city_a : topology) {
+			double p_nopacket = 0;
+			for (City city_b : topology) {
+				p_nopacket += td.probability(city_a, city_b);
+			}
+			P_nopacket[city_a.id] = 1 - p_nopacket;
+		}
+		
 		// Initialize V values
+		// TODO: Check that this is a good initialization (o/w try with -max_distance * cost_km)
 		for (City city : topology) {
-			V[city.id] = -1;
+			V[city.id] = 0;
 		}
 		
 		// TODO: Iterate UNTIL GOOD ENOUGH
@@ -50,20 +62,25 @@ public class ReactiveTemplate implements ReactiveBehavior {
 			for (City city_a : topology) {				
 				for (City city_b : topology) {					
 					// Actions: Refuse (0) and Accept (1)
-					// Check probability of traveling if refuse
-					Q[city_a.id][city_b.id][0] = - city_a.distanceTo(city_b) + discount * td.probability(city_a, city_b) * V[city_b.id];
-					Q[city_a.id][city_b.id][1] = td.reward(city_a, city_a) + discount * td.probability(city_a, city_b) * V[city_b.id];
 					
-					
-					// Update V values if we find something better
-					if (Q[city_a.id][city_b.id][0] > Q[city_a.id][city_b.id][1]) {
+					if (city_a.hasNeighbor(city_b)) {
+						// Refuse only with neighbors
+						Q[city_a.id][city_b.id][0] = - city_a.distanceTo(city_b) * v.costPerKm() +
+								discount * P_nopacket[city_a.id] / city_a.neighbors().size() * V[city_b.id];
+						
+						// Update V values if we find something better
 						if (Q[city_a.id][city_b.id][0] > V[city_a.id]) {
 							V[city_a.id] = Q[city_a.id][city_b.id][0];
 						}
-					} else {
-						if (Q[city_a.id][city_b.id][1] > V[city_a.id]) {
-							V[city_a.id] = Q[city_a.id][city_b.id][1];
-						}
+					}
+					
+					// TODO: Check that the weight incurs a multiplicative cost by distance
+					Q[city_a.id][city_b.id][1] = td.reward(city_a, city_b) -
+							city_a.distanceTo(city_b) * v.costPerKm() * td.weight(city_a, city_b) +
+							discount * td.probability(city_a, city_b) * V[city_b.id];
+					
+					if (Q[city_a.id][city_b.id][1] > V[city_a.id]) {
+						V[city_a.id] = Q[city_a.id][city_b.id][1];
 					}
 				}
 			}

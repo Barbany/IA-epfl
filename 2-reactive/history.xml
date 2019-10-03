@@ -2,5 +2,5 @@
 
 <history configuration="config/reactive.xml">
 	<agents>
-		<agent name="reactive-random">
+		<agent name="reactive-rla">
 			<vehicle name="Vehicle 1"/>
