@@ -5,3 +5,4 @@
 **.classpath
 **.project
 **/repast.log
+*/bin/.gitignore
