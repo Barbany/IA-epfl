@@ -24,7 +24,7 @@ public class ReactiveTemplate implements ReactiveBehavior {
 	
 	// Policy: Random (0), Q-Learning (1)
 	// TODO: Note that policy that takes all the packets is also very good
-	private int policy = 1;
+	private int policy = 0;
 	
 	private double[][][] Q;
 	private double[] V;
@@ -128,12 +128,19 @@ public class ReactiveTemplate implements ReactiveBehavior {
 			City max_neigh = city_a;
 			
 			for (City city_b: city_a.neighbors()) {
-				max_qval = Math.max(max_qval, Q[city_a.id][city_b.id][0]);
-				max_neigh = city_b;
+				//System.out.println("Q_vals: " + Q[city_a.id][city_b.id][0] + " for city " + city_b.name);
+				if(max_qval < Q[city_a.id][city_b.id][0]) {
+					max_qval = Q[city_a.id][city_b.id][0];
+					max_neigh = city_b;
+				}
+				//max_qval = Math.max(max_qval, Q[city_a.id][city_b.id][0]);
+				
 			}
 			if (availableTask != null && (max_qval < Q[city_a.id][availableTask.deliveryCity.id][1])) {
+				//System.out.println("Pickup action");
 				action = new Pickup(availableTask);
 			} else {
+				//System.out.println("destination to: " + max_neigh.name + " with Q val " + max_qval);
 				action = new Move(max_neigh);
 			}
 			break;
