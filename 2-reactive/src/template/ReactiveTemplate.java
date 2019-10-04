@@ -13,6 +13,7 @@ import logist.task.TaskDistribution;
 import logist.topology.Topology;
 import logist.topology.Topology.City;
 
+
 public class ReactiveTemplate implements ReactiveBehavior {
 	
 	private static double EPSILON = 1e-5;
@@ -21,6 +22,7 @@ public class ReactiveTemplate implements ReactiveBehavior {
 	private double discount;
 	private int numActions;
 	private Agent myAgent;
+	//private OpenSequenceGraph qValuesEvolution;
 	
 	// Policy: Random (0), Q-Learning (1)
 	// TODO: Note that policy that takes all the packets is also very good
@@ -37,6 +39,8 @@ public class ReactiveTemplate implements ReactiveBehavior {
 		// If the property is not present it defaults to 0.95
 		Double discount = agent.readProperty("discount-factor", Double.class,
 				0.95);
+		Integer policy_v = agent.readProperty("policy", Integer.class, 0);
+		policy = policy_v;
 
 		this.random = new Random();
 		
@@ -52,6 +56,14 @@ public class ReactiveTemplate implements ReactiveBehavior {
 	
 	public void reinforce(Topology topology, TaskDistribution td, Vehicle v) {
 		// Initialize V values to 0 (default in Java)
+		
+		/*
+		 * if (qValuesEvolution != null) { qValuesEvolution.dispose(); }
+		 * qValuesEvolution = null;
+		 * 
+		 * qValuesEvolution = new OpenSequenceGraph("Evolution of Q vals", this);
+		 */
+		
 		P_nopacket = new double[topology.cities().size()];
 		V = new double[topology.cities().size()];
 		Q = new double[topology.cities().size()][topology.cities().size()][2];
@@ -101,6 +113,8 @@ public class ReactiveTemplate implements ReactiveBehavior {
 					dif = Math.max(dif, Math.abs(Q[city_a.id][city_b.id][1] - old_Qval));
 				}
 			}
+			System.out.println("diff " + dif);
+			//qValuesEvolution.addSequence("Discount " + this.discount, dif);
 		} while (dif > EPSILON);
 	}
 
@@ -120,11 +134,12 @@ public class ReactiveTemplate implements ReactiveBehavior {
 			}
 			break;
 		case 1:
+			// TODO: remove prints! 
 		default:
 			// Off-line Q-Learning: Greedy policy
 			City city_a = vehicle.getCurrentCity();
 			
-			double max_qval = 0;
+			double max_qval = -9999; // If 0 can lead to vehicle choosing the current city if q vals are negative
 			City max_neigh = city_a;
 			
 			for (City city_b: city_a.neighbors()) {

@@ -6,3 +6,4 @@
 **.project
 **/repast.log
 */bin/.gitignore
+2-reactive/history.xml
