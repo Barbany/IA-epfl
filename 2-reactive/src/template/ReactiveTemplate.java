@@ -31,6 +31,9 @@ public class ReactiveTemplate implements ReactiveBehavior {
 	private double[][][] Q;
 	private double[] V;
 	private double[] P_nopacket;
+	
+	private double[] Best_value;
+	private City[] Best_neigh;
 
 	@Override
 	public void setup(Topology topology, TaskDistribution td, Agent agent) {
@@ -125,11 +128,26 @@ public class ReactiveTemplate implements ReactiveBehavior {
 			}
 			//qValuesEvolution.addSequence("Discount " + this.discount, dif);
 		} while (dif > EPSILON);
+		
+		// Compute Best vectors
+		for (City city_a: topology.cities()) {
+			double max_qval = -9999; // If 0 can lead to vehicle choosing the current city if q values are negative
+			City max_neigh = city_a;
+			
+			for (City city_b: city_a.neighbors()) {
+				if(max_qval < Q[city_a.id][city_b.id][0]) {
+					max_qval = Q[city_a.id][city_b.id][0];
+					max_neigh = city_b;
+				}
+			}
+			Best_value[city_a.id] = max_qval;
+			Best_neigh[city_a.id] = max_neigh;
+		}
 	}
 
 	@Override
 	public Action act(Vehicle vehicle, Task availableTask) {
-		Action action;
+		Action action = null;
 
 		//Random policy
 		switch(policy) {
@@ -151,30 +169,19 @@ public class ReactiveTemplate implements ReactiveBehavior {
 				City currentCity = vehicle.getCurrentCity();
 				action = new Move(currentCity.randomNeighbor(random));
 			}
-			 
-			// TODO: remove prints! 
+
 		default:
 			// Off-line Q-Learning: Greedy policy
 			City city_a = vehicle.getCurrentCity();
 			
-			double max_qval = -9999; // If 0 can lead to vehicle choosing the current city if q vals are negative
-			City max_neigh = city_a;
-			
-			for (City city_b: city_a.neighbors()) {
-				//System.out.println("Q_vals: " + Q[city_a.id][city_b.id][0] + " for city " + city_b.name);
-				if(max_qval < Q[city_a.id][city_b.id][0]) {
-					max_qval = Q[city_a.id][city_b.id][0];
-					max_neigh = city_b;
+			if (availableTask != null) {
+				if (Best_value[city_a.id] < Q[city_a.id][availableTask.deliveryCity.id][1] &&
+						availableTask.weight <= vehicle.capacity()){
+					//System.out.println("Pickup action");
+					action = new Pickup(availableTask);	
 				}
-				//max_qval = Math.max(max_qval, Q[city_a.id][city_b.id][0]);
-				
-			}
-			if (availableTask != null && (max_qval < Q[city_a.id][availableTask.deliveryCity.id][1])) {
-				//System.out.println("Pickup action");
-				action = new Pickup(availableTask);
 			} else {
-				//System.out.println("destination to: " + max_neigh.name + " with Q val " + max_qval);
-				action = new Move(max_neigh);
+				action = new Move(Best_neigh[city_a.id]);
 			}
 			break;
 		}
