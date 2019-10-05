@@ -31,20 +31,9 @@
 	<companies>
 		<company name="Company A">
 			<!-- the first vehicle (blue) -->
-			<vehicle name="Vehicle 1">
+			<vehicle name="RLA - 0.95">
 				<set color="#0000ff" />
 				<set home="Paris" />
-				<set speed="220" />
-				<set capacity="30" />
-				<set cost-per-km="5" />
-			</vehicle>
-		</company>
-		
-		<company name="Company B">
-			<!-- the second vehicle (red) -->
-			<vehicle name="Vehicle 2">
-				<set color="#ff0000" />
-				<set home="Lyon" />
 				<set speed="220" />
 				<set capacity="30" />
 				<set cost-per-km="5" />
@@ -53,7 +42,7 @@
 
 		<company name="Company C">
 			<!-- the third vehicle (green) -->
-			<vehicle name="Vehicle 3">
+			<vehicle name="RLA - 0.8">
 				<set color="#00ff00" />
 				<set home="Brest" />
 				<set speed="220" />
@@ -64,7 +53,7 @@
 
 		<company name="Company D">
 			<!-- the fourth vehicle (yellow) -->
-			<vehicle name="Vehicle 4">
+			<vehicle name="RLA - 0.5">
 				<set color="#ffff00" />
 				<set home="Monaco" />
 				<set speed="220" />
@@ -75,7 +64,7 @@
 		
 		<company name="Company E">
 			<!-- the fifth vehicle (magenta) -->
-			<vehicle name="Vehicle 5">
+			<vehicle name="RLA - 0.0">
 				<set color="#ff00ff" />
 				<set home="Strasbourg" />
 				<set speed="220" />
@@ -86,7 +75,7 @@
 		
 		<company name="Company F">
 			<!-- the sixth vehicle (cyan) -->
-			<vehicle name="Vehicle 6">
+			<vehicle name="RLA8">
 				<set color="#00ffff" />
 				<set home="Bordeaux" />
 				<set speed="220" />
@@ -94,6 +83,17 @@
 				<set cost-per-km="5" />
 			</vehicle>
 		</company>
+        
+        <company name="Company B">
+            <!-- the second vehicle (red) -->
+            <vehicle name="Random">
+                <set color="#ff0000" />
+                <set home="Lyon" />
+                <set speed="220" />
+                <set capacity="30" />
+                <set cost-per-km="5" />
+            </vehicle>
+        </company>
 		
 	</companies>
 	

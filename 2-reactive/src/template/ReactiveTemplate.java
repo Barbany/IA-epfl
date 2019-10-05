@@ -51,7 +51,17 @@ public class ReactiveTemplate implements ReactiveBehavior {
 		
 		// Run Offline Q-Learning
 		// Given that there's only one vehicle, get first (and unique) element of list
+		
+		long start = System.nanoTime();
 		reinforce(topology, td, agent.vehicles().get(0));
+		long end = System.nanoTime();
+		//finding the time difference and converting it into seconds
+		float sec = (end - start); 
+		System.out.println("Discount factor: " + discount);
+		System.out.println("Elapsed time in training " + sec + "ns");
+		System.out.println("\n \n");
+		
+		
 	}
 	
 	public void reinforce(Topology topology, TaskDistribution td, Vehicle v) {
@@ -113,7 +123,6 @@ public class ReactiveTemplate implements ReactiveBehavior {
 					dif = Math.max(dif, Math.abs(Q[city_a.id][city_b.id][1] - old_Qval));
 				}
 			}
-			System.out.println("diff " + dif);
 			//qValuesEvolution.addSequence("Discount " + this.discount, dif);
 		} while (dif > EPSILON);
 	}
@@ -125,6 +134,7 @@ public class ReactiveTemplate implements ReactiveBehavior {
 		//Random policy
 		switch(policy) {
 		case 0:
+			
 			// Random policy
 			if (availableTask == null || random.nextDouble() > discount) {
 				City currentCity = vehicle.getCurrentCity();
@@ -133,7 +143,15 @@ public class ReactiveTemplate implements ReactiveBehavior {
 				action = new Pickup(availableTask);
 			}
 			break;
-		case 1:
+		case -1:
+			// Dummy agent
+			if (availableTask != null && random.nextDouble() > discount) {
+				action = new Pickup(availableTask);
+			} else {
+				City currentCity = vehicle.getCurrentCity();
+				action = new Move(currentCity.randomNeighbor(random));
+			}
+			 
 			// TODO: remove prints! 
 		default:
 			// Off-line Q-Learning: Greedy policy

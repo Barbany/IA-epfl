@@ -11,10 +11,18 @@
         <set policy="0"/>
     </agent>
     
+    <agent name="reactive-dummy">
+        <set class-path="bin/"/>
+        <set class-name="template.ReactiveTemplate"/>
+        <set discount-factor=".5"/>
+        <set policy="-1"/>
+    </agent>
+    
+    
     <agent name="reactive-rla">
         <set class-path="bin/"/>
         <set class-name="template.ReactiveTemplate"/>
-        <set discount-factor=".9"/>
+        <set discount-factor="0.95"/>
         <set policy="1"/>
     </agent>
     
@@ -22,8 +30,29 @@
 	<agent name="reactive-rla2">
 		<set class-path="bin/"/>
 		<set class-name="template.ReactiveTemplate"/>
-		<set discount-factor=".2"/>
+		<set discount-factor=".8"/>
         <set policy="1"/>
 	</agent>
+    
+    <agent name="reactive-rla4">
+        <set class-path="bin/"/>
+        <set class-name="template.ReactiveTemplate"/>
+        <set discount-factor=".5"/>
+        <set policy="1"/>
+    </agent>
+    
+    <agent name="reactive-rla6">
+        <set class-path="bin/"/>
+        <set class-name="template.ReactiveTemplate"/>
+        <set discount-factor=".0"/>
+        <set policy="1"/>
+    </agent>
+    
+    <agent name="reactive-rla8">
+        <set class-path="bin/"/>
+        <set class-name="template.ReactiveTemplate"/>
+        <set discount-factor=".8"/>
+        <set policy="1"/>
+    </agent>
 	
 </agents>
