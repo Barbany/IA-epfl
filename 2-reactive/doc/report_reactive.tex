@@ -17,6 +17,23 @@
 \section{Problem Representation}
 
 \subsection{Representation Description}
+ Given the pickup and delivery problem presented, we have defined the states and actions as follows: 
+ 
+\textbf{States}: Our state space is the set of cities in the problem. The state of the agent corresponds to the city where it is currently located. $\mathcal{S} = \{ Cities \} $
+
+\textbf{Actions}: The actions are represented by a tuple of two elements: Pickup/Refuse and the destination city.  $\mathcal{A} = \{Accept/Refuse\} \times \{ Cities \} $. Not all actions are available in all states: If there is no task available, the possible actions will be limited to the subset $\{Refuse\} \times \{c'\}$ for  $c' \in C'$ where $C'$ is the set of neighbor cities of the current one. On the other hand, if there is a task and the agent accepts it, the destination city will be fixed by the task. 
+
+\textbf{Reward table}: The rewards are given by two factors: the reward of pursuing a task and the cost of movement. For each state-action pair, we compute the reward associated to the task if it was accepted and the cost of movement. This cost is calculated as the cost per kilometer of the used vehicle time the distance from the origin to the destination city. %% NO ESTEM TENINT EN COMPTE EL PES DEL PAQEUT PERQ SI FOS MENYS DE 1 SURTIRIA MÉS BARAT PORTAR PAQUET Q NO POTAR-NE! 
+%% SHOULD WE CHECK CAPACITY? 
+
+\textbf{Probability transition table:} this table represents the probability to reach an state ($s'$
+) given the current state (s) and action (a). In our case, given the available information from the probability of having a task from city i to city j, we distinguish to cases for computing the transition probabilities: 
+
+
+\textit{Case 1.}. From city i to city j with a task ( a = $\{Accept \times city-j \}$. In this case the probability of reaching city j (s') is the same as of having a task in i for city j. 
+
+
+\textit{Case 2.}. From city i to city j without a task ( a = $\{Refuse \times city-j \}$. In this case, the probability of transiting to j is 0 if j is not a neighbor of i. Otherwise, the probability is given by the probability of not having a task in i $(1 - \sum_j p(i,j))$ times 1 over the number of neighbors of city i  ( $(1 - \sum_j p(i,j)) \frac{1}{card(i)}$) as we consider equiprobable moving to any of the neighbors of the original city.   
 % describe how you design the state representation, the possible actions, the reward table and the probability transition table
 
 \subsection{Implementation Details}
@@ -53,3 +70,33 @@
 \subsubsection{Observations}
 
 \end{document}
+
+%%%%
+%
+%Discount factor: 0.0
+%Elapsed time in training 714839.0ns
+
+%Discount factor: 0.2
+%Elapsed time in training 766778.0ns
+
+%Discount factor: 0.4
+%Elapsed time in training 410527.0ns
+
+%Discount factor: 0.6
+%Elapsed time in training 301511.0ns
+
+%Discount factor: 0.8
+%Elapsed time in training 298301.0ns
+
+%%%%
+%Discount factor: 0.95
+%Elapsed time in training 1007973.0ns
+
+%Discount factor: 0.8
+%Elapsed time in training 347516.0ns
+
+%Discount factor: 0.5
+%Elapsed time in training 296873.0ns
+
+%Discount factor: 0.0
+%Elapsed time in training 157252.0ns
