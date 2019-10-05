@@ -81,6 +81,9 @@ public class ReactiveTemplate implements ReactiveBehavior {
 		V = new double[topology.cities().size()];
 		Q = new double[topology.cities().size()][topology.cities().size()][2];
 		
+		Best_neigh = new City[topology.cities().size()];
+		Best_value = new double[topology.cities().size()];
+		
 		// Compute probability of no having tasks at each city (so T(s,a,s') sums up to one for each s)
 		for (City city_a : topology) {
 			double p_nopacket = 0;
@@ -131,7 +134,7 @@ public class ReactiveTemplate implements ReactiveBehavior {
 		
 		// Compute Best vectors
 		for (City city_a: topology.cities()) {
-			double max_qval = -9999; // If 0 can lead to vehicle choosing the current city if q values are negative
+			double max_qval = -9999999; // If 0 can lead to vehicle choosing the current city if q values are negative
 			City max_neigh = city_a;
 			
 			for (City city_b: city_a.neighbors()) {
@@ -162,11 +165,12 @@ public class ReactiveTemplate implements ReactiveBehavior {
 			}
 			break;
 		case -1:
-			// Dummy agent
-			if (availableTask != null && random.nextDouble() > discount) {
+			// Dummy agent - only picks tasks to be delivered in a neighbor city
+			City currentCity = vehicle.getCurrentCity();
+			
+			if (availableTask != null && currentCity.hasNeighbor(availableTask.deliveryCity) ) {
 				action = new Pickup(availableTask);
 			} else {
-				City currentCity = vehicle.getCurrentCity();
 				action = new Move(currentCity.randomNeighbor(random));
 			}
 
@@ -174,12 +178,15 @@ public class ReactiveTemplate implements ReactiveBehavior {
 			// Off-line Q-Learning: Greedy policy
 			City city_a = vehicle.getCurrentCity();
 			
-			if (availableTask != null) {
-				if (Best_value[city_a.id] < Q[city_a.id][availableTask.deliveryCity.id][1] &&
-						availableTask.weight <= vehicle.capacity()){
+			if (availableTask != null ) {
+				if (Best_value[city_a.id] < Q[city_a.id][availableTask.deliveryCity.id][1] 
+						&& availableTask.weight <= vehicle.capacity()){
 					//System.out.println("Pickup action");
 					action = new Pickup(availableTask);	
+				} else {
+					action = new Move(Best_neigh[city_a.id]);
 				}
+					
 			} else {
 				action = new Move(Best_neigh[city_a.id]);
 			}
