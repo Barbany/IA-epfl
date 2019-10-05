@@ -17,9 +17,9 @@
 		<!--
 			the probabilities, rewards and weight of tasks
 		-->
-		<reward distribution="constant" policy="short-distances" min="100" max="99999" />
 		<probability distribution="uniform" min="0.0" max="1.0" />
-		<weight distribution="uniform" min="10" max="30" />
+        <reward distribution="constant" policy="short-distances" min="1000" max="99999" />
+        <weight distribution="constant" value="3" />
 		
 		<!--
 			the probability that there is no task in a city
