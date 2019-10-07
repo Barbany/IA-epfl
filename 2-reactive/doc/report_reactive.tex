@@ -10,6 +10,9 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 
+% Used to directly include eps files
+\usepackage{epstopdf}
+
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 % put your group number and names in the author field
@@ -24,11 +27,13 @@
 \section{Problem Representation}
 
 \subsection{Representation Description}
-The topology of the problem is defined by the weighted graph $\mathcal{G}=(V,E)$, where $V$ is the set of cities and $E$ represent the roads between them, which have a weight function $w:E\to \mathbb{R}^+$ associated representing the distance in kilometers between vertices connected by an edge. To ease the notation, we define $d(s,s')$ to be the distance between city $s$ and city $s'$. Note that if $(s,s')\in E$, $d(s,s')=w(s,s')$ and otherwise it is the minimum length path between them. Given the pickup and delivery problem presented, we have defined the states and actions as follows.
+The topology of the problem is defined by the weighted graph $\mathcal{G}=(V,E)$, where $V$ is the set of cities and $E$ represent the roads between them. The distance in kilometers between cities $s,s' \in V$ is denoted as $d(s,s')$.
+
+% which have a weight function $w:E\to \mathbb{R}^+$ associated representing the distance in kilometers between vertices connected by an edge. To ease the notation, we define $d(s,s')$ to be the distance between city $s$ and city $s'$. Note that if $(s,s')\in E$, $d(s,s')=w(s,s')$ and otherwise it is the minimum length path between them. Given the pickup and delivery problem presented, we have defined the states and actions as follows.
  
 \textbf{States}: Our state space is the set of cities in the problem, i.e. $\mathcal{S} = V$. The state of the agent at a given time step corresponds to the city where it is currently located.
 
-\textbf{Actions}: The actions are represented by a tuple of two elements: Accept/Refuse and the destination city. Note that a given task can have any destination except the source, and if the task is refused, we restrict the next movement to neighbor cities. We apply this constraint in order to avoid changing the action chosen by the policy if a new task is found when going from the source to the destination without a task.
+\textbf{Actions}: The actions are represented by a tuple of two elements: Accept/Refuse and the destination city. Note that a given task can have any destination except the source, and if the task is refused, we restrict the next movement to neighbor cities. We apply this constraint in order to avoid skipping tasks found when going from the source to the destination without a task, thus leading to suboptimal results.
 
 Formally, our action set for a city $s\in V$ is $\mathcal{A}(s) = \{Accept\} \times V \setminus s \cup \{Refuse\} \times \mathcal{N}(s)$, where $\mathcal{N}(s)$ is the set of neighbors of city $s$. We consider all the set of actions when computing the Q-values, but in the simulation, not all the actions are available in all cities. Indeed, there is at most one $\{Accept\}$ action, so the set of possible actions $\mathcal{A}(s)$ will be constrained. On the one hand, if there is no task available in $s$ for a given time step, the possible actions will be limited to the subset $\{Refuse\} \times \mathcal{N}(s)$. We then define $Best(s)$ to be the best action of this restricted set. 
 
@@ -37,9 +42,9 @@ On the other hand, if there is a task to city $s'\in V\setminus s$, then $\mathc
 \textbf{Reward table}: The rewards are given by two factors: the actual reward of pursuing a task from $i$ to $j$ given by $r[i,j]$, a table accessed through the \texttt{TaskDistribution} object, and the cost of movement. Let $c$ be the cost per kilometer, then we compute the reward for each state-action pair as follows:
 
 \begin{align}
-    R(s, a) = r[s, \pi_2(a)] \mathbbm{1}\{\pi_1(a) = Accept\}- c \cdot d((s, \pi_2(a)))
+    R(s, a) = r[s, \pi_2(a)] \mathbbm{1}_{\{\pi_1(a) = Accept\}}- c \cdot d((s, \pi_2(a)))
 \end{align}
-, where $\mathbbm{1}\{\cdot\}$ is the indicator function and $\pi_i$ is the projection operator defined by $\pi_1(x, y) = x$, $\pi_2(x, y) = y$. In the case of an action $a$ from an state $s$, $\pi_1\in \{Accept, Reject\}$ and $\pi_2(a) \in V \setminus s$ (the destination city). Note that $d((s, \pi_2(a)))$ is the distance from city $s$ to the destination city, i.e. the kilometers separating them.
+, where $\mathbbm{1}_{\{\cdot\}}$ is the indicator function and $\pi_i$ is the projection operator defined by $\pi_1(x, y) = x$, $\pi_2(x, y) = y$. In the case of an action $a$ from an state $s$, $\pi_1\in \{Accept, Reject\}$ and $\pi_2(a) \in V \setminus s$ (the destination city). Note that $d((s, \pi_2(a)))$ is the distance from city $s$ to the destination city, i.e. the kilometers separating them.
 
 %% NO ESTEM TENINT EN COMPTE EL PES DEL PAQEUT PERQ SI FOS MENYS DE 1 SURTIRIA MÉS BARAT PORTAR PAQUET Q NO POTAR-NE! 
 %% SHOULD WE CHECK CAPACITY? 
@@ -68,7 +73,7 @@ The stopping criteria for the iterative computation of the Q-values and V-values
     |V_{t+1}(s) - V_{t}(s)| &= |\max_a Q_{t+1}(s,a) - \max_a Q_{t}(s,a) | \leq \max_a \{|Q_{t+1}(s,a) - Q_{t}(s,a)|\} \\
     &\leq \max_{s,a} \{|Q_{t+1}(s,a) - Q_{t}(s,a)|\} := \Delta_q(t+1)
 \end{align*}
-so the difference in Q-values will also be bigger than those of V-values. Hence, we take the maximum absolute difference between Q-values when updating all the values for all state-action pair, and if it's bigger than $\varepsilon=10^{-5}$ we perform another iteration of all the values until the stopping criteria is satisfied, i.e. until iteration $t$ such that $\Delta_q(t) \leq \varepsilon$.
+so the difference in Q-values will always be bigger than that of V-values. Hence, we take the maximum absolute difference between Q-values when updating all the values for all state-action pair, and if it's bigger than $\varepsilon=10^{-5}$ we perform another iteration of all the values until the stopping criteria is satisfied, i.e. until iteration $t$ such that $\Delta_q(t) \leq \varepsilon$.
 
 \section{Results}
 % in this section, you describe several results from the experiments with your reactive agent
@@ -84,30 +89,28 @@ The experiment has been conducted with 7 different agents. Each of them was assi
 \subsubsection{Observations}
 % you describe the experimental results and the conclusions you inferred from these results
 
-
-\begin{minipage}[]{\textwidth}
-
 \begin{minipage}[]{0.48\textwidth}
+
 \includegraphics[width=\textwidth]{2-reactive/doc/plots/time-discount-2.png}
 \captionof{figure}{Evolution of training time for different discount factors}
 \label{fig:time}
+\centering
+\includegraphics[width=\textwidth]{2-reactive/doc/plots/variance-disc3.pdf}
+\captionof{figure}{Evolution of profit for different discount factors. Each line represents a different seed}
+\label{fig:variance}
 \end{minipage}
-\hfill
-\begin{minipage}[]{0.5\textwidth}
-The first effect we can see is the influence in the training time. As we can see in Figure \ref{fig:time}, the time required to converge when computing the Q values increases as we increase the discount factor. If we select as reference the time required for a discount factor of 0, we can see that for higher discounts up to 0.9, this time doubles. Once we overpass this late value, the required time for training increases much faster, resulting in 7 times more time than the base case for a discount of 0.95. \\
-\end{minipage}
+\begin{minipage}[]{0.48\textwidth}
+The first effect we can see is the influence in the training time. As we can see in Figure \ref{fig:time}, the time required to converge when computing the Q values increases as we increase the discount factor.
+If we select as reference the time required for a discount factor of 0, we can see that for higher discounts up to 0.9, this time doubles. Once we overpass this late value, the required time for training increases much faster, resulting in 7 times more time than the base case for a discount of 0.95.
+
+On the other hand, the discount value also has an impact in the average total revenue. This factor reflects how much importance we give the future possible rewards vs. the current one. Therefore, it determines which actions will our agent perform. 
 
 \end{minipage}
 
-%% afegir plots discount vs time i discount vs revenue
 
+Nevertheless, we can see in Figure \ref{fig:variance} that in this case, the variance produced by changing the seed is greater than the variance given by changing our discount factor, showing a low impact of this parameter in the final profit of the agent. 
 
-On the other hand, the discount value also has an impact in the average total revenue. This factor reflects how much importance we give the future possible rewards vs. the current one. Therefore, it determines which actions will our agent perform. We have studied 2 different cases, varying the cost per km of the vehicles to point out the influence of the discount factor. 
-
-For low values of cost, we can see that the difference between the policies performance is not very relevant and all agents achieve a similar reward. It is not the same case when we increase the cost per km. In this case, the gap in revenue achieved between large or small discount factors increases, pointing out the need of a non-zero value to improve performance. 
-
-
-\begin{minipage}[]{\textwidth}
+We have studied 2 different cases, varying the cost per km of the vehicles to point out the influence of the discount factor. For low values of cost, we can see that the difference between the policies performance is not very relevant and all agents achieve a similar reward. It is not the same case when we increase the cost per km. In this case, the gap in revenue achieved between large or small discount factors increases, pointing out the need of a non-zero value to improve performance. 
 
 \begin{minipage}[]{0.45\textwidth}
 \includegraphics[width=\textwidth]{2-reactive/doc/plots/2000ticks-cost5.png}
@@ -119,9 +122,6 @@ For low values of cost, we can see that the difference between the policies perf
 \includegraphics[width=\textwidth]{2-reactive/doc/plots/2000ticks-cost50.png}
 \captionof{figure}{Evolution of reward per km with  \\cost = 50u/km}
 \label{fig:cost50}
-\end{minipage}
-\hfill
-
 \end{minipage}
 
 
