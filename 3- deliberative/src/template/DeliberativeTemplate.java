@@ -122,7 +122,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			return plan;
 		}
 	
-		List<Plan> comb = CombinationTasks(newTasks.iterator(), current, freeSpace, Collections.<Plan>singletonList(plan));
+		List<Plan> comb = CombinationTasks(newTasks.iterator(), current, freeSpace, Collections.<Plan>singletonList(plan), plan);
 		Plan currentPlan = plan;
 		// Check all combinations of neighbor cities and possible taken tasks
 		for(City neigh : current.neighbors()) {
@@ -162,20 +162,23 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 	 * @param freeSpace
 	 * @return
 	 */
-	private List<Plan> CombinationTasks(Iterator<Task> it, City current, int freeSpace, List<Plan> plans) {
+	private List<Plan> CombinationTasks(Iterator<Task> it, City current, int freeSpace, List<Plan> plans, Plan currentPlan) {
+		
+		
 		while(it.hasNext()) {
 			Task currentTask = it.next();
 			// Consider what to do with tasks that we can actually pick up
 			if(currentTask.pickupCity.equals(current) && currentTask.weight <= freeSpace) {
 				// Leave it
-				CombinationTasks(it, current, freeSpace, tasks);
+				CombinationTasks(it, current, freeSpace, plans, currentPlan);
 				
 				// Take it
-				tasks.add(currentTask);
-				CombinationTasks(it, current, freeSpace - currentTask.weight, tasks);
+				currentPlan.appendPickup(currentTask);
+				plans.add(currentPlan);
+				CombinationTasks(it, current, freeSpace - currentTask.weight, plans, currentPlan); 
 			}
 		}
-		return tasks;
+		return plans;
 	}
 
 	@Override
