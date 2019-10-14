@@ -11,6 +11,8 @@ import logist.task.TaskSet;
 import logist.topology.Topology;
 import logist.topology.Topology.City;
 
+import java.util.*;
+
 /**
  * An optimal planner for one vehicle.
  */
@@ -87,6 +89,93 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			current = task.deliveryCity;
 		}
 		return plan;
+	}
+	
+	/**
+	 * Function that returns an optimal plan computed with BST
+	 * This function uses the recursive method BSTAux
+	 * @param vehicle
+	 * @param tasks
+	 * @return Optimal plan
+	 */
+	private Plan BSTPlan(Vehicle vehicle, TaskSet tasks) {
+		City current = vehicle.getCurrentCity();
+		return BSTAux(new Plan(current), current, (TaskSet) Collections.<Task>emptySet(), tasks, vehicle.capacity());
+	}
+	
+	private Plan BSTAux(Plan plan, City current, TaskSet openTasks, TaskSet newTasks, int freeSpace) {
+		Task currentTask = null;
+		
+		// Check if open tasks have current city as destination
+		Iterator<Task> it = openTasks.iterator();
+		while(it.hasNext()) {
+			currentTask = it.next();
+			if(currentTask.deliveryCity.equals(current)) {
+				freeSpace += currentTask.weight;
+				plan.appendDelivery(currentTask);
+				openTasks.remove(currentTask);
+			}
+		}
+		
+		// Check if state is terminal
+		if(newTasks.isEmpty() && openTasks.isEmpty()) {
+			return plan;
+		}
+	
+		List<Plan> comb = CombinationTasks(newTasks.iterator(), current, freeSpace, Collections.<Plan>singletonList(plan));
+		Plan currentPlan = plan;
+		// Check all combinations of neighbor cities and possible taken tasks
+		for(City neigh : current.neighbors()) {
+			// Check all the possibilities involving at least one packet pickup
+			Iterator<Plan> it_plan = comb.iterator();
+			while(it_plan.hasNext()) {
+				currentPlan = it_plan.next();
+				openTasks.add(currentTask);
+				newTasks.remove(currentTask);
+				plan.appendDelivery(currentTask);
+				
+				BSTAux(plan, neigh, openTasks, newTasks, freeSpace);
+			}
+			
+			// Check option not picking up any packet
+		}
+		/*for (City city : current.pathTo(task.pickupCity))
+			plan.appendMove(city);
+
+		plan.appendPickup(task);
+
+		// move: pickup location => delivery location
+		for (City city : task.path())
+			plan.appendMove(city);
+
+		plan.appendDelivery(task);*/
+		return plan;
+	}
+	
+	/**
+	 * Return all combinations of tasks available in a city
+	 * E.g. If tasks 1,2,3 available, return {1,2,3,1+2,1+3,2+3,1+2+3}
+	 * @param it
+	 * @param openTasks
+	 * @param newTasks
+	 * @param current
+	 * @param freeSpace
+	 * @return
+	 */
+	private List<Plan> CombinationTasks(Iterator<Task> it, City current, int freeSpace, List<Plan> plans) {
+		while(it.hasNext()) {
+			Task currentTask = it.next();
+			// Consider what to do with tasks that we can actually pick up
+			if(currentTask.pickupCity.equals(current) && currentTask.weight <= freeSpace) {
+				// Leave it
+				CombinationTasks(it, current, freeSpace, tasks);
+				
+				// Take it
+				tasks.add(currentTask);
+				CombinationTasks(it, current, freeSpace - currentTask.weight, tasks);
+			}
+		}
+		return tasks;
 	}
 
 	@Override
