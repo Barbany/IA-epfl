@@ -59,8 +59,8 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			plan = naivePlan(vehicle, tasks);
 			break;
 		case BFS:
-			// ...
-			plan = naivePlan(vehicle, tasks);
+			plan = BSTPlan(vehicle, tasks);
+			//plan = naivePlan(vehicle, tasks);
 			break;
 		default:
 			throw new AssertionError("Should not happen.");
@@ -90,7 +90,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		}
 		return plan;
 	}
-	
+
 	/**
 	 * Function that returns an optimal plan computed with BST
 	 * This function uses the recursive method BSTAux
@@ -100,15 +100,22 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 	 */
 	private Plan BSTPlan(Vehicle vehicle, TaskSet tasks) {
 		City current = vehicle.getCurrentCity();
-		return BSTAux(new Plan(current), current, (TaskSet) Collections.<Task>emptySet(), tasks, vehicle.capacity());
+		// return BSTAux(new Plan(current), current, (TaskSet) Collections.<Task>emptySet(), tasks, vehicle.capacity()); 
+		TaskSet openTasks = tasks.clone();
+		openTasks.clear(); // empty set of tasks since it has not done any task yet. 
+		
+		//return BSTAux(new Plan(current), current, (TaskSet) Collections.<Task>emptySet(), tasks, vehicle.capacity());
+		return BSTAux(new Plan(current), current, openTasks, tasks, vehicle.capacity());
+
 	}
 	
-	private Plan BSTAux(Plan plan, City current, TaskSet openTasks, TaskSet newTasks, int freeSpace) {
+	private Plan BSTAux(Plan plan, City current, TaskSet openTasks, TaskSet newTasks, int freeSpace) { // error: no pot fer cast a TaskSet; deixar com set normal
 		Task currentTask = null;
 		
 		// Check if open tasks have current city as destination
 		Iterator<Task> it = openTasks.iterator();
 		while(it.hasNext()) {
+			
 			currentTask = it.next();
 			if(currentTask.deliveryCity.equals(current)) {
 				freeSpace += currentTask.weight;
@@ -121,8 +128,11 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		if(newTasks.isEmpty() && openTasks.isEmpty()) {
 			return plan;
 		}
-	
-		List<Plan> comb = CombinationTasks(newTasks.iterator(), current, freeSpace, Collections.<Plan>singletonList(plan), plan);
+
+		
+		//List<Plan> comb = CombinationTasks(newTasks.iterator(), current, freeSpace, Collections.<Plan>singletonList(plan), plan);
+		List<Plan> comb = CombinationTasks(newTasks.iterator(), current, freeSpace, Arrays.asList(plan), plan);
+		
 		Plan currentPlan = plan;
 		// Check all combinations of neighbor cities and possible taken tasks
 		for(City neigh : current.neighbors()) {
@@ -132,11 +142,13 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 				currentPlan = it_plan.next();
 				openTasks.add(currentTask);
 				newTasks.remove(currentTask);
-				plan.appendDelivery(currentTask);
+				plan.appendPickup(currentTask); //Shouldn't it be Pickup?  - EXTRA (changed to Pickup)
 				
-				BSTAux(plan, neigh, openTasks, newTasks, freeSpace);
+				plan.appendMove(neigh); // Move to neighbor city
+				plan = BSTAux(plan, neigh, openTasks, newTasks, freeSpace); //Update plan
 			}
-			
+			plan.appendMove(neigh);
+			plan = BSTAux(plan, neigh, openTasks, newTasks, freeSpace); // Perform no Pickup action - EXTRA // Update plan
 			// Check option not picking up any packet
 		}
 		/*for (City city : current.pathTo(task.pickupCity))
@@ -162,6 +174,8 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 	 * @param freeSpace
 	 * @return
 	 */
+	
+	
 	private List<Plan> CombinationTasks(Iterator<Task> it, City current, int freeSpace, List<Plan> plans, Plan currentPlan) {
 		
 		
@@ -174,10 +188,13 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 				
 				// Take it
 				currentPlan.appendPickup(currentTask);
+				System.out.println("Plan " + currentPlan.toString());
+				System.out.println("List Plan " + plans.size());
 				plans.add(currentPlan);
 				CombinationTasks(it, current, freeSpace - currentTask.weight, plans, currentPlan); 
 			}
 		}
+		currentPlan = new Plan(current); 
 		return plans;
 	}
 
