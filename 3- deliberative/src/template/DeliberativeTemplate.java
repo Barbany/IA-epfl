@@ -10,6 +10,7 @@ import logist.task.TaskDistribution;
 import logist.task.TaskSet;
 import logist.topology.Topology;
 import logist.topology.Topology.City;
+import template.Utils;
 
 import java.util.*;
 
@@ -104,13 +105,23 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		TaskSet openTasks = tasks.clone();
 		openTasks.clear(); // empty set of tasks since it has not done any task yet. 
 		
+		boolean [] loopDetector = new boolean[topology.cities().size()];
+		
 		//return BSTAux(new Plan(current), current, (TaskSet) Collections.<Task>emptySet(), tasks, vehicle.capacity());
-		return BSTAux(new Plan(current), current, openTasks, tasks, vehicle.capacity());
+		return BSTAux(new Plan(current), current, openTasks, tasks, vehicle.capacity(), loopDetector);
 
 	}
 	
-	private Plan BSTAux(Plan plan, City current, TaskSet openTasks, TaskSet newTasks, int freeSpace) { // error: no pot fer cast a TaskSet; deixar com set normal
+	private Plan BSTAux(Plan plan, City current, TaskSet openTasks, TaskSet newTasks, int freeSpace, boolean[] loopDetector) { // error: no pot fer cast a TaskSet; deixar com set normal
 		Task currentTask = null;
+		
+		if(loopDetector[current.id]) {
+			return null; 
+		}
+		
+		// Indicate we already visited the city
+		loopDetector[current.id] = true;
+		
 		
 		// Check if open tasks have current city as destination
 		Iterator<Task> it = openTasks.iterator();
@@ -131,25 +142,78 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 
 		
 		//List<Plan> comb = CombinationTasks(newTasks.iterator(), current, freeSpace, Collections.<Plan>singletonList(plan), plan);
-		List<Plan> comb = CombinationTasks(newTasks.iterator(), current, freeSpace, Arrays.asList(plan), plan);
+		//List<Plan> comb = CombinationTasks(newTasks.iterator(), current, freeSpace, Arrays.asList(plan), plan);
+		// List<List<Task>> emptyListTask = new ArrayList<>();
+		int size = 1; 
+	
+		// Get all combination of tasks
+		List<TaskSet> powerSet = new LinkedList<TaskSet>();
+		it = newTasks.iterator();
+		while (it.hasNext()) {
+			if (it.next().deliveryCity.equals(current)) {
+				powerSet.addAll(Utils.combination(newTasks, size));
+				size ++; 
+			}
+			
+		}
+		
+		
 		
 		Plan currentPlan = plan;
 		// Check all combinations of neighbor cities and possible taken tasks
 		for(City neigh : current.neighbors()) {
 			// Check all the possibilities involving at least one packet pickup
-			Iterator<Plan> it_plan = comb.iterator();
-			while(it_plan.hasNext()) {
-				currentPlan = it_plan.next();
-				openTasks.add(currentTask);
-				newTasks.remove(currentTask);
-				plan.appendPickup(currentTask); //Shouldn't it be Pickup?  - EXTRA (changed to Pickup)
+			Iterator<TaskSet> it_tasks = powerSet.iterator();
+			
+			
+			// Iterate along the list of lists of tasks
+			while(it_tasks.hasNext()) {
+				TaskSet toDoTasks = it_tasks.next();
 				
-				plan.appendMove(neigh); // Move to neighbor city
-				plan = BSTAux(plan, neigh, openTasks, newTasks, freeSpace); //Update plan
+				// If feasible taskSet
+				if (toDoTasks.weightSum() <= freeSpace) {
+					Iterator<Task> it_toDoTasks = toDoTasks.iterator();
+					
+					// Iterate along the tasks in the list of tasks - add them to the plan
+					while(it_toDoTasks.hasNext()) {
+						currentTask = it_toDoTasks.next();
+						openTasks.add(currentTask);
+						newTasks.remove(currentTask);
+						plan.appendPickup(currentTask);
+						
+						
+						
+					}
+					
+					// Reset 
+					plan.appendMove(neigh); // Move to neighbor city
+					plan = BSTAux(plan, neigh, openTasks, newTasks, freeSpace, new boolean[topology.cities().size()]); //Update plan
+					
+					if(plan!= null) {
+						// If the new plan has lower cost than the actual or the actual is empty
+						if(currentPlan.totalDistance() > plan.totalDistance() || currentPlan.totalDistance() == 0) {
+							currentPlan = plan; 
+							}
+						
+					}
+					
+					
+	
+				}
 			}
+			// Move without picking up any task
 			plan.appendMove(neigh);
-			plan = BSTAux(plan, neigh, openTasks, newTasks, freeSpace); // Perform no Pickup action - EXTRA // Update plan
-			// Check option not picking up any packet
+			
+			plan = BSTAux(plan, neigh, openTasks, newTasks, freeSpace, loopDetector); 
+			
+			// Check if we found a better plan
+			if(plan!= null) {
+				// If the new plan has lower cost than the actual or the actual is empty
+				if(currentPlan.totalDistance() > plan.totalDistance() || currentPlan.totalDistance() == 0) {
+					currentPlan = plan; 
+					}
+				
+			}
 		}
 		/*for (City city : current.pathTo(task.pickupCity))
 			plan.appendMove(city);
@@ -161,42 +225,9 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			plan.appendMove(city);
 
 		plan.appendDelivery(task);*/
-		return plan;
+		return currentPlan ;
 	}
 	
-	/**
-	 * Return all combinations of tasks available in a city
-	 * E.g. If tasks 1,2,3 available, return {1,2,3,1+2,1+3,2+3,1+2+3}
-	 * @param it
-	 * @param openTasks
-	 * @param newTasks
-	 * @param current
-	 * @param freeSpace
-	 * @return
-	 */
-	
-	
-	private List<Plan> CombinationTasks(Iterator<Task> it, City current, int freeSpace, List<Plan> plans, Plan currentPlan) {
-		
-		
-		while(it.hasNext()) {
-			Task currentTask = it.next();
-			// Consider what to do with tasks that we can actually pick up
-			if(currentTask.pickupCity.equals(current) && currentTask.weight <= freeSpace) {
-				// Leave it
-				CombinationTasks(it, current, freeSpace, plans, currentPlan);
-				
-				// Take it
-				currentPlan.appendPickup(currentTask);
-				System.out.println("Plan " + currentPlan.toString());
-				System.out.println("List Plan " + plans.size());
-				plans.add(currentPlan);
-				CombinationTasks(it, current, freeSpace - currentTask.weight, plans, currentPlan); 
-			}
-		}
-		currentPlan = new Plan(current); 
-		return plans;
-	}
 
 	@Override
 	public void planCancelled(TaskSet carriedTasks) {
