@@ -1,20 +1,21 @@
 package template;
 
-import logist.plan.Plan;
-import logist.task.TaskSet;
+import template.CustomPlan;
+
 import logist.topology.Topology.City;
 
 public class State {
-	public Plan plan;
+	public CustomPlan plan;
 	public City currentCity;
-	public TaskSet openTasks, newTasks;
+	public Mapping deliveryMapping, pickupMapping;
 	public int freeSpace;
 	public boolean visited[];
 	
-	public State(Plan plan, City currentCity, TaskSet openTasks, TaskSet newTasks, int freeSpace, boolean visited[]) {
+	public State(CustomPlan plan, City currentCity, Mapping pickupMapping, Mapping deliveryMapping,
+			int freeSpace, boolean visited[]) {
 		this.plan = plan;
-		this.openTasks = openTasks;
-		this.newTasks = newTasks;
+		this.deliveryMapping = deliveryMapping;
+		this.pickupMapping = pickupMapping;
 		this.freeSpace = freeSpace;
 		this.visited = visited;
 		this.currentCity = currentCity; 

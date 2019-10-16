@@ -1,67 +1,39 @@
 package template;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import logist.task.*;
-import logist.topology.Topology.City;
-
 public class Utils {
-	public static List<TaskSet> combination(TaskSet values, int size) {
+	public static <T> List<List<T>> combination(List<T> values, int size) {
 
 	    if (0 == size) {
-	        return Collections.<TaskSet> emptyList();
+	        return Collections.singletonList(Collections.<T> emptyList());
 	    }
 
 	    if (values.isEmpty()) {
 	        return Collections.emptyList();
 	    }
 
-	    List<TaskSet> combination = new LinkedList<TaskSet>();
+	    List<List<T>> combination = new LinkedList<List<T>>();
 
-	    Task actual = values.iterator().next();
+	    T actual = values.iterator().next();
 
-	    TaskSet subSet = values.clone();
+	    List<T> subSet = new LinkedList<T>(values);
 	    subSet.remove(actual);
 
-	    List<TaskSet> subSetCombination = combination(subSet, size - 1);
+	    List<List<T>> subSetCombination = combination(subSet, size - 1);
 
-	    for (TaskSet set : subSetCombination) {
-	    	TaskSet newSet = set.clone();
-	    	Task[] aux = {actual}; 
-	    	TaskSet.union(newSet, TaskSet.create(aux));
+	    for (List<T> set : subSetCombination) {
+	        List<T> newSet = new LinkedList<T>(set);
+	        newSet.add(0, actual);
 	        combination.add(newSet);
 	    }
-	    combination.addAll(combination((TaskSet) subSet, size));
+
+	    combination.addAll(combination(subSet, size));
 
 	    return combination;
 	}
-	
-	public static HashMap<City, TaskSet> createTaskMap(TaskSet notDoneTasks){
-		// Create mapping between cities and tasks
-		HashMap<City, TaskSet> taskDistribution = new HashMap<City, TaskSet>(); 
-		Iterator<Task> it_tasks = notDoneTasks.iterator();
-		while(it_tasks.hasNext()) {
-			Task task = it_tasks.next();
-			TaskSet cityTaskSet = TaskSet.noneOf(notDoneTasks); 
-			
-			// If the city already has other tasks, add it to the TaskSet 
-			if (taskDistribution.containsKey(task.pickupCity)){
-				cityTaskSet = taskDistribution.get(task.pickupCity);
-				
-			}
-			
-			// Include task in the taskSet
-			cityTaskSet.add(task);
-			taskDistribution.put(task.pickupCity, cityTaskSet);
-		}
-		
-		return taskDistribution;
-	}
-	
 }
 
 
