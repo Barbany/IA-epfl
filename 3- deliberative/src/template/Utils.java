@@ -1,10 +1,13 @@
 package template;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import logist.task.*;
+import logist.topology.Topology.City;
 
 public class Utils {
 	public static List<TaskSet> combination(TaskSet values, int size) {
@@ -36,4 +39,29 @@ public class Utils {
 
 	    return combination;
 	}
+	
+	public static HashMap<City, TaskSet> createTaskMap(TaskSet notDoneTasks){
+		// Create mapping between cities and tasks
+		HashMap<City, TaskSet> taskDistribution = new HashMap<City, TaskSet>(); 
+		Iterator<Task> it_tasks = notDoneTasks.iterator();
+		while(it_tasks.hasNext()) {
+			Task task = it_tasks.next();
+			TaskSet cityTaskSet = TaskSet.noneOf(notDoneTasks); 
+			
+			// If the city already has other tasks, add it to the TaskSet 
+			if (taskDistribution.containsKey(task.pickupCity)){
+				cityTaskSet = taskDistribution.get(task.pickupCity);
+				
+			}
+			
+			// Include task in the taskSet
+			cityTaskSet.add(task);
+			taskDistribution.put(task.pickupCity, cityTaskSet);
+		}
+		
+		return taskDistribution;
+	}
+	
 }
+
+

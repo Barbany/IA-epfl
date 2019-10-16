@@ -11,11 +11,12 @@ public class State {
 	public int freeSpace;
 	public boolean visited[];
 	
-	public State(Plan plan, City current, TaskSet openTasks, TaskSet newTasks, int freeSpace, boolean visited[]) {
+	public State(Plan plan, City currentCity, TaskSet openTasks, TaskSet newTasks, int freeSpace, boolean visited[]) {
 		this.plan = plan;
 		this.openTasks = openTasks;
 		this.newTasks = newTasks;
 		this.freeSpace = freeSpace;
 		this.visited = visited;
+		this.currentCity = currentCity; 
 	}
 }

@@ -14,6 +14,8 @@ import logist.topology.Topology.City;
 import template.Utils;
 import template.State;
 
+import template.Mapping;
+
 import java.util.*;
 
 /**
@@ -103,83 +105,109 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		LinkedList<Plan> finalPlans = new LinkedList<Plan>();
 		
 		visited[currentCity.id] = true;
-		// TODO: Mapping pickup_city -> newTasks, delivery_city -> openTasks
-		queue.add(new State(new Plan(currentCity), currentCity, TaskSet.create(null), tasks, vehicle.capacity(), visited));
+		
+		// Create map of tasks with Pickup cities
+		Mapping pickUpMapping = new Mapping(tasks, true);
+		// Create map of tasks with Delivery cities
+		Mapping deliveryMapping = new Mapping(TaskSet.noneOf(tasks),false); 
+		
+		TaskSet openTasks = pickUpMapping.get(currentCity);
+		
+		queue.add(new State(new Plan(currentCity), currentCity, openTasks, tasks, vehicle.capacity(), visited));
 		
 		while(!queue.isEmpty()) {
 			// Get current state
 			State s = queue.poll();
-			Task currentTask = null;
+			Task currentTask;
+			
+			// 1. Delivery of tasks
+			TaskSet toDeliver = deliveryMapping.get(currentCity);
 			
 			// Check if open tasks have current city as destination
-			Iterator<Task> it = s.openTasks.iterator();
+			Iterator<Task> it = toDeliver.iterator();
 			while(it.hasNext()) {
 				currentTask = it.next();
-				if(currentTask.deliveryCity.equals(s.currentCity)) {
-					s.freeSpace += currentTask.weight;
-					s.plan.appendDelivery(currentTask);
-					s.openTasks.remove(currentTask);
-				}
+				s.freeSpace += currentTask.weight;
+				s.plan.appendDelivery(currentTask);
+				s.openTasks.remove(currentTask);
+				
 			}
 			
-			// Check if state is terminal
+			// Remove from the delivery mapping
+			deliveryMapping.remove(currentCity);
+			
+			
+			// 2. Check if state is terminal
 			// If it's the case, add it to final Plan list
 			if(s.newTasks.isEmpty() && s.openTasks.isEmpty()) {
 				finalPlans.add(s.plan);
-			}
-		
-			// Get all combination of tasks
-			int size = 1; 
-			List<TaskSet> powerSet = new LinkedList<TaskSet>();
-			it = s.newTasks.iterator();
-			while (it.hasNext()) {
-				if (it.next().deliveryCity.equals(s.currentCity)) {
-					powerSet.addAll(Utils.combination(s.newTasks, size));
-					size ++; 
-				}	
-			}
-			
-			// Check all combinations of neighbor cities and possible taken tasks
-			for(City neigh : s.currentCity.neighbors()) {
-				// Check all the possibilities involving at least one packet pickup
-				Iterator<TaskSet> it_tasks = powerSet.iterator();
+			}else {
 				
-				// Iterate along the list of lists of tasks
-				while(it_tasks.hasNext()) {
-					TaskSet toDoTasks = it_tasks.next();
+				// 3. Get all combination of tasks
+				List<TaskSet> powerSet = new LinkedList<TaskSet>();
+				
+				// Get current tasks that can be picked up 
+				TaskSet potentialTasks = pickUpMapping.get(currentCity);
+				it = potentialTasks.iterator();
+				
+				// Generate combinations
+				for(int size=1; size <= potentialTasks.size(); size++) {
+					powerSet.addAll(Utils.combination(potentialTasks, size));
+					size ++;
+				}
+				
+				
+				// Check all combinations of neighbor cities and possible taken tasks
+				for(City neigh : s.currentCity.neighbors()) {
+					// Check all the possibilities involving at least one packet pickup
+					Iterator<TaskSet> it_tasks = powerSet.iterator();
 					
-					// If feasible taskSet
-					if (toDoTasks.weightSum() <= s.freeSpace) {
-						Iterator<Task> it_toDoTasks = toDoTasks.iterator();
+					// Iterate along the list of lists of tasks
+					while(it_tasks.hasNext()) {
+						TaskSet toDoTasks = it_tasks.next();
 						
-						TaskSet openTasksAux = s.openTasks.clone();
-						TaskSet newTasksAux = s.newTasks.clone();
+						// If feasible taskSet
+						if (toDoTasks.weightSum() <= s.freeSpace) {
+							Iterator<Task> it_toDoTasks = toDoTasks.iterator();
+							
+							TaskSet openTasksAux = s.openTasks.clone();
+							TaskSet newTasksAux = s.newTasks.clone();
+							// TODO: Here we should do a clone instead
+							Plan planAux = s.plan.seal();
+							
+							
+							// Iterate along the tasks in the list of tasks - add them to the plan
+							while(it_toDoTasks.hasNext()) {							
+								currentTask = it_toDoTasks.next();
+								planAux.appendMove(neigh);
+								newTasksAux.remove(currentTask);
+								planAux.appendPickup(currentTask);
+								
+								// Update mappings
+								pickUpMapping.removeTask(currentCity, currentTask);
+								deliveryMapping.add(currentTask.deliveryCity, currentTask);
+							}
+							
+							// Move to neighbor city in next iteration
+							// Don't check for loops (and restart loop finder) since doing a pickup move cannot reach to a loop
+							queue.add(new State(planAux, neigh, openTasksAux, newTasksAux, s.freeSpace - toDoTasks.weightSum(),
+									new boolean[topology.cities().size()]));
+						}
+					}
+					// Move without picking up any task
+					if(!s.visited[neigh.id]) {
 						// TODO: Here we should do a clone instead
 						Plan planAux = s.plan.seal();
+						planAux.appendMove(neigh);
 						
-						// Iterate along the tasks in the list of tasks - add them to the plan
-						while(it_toDoTasks.hasNext()) {							
-							currentTask = it_toDoTasks.next();
-							planAux.appendMove(neigh);
-							newTasksAux.remove(currentTask);
-							planAux.appendPickup(currentTask);
-						}
-						
-						// Move to neighbor city in next iteration
-						// Don't check for loops (and restart loop finder) since doing a pickup move cannot reach to a loop
-						queue.add(new State(planAux, neigh, openTasksAux, newTasksAux, s.freeSpace - toDoTasks.weightSum(),
-								new boolean[topology.cities().size()]));
+						queue.add(new State(planAux, neigh, s.openTasks, s.newTasks, s.freeSpace, s.visited));	
 					}
-				}
-				// Move without picking up any task
-				if(!s.visited[neigh.id]) {
-					// TODO: Here we should do a clone instead
-					Plan planAux = s.plan.seal();
-					planAux.appendMove(neigh);
+				}	
+				
+				
+			}
+		
 					
-					queue.add(new State(planAux, neigh, s.openTasks, s.newTasks, s.freeSpace, s.visited));	
-				}
-			}			
 		}
 		
 		// All terminal states found
