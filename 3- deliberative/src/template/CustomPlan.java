@@ -73,7 +73,7 @@ public class CustomPlan implements Iterable<Action>, Cloneable {
 	}
 	
 	public CustomPlan clone() {
-		return new CustomPlan(this.initialCity, this.actions);
+		return new CustomPlan(this.initialCity, new ArrayList<Action>(this.actions));
 	}
 	
 	public Plan asPlan() {

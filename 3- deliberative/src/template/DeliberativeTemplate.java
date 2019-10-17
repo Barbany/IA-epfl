@@ -127,14 +127,15 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		Iterator<Task> it;
 		Task currentTask;
 		
+		int i = 0;
 		while(!queue.isEmpty()) {
 			// Get current state
 			State s = queue.poll();
 			
-			/* Debugging */
+			/* Debugging*
 			System.out.println(s.toString());
 			try {
-				TimeUnit.SECONDS.sleep(5);
+				TimeUnit.SECONDS.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}/**/
@@ -149,28 +150,28 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 					currentTask = it.next();
 					s.freeSpace += currentTask.weight;
 					s.plan.appendDelivery(currentTask);
-					s.pickupMapping.remove(s.currentCity, currentTask);
-					
 				}
 				
 				// Remove from the delivery mapping
+				System.out.println(s.deliveryMapping);
 				s.deliveryMapping.remove(s.currentCity);
+				System.out.println("Remove "+ s.currentCity);
+				System.out.println(s.deliveryMapping);
 			}
 			
 			
 			// 2. Check if state is terminal
 			// If it's the case, add it to final Plan list
 			if(s.deliveryMapping.isEmpty() && s.pickupMapping.isEmpty()) {
+				System.out.println("Final plan created");
 				finalPlans.add(s.plan);
 			}else {
 				// 3. Pick all possible packets and go to each neighbor
 				for(City neigh : s.currentCity.neighbors()) {
-					
 					CustomPlan planAux = s.plan.clone();
 					
 					if (s.pickupMapping.containsKey(s.currentCity)) {
 						List<Task> availableTasks = s.pickupMapping.get(s.currentCity);
-						
 						Mapping pickupAux = s.pickupMapping.clone();
 						Mapping deliveryAux = s.deliveryMapping.clone();
 						
@@ -190,10 +191,10 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 								planAux.appendPickup(task2);
 								
 								// Update mappings
-								pickupAux.remove(s.currentCity, task1);
+								pickupAux.removeTask(s.currentCity, task1);
 								deliveryAux.add(task1.deliveryCity, task1);
 								
-								pickupAux.remove(s.currentCity, task2);
+								pickupAux.removeTask(s.currentCity, task2);
 								deliveryAux.add(task2.deliveryCity, task2);
 								
 								planAux.appendMove(neigh);
@@ -203,7 +204,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 								// Otherwise, we create two neighbors, one by picking each package
 								planAux.appendPickup(task1);
 								
-								pickupAux.remove(s.currentCity, task1);
+								pickupAux.removeTask(s.currentCity, task1);
 								deliveryAux.add(task1.deliveryCity, task1);
 								
 								// First neighbor
@@ -218,7 +219,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 								
 								planAux.appendPickup(task2);
 								
-								pickupAux.remove(s.currentCity, task2);
+								pickupAux.removeTask(s.currentCity, task2);
 								deliveryAux.add(task2.deliveryCity, task2);
 								
 								// Second neighbor
@@ -233,7 +234,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 							
 							planAux.appendPickup(task);
 							
-							pickupAux.remove(s.currentCity, task);
+							pickupAux.removeTask(s.currentCity, task);
 							deliveryAux.add(task.deliveryCity, task);
 							
 							// First neighbor
@@ -266,6 +267,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		// Choose best one
 		CustomPlan bestPlan = finalPlans.poll();
 		CustomPlan currentPlan;
+		System.out.println(bestPlan);
 		
 		while(!finalPlans.isEmpty()) {
 			currentPlan = finalPlans.poll();

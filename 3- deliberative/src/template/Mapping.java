@@ -52,7 +52,19 @@ public class Mapping extends HashMap<City, List<Task>> implements Cloneable{
 		}
 	}
 	
+	public void removeTask(City currentCity, Task task) {
+		List<Task> l = this.get(currentCity);
+		l.remove(task);
+		if(l.size() == 0) {
+			this.remove(currentCity);
+		}
+	}
+	
 	public Mapping clone() {
-		return (Mapping) super.clone();
+		Mapping ret = new Mapping();
+		for (City c: this.keySet()) {
+			ret.put(c, new LinkedList<Task>(this.get(c)));
+		}
+		return ret;
 	}
 }
