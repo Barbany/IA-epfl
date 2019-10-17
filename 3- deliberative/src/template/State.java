@@ -18,6 +18,10 @@ public class State {
 		this.pickupMapping = pickupMapping;
 		this.freeSpace = freeSpace;
 		this.visited = visited;
-		this.currentCity = currentCity; 
+		this.currentCity = currentCity;
+	}
+	
+	public String toString() {
+		return "City: " + currentCity.toString() + ", Plan: " + plan.toString();
 	}
 }

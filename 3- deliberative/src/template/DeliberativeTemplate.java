@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import logist.simulation.Vehicle;
 import logist.agent.Agent;
@@ -124,7 +125,14 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		while(!queue.isEmpty()) {
 			// Get current state
 			State s = queue.poll();
-			System.out.println(s.currentCity.name);
+			
+			/* Debugging
+			System.out.println(s.toString());
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}*/
 			
 			// 1. Delivery of tasks
 			if(s.deliveryMapping.containsKey(s.currentCity)) {
@@ -187,11 +195,12 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 							Mapping deliveryAux = s.deliveryMapping.clone();
 							CustomPlan planAux = s.plan.clone();
 							
+							planAux.appendMove(neigh);
+							
 							// Iterate along the tasks in the list of tasks - add them to the plan
 							it = toDoTasks.iterator();
 							while(it.hasNext()) {							
 								currentTask = it.next();
-								planAux.appendMove(neigh);
 								
 								planAux.appendPickup(currentTask);
 								pickupAux.remove(s.currentCity, currentTask);
@@ -219,6 +228,8 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		
 					
 		}
+		
+		System.out.println("Finished BST");
 		
 		// All terminal states found
 		// Choose best one
