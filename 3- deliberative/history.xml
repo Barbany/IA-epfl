@@ -4,3 +4,57 @@
 	<agents>
 		<agent name="deliberative-main">
 			<vehicle name="Vehicle 1"/>
+		</agent>
+	</agents>
+	<rounds>
+		<round id="1">
+			<tasks>
+				<task id="0" pickup="Aarau" delivery="Genève" weight="3" reward="36797"/>
+				<task id="1" pickup="Zürich" delivery="Sion" weight="3" reward="40875"/>
+				<task id="2" pickup="Sion" delivery="Genève" weight="3" reward="59223"/>
+				<task id="3" pickup="Basel" delivery="St-Gallen" weight="3" reward="59223"/>
+				<task id="4" pickup="Lausanne" delivery="St-Gallen" weight="3" reward="18448"/>
+				<task id="5" pickup="Sion" delivery="Basel" weight="3" reward="46991"/>
+			</tasks>
+			<events>
+				<event id="0" time="0" vehicle="Vehicle 1" pickup="4"/>
+				<event id="1" time="299999998" vehicle="Vehicle 1" move="Fribourg"/>
+				<event id="2" time="1411111057" vehicle="Vehicle 1" move="Bern"/>
+				<event id="3" time="1966666580" vehicle="Vehicle 1" move="Aarau"/>
+				<event id="4" time="3188888740" vehicle="Vehicle 1" pickup="0"/>
+				<event id="5" time="3488888724" vehicle="Vehicle 1" move="Zürich"/>
+				<event id="6" time="4155555349" vehicle="Vehicle 1" pickup="1"/>
+				<event id="7" time="4455555332" vehicle="Vehicle 1" move="Aarau"/>
+				<event id="8" time="5122221969" vehicle="Vehicle 1" move="Bern"/>
+				<event id="9" time="6344444136" vehicle="Vehicle 1" move="Thun"/>
+				<event id="10" time="6788888559" vehicle="Vehicle 1" move="Sion"/>
+				<event id="11" time="8122221822" vehicle="Vehicle 1" deliver="1"/>
+				<event id="12" time="8422221803" vehicle="Vehicle 1" pickup="2"/>
+				<event id="13" time="8722221787" vehicle="Vehicle 1" pickup="5"/>
+				<event id="14" time="9022221771" vehicle="Vehicle 1" move="Lausanne"/>
+				<event id="15" time="10688888351" vehicle="Vehicle 1" move="Genève"/>
+				<event id="16" time="11688888305" vehicle="Vehicle 1" deliver="0"/>
+				<event id="17" time="11988888291" vehicle="Vehicle 1" deliver="2"/>
+				<event id="18" time="12288888273" vehicle="Vehicle 1" move="Lausanne"/>
+				<event id="19" time="13288888222" vehicle="Vehicle 1" move="Neuchâtel"/>
+				<event id="20" time="14399999276" vehicle="Vehicle 1" move="Bern"/>
+				<event id="21" time="15066665904" vehicle="Vehicle 1" move="Basel"/>
+				<event id="22" time="16622221372" vehicle="Vehicle 1" deliver="5"/>
+				<event id="23" time="16922221356" vehicle="Vehicle 1" pickup="3"/>
+				<event id="24" time="17222221339" vehicle="Vehicle 1" move="Zürich"/>
+				<event id="25" time="18555554597" vehicle="Vehicle 1" move="St-Gallen"/>
+				<event id="26" time="19888887864" vehicle="Vehicle 1" deliver="4"/>
+				<event id="27" time="20188887848" vehicle="Vehicle 1" deliver="3"/>
+			</events>
+		</round>
+	</rounds>
+	<statistics>
+		<stat rank="1" agent="deliberative-main">
+			<total-tasks value="6"/>
+			<total-distance value="1520.0"/>
+			<total-cost value="7600"/>
+			<total-reward value="261557"/>
+			<total-profit value="253957"/>
+		</stat>
+	</statistics>
+</history>

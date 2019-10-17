@@ -141,6 +141,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			}/**/
 			
 			// 1. Delivery of tasks
+			boolean deliver = false;
 			if(s.deliveryMapping.containsKey(s.currentCity)) {
 				List<Task> toDeliver = s.deliveryMapping.get(s.currentCity);
 				
@@ -153,31 +154,28 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 				}
 				
 				// Remove from the delivery mapping
-				System.out.println(s.deliveryMapping);
 				s.deliveryMapping.remove(s.currentCity);
-				System.out.println("Remove "+ s.currentCity);
-				System.out.println(s.deliveryMapping);
+				deliver = true;
 			}
 			
 			
 			// 2. Check if state is terminal
 			// If it's the case, add it to final Plan list
 			if(s.deliveryMapping.isEmpty() && s.pickupMapping.isEmpty()) {
-				System.out.println("Final plan created");
 				finalPlans.add(s.plan);
 			}else {
 				// 3. Pick all possible packets and go to each neighbor
 				for(City neigh : s.currentCity.neighbors()) {
 					CustomPlan planAux = s.plan.clone();
 					
+					// Reset cycle detection
+					boolean[] visitedAux = new boolean[topology.cities().size()];
+					visitedAux[s.currentCity.id] = true;
+					
 					if (s.pickupMapping.containsKey(s.currentCity)) {
 						List<Task> availableTasks = s.pickupMapping.get(s.currentCity);
 						Mapping pickupAux = s.pickupMapping.clone();
 						Mapping deliveryAux = s.deliveryMapping.clone();
-						
-						// Reset cycle detection
-						boolean[] visitedAux = new boolean[topology.cities().size()];
-						visitedAux[s.currentCity.id] = true;
 						
 						switch(availableTasks.size()) {
 						case 2:
@@ -248,13 +246,18 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 					} else {
 						// Otherwise, go to a neighbor
 						if(!s.visited[neigh.id]) {
-							s.visited[neigh.id] = true;
-							
 							planAux = s.plan.clone();
 							planAux.appendMove(neigh);
 							
-							queue.add(new State(planAux, neigh, s.pickupMapping.clone(), s.deliveryMapping.clone(),
-									s.freeSpace, s.visited));
+							if(!deliver) {
+								s.visited[neigh.id] = true;
+								queue.add(new State(planAux, neigh, s.pickupMapping.clone(), s.deliveryMapping.clone(),
+										s.freeSpace, s.visited));
+							} else {
+								queue.add(new State(planAux, neigh, s.pickupMapping.clone(), s.deliveryMapping.clone(),
+										s.freeSpace, visitedAux));
+							}
+							
 						}
 					}				
 				}		
@@ -267,7 +270,6 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		// Choose best one
 		CustomPlan bestPlan = finalPlans.poll();
 		CustomPlan currentPlan;
-		System.out.println(bestPlan);
 		
 		while(!finalPlans.isEmpty()) {
 			currentPlan = finalPlans.poll();
