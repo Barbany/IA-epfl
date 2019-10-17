@@ -108,6 +108,11 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		Task[] tasksArray = new Task[tasks.size()];
 		tasks.toArray(tasksArray);
 		
+		for(int i=0; i<tasks.size(); i++) {
+			// add elements of the TaskSet to the mapping
+			System.out.println(tasksArray[i]);
+		}
+		
 		LinkedList<State> queue = new LinkedList<State>();
 		LinkedList<CustomPlan> finalPlans = new LinkedList<CustomPlan>();
 		
@@ -126,13 +131,13 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			// Get current state
 			State s = queue.poll();
 			
-			/* Debugging
+			/* Debugging */
 			System.out.println(s.toString());
 			try {
-				TimeUnit.SECONDS.sleep(1);
+				TimeUnit.SECONDS.sleep(5);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}*/
+			}/**/
 			
 			// 1. Delivery of tasks
 			if(s.deliveryMapping.containsKey(s.currentCity)) {
@@ -158,75 +163,101 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			if(s.deliveryMapping.isEmpty() && s.pickupMapping.isEmpty()) {
 				finalPlans.add(s.plan);
 			}else {
-				
-				// 3. Get all combination of tasks
-				List<List<Task>> powerSet = new LinkedList<List<Task>>();
-				
-				// Get current tasks that can be picked up 
-				if (s.pickupMapping.containsKey(s.currentCity)) {
-					List<Task> potentialTasks = s.pickupMapping.get(s.currentCity);
-					it = potentialTasks.iterator();
-
-					// Generate combinations
-				    for (int i = 1; i <= potentialTasks.size(); i++) {
-				    	powerSet.addAll(Utils.combination(potentialTasks, i));	
-				    }	
-				}
-				// Else, powerSet is empty
-				
-				// Check all combinations of neighbor cities and possible taken tasks
+				// 3. Pick all possible packets and go to each neighbor
 				for(City neigh : s.currentCity.neighbors()) {
-					// Check all the possibilities involving at least one packet pickup
-					Iterator<List<Task>> it_tasks = powerSet.iterator();
 					
-					// Iterate along the list of lists of tasks
-					while(it_tasks.hasNext()) {
-						List<Task> toDoTasks = it_tasks.next();
+					CustomPlan planAux = s.plan.clone();
+					
+					if (s.pickupMapping.containsKey(s.currentCity)) {
+						List<Task> availableTasks = s.pickupMapping.get(s.currentCity);
 						
-						// If feasible taskSet
-						int weightSum = 0;
-						it = toDoTasks.iterator();
-						while(it.hasNext()) {
-							weightSum += it.next().weight;
-						}
+						Mapping pickupAux = s.pickupMapping.clone();
+						Mapping deliveryAux = s.deliveryMapping.clone();
 						
-						if (weightSum <= s.freeSpace) {							
-							Mapping pickupAux = s.pickupMapping.clone();
-							Mapping deliveryAux = s.deliveryMapping.clone();
-							CustomPlan planAux = s.plan.clone();
+						// Reset cycle detection
+						boolean[] visitedAux = new boolean[topology.cities().size()];
+						visitedAux[s.currentCity.id] = true;
+						
+						switch(availableTasks.size()) {
+						case 2:
+							// If there are two packages:
+							Task task1 = availableTasks.get(0);
+							Task task2 = availableTasks.get(1);
 							
+							if(task1.weight + task2.weight <= s.freeSpace) {
+								// If we can pick both, we will do it
+								planAux.appendPickup(task1);
+								planAux.appendPickup(task2);
+								
+								// Update mappings
+								pickupAux.remove(s.currentCity, task1);
+								deliveryAux.add(task1.deliveryCity, task1);
+								
+								pickupAux.remove(s.currentCity, task2);
+								deliveryAux.add(task2.deliveryCity, task2);
+								
+								planAux.appendMove(neigh);
+								queue.add(new State(planAux, neigh, pickupAux, deliveryAux, s.freeSpace - task1.weight - task2.weight,
+										visitedAux));
+							} else {
+								// Otherwise, we create two neighbors, one by picking each package
+								planAux.appendPickup(task1);
+								
+								pickupAux.remove(s.currentCity, task1);
+								deliveryAux.add(task1.deliveryCity, task1);
+								
+								// First neighbor
+								planAux.appendMove(neigh);
+								queue.add(new State(planAux, neigh, pickupAux, deliveryAux, s.freeSpace - task1.weight,
+										visitedAux));
+								
+								// Reset auxiliary mappings and plan
+								pickupAux = s.pickupMapping.clone();
+								deliveryAux = s.deliveryMapping.clone();
+								planAux = s.plan.clone();
+								
+								planAux.appendPickup(task2);
+								
+								pickupAux.remove(s.currentCity, task2);
+								deliveryAux.add(task2.deliveryCity, task2);
+								
+								// Second neighbor
+								planAux.appendMove(neigh);
+								queue.add(new State(planAux, neigh, pickupAux, deliveryAux, s.freeSpace - task2.weight,
+										visitedAux));
+							}
+							break;
+						case 1:
+							// If there is one, pick it
+							Task task = availableTasks.get(0);
+							
+							planAux.appendPickup(task);
+							
+							pickupAux.remove(s.currentCity, task);
+							deliveryAux.add(task.deliveryCity, task);
+							
+							// First neighbor
+							planAux.appendMove(neigh);
+							queue.add(new State(planAux, neigh, pickupAux, deliveryAux, s.freeSpace - task.weight,
+									visitedAux));
+							break;
+						default:
+							throw new IllegalArgumentException("Case with 3 pickup options not considered");
+						}
+					} else {
+						// Otherwise, go to a neighbor
+						if(!s.visited[neigh.id]) {
+							s.visited[neigh.id] = true;
+							
+							planAux = s.plan.clone();
 							planAux.appendMove(neigh);
 							
-							// Iterate along the tasks in the list of tasks - add them to the plan
-							it = toDoTasks.iterator();
-							while(it.hasNext()) {							
-								currentTask = it.next();
-								
-								planAux.appendPickup(currentTask);
-								pickupAux.remove(s.currentCity, currentTask);
-								deliveryAux.add(currentTask.deliveryCity, currentTask);
-							}
-							
-							// Move to neighbor city in next iteration
-							// Don't check for loops (and restart loop finder) since doing a pickup move cannot reach to a loop
-							queue.add(new State(planAux, neigh, pickupAux, deliveryAux, s.freeSpace - weightSum,
-									new boolean[topology.cities().size()]));
+							queue.add(new State(planAux, neigh, s.pickupMapping.clone(), s.deliveryMapping.clone(),
+									s.freeSpace, s.visited));
 						}
-					}
-					// Move without picking up any task
-					if(!s.visited[neigh.id]) {
-						CustomPlan planAux = s.plan.clone();
-						planAux.appendMove(neigh);
-						
-						queue.add(new State(planAux, neigh, s.pickupMapping.clone(), s.deliveryMapping.clone(),
-								s.freeSpace, s.visited));	
-					}
-				}	
-				
-				
-			}
-		
-					
+					}				
+				}		
+			}					
 		}
 		
 		System.out.println("Finished BST");

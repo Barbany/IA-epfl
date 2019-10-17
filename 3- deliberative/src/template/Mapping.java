@@ -17,14 +17,14 @@ public class Mapping extends HashMap<City, List<Task>> implements Cloneable{
 	public Mapping(Task[] tasksArray, int size){
 		City currentCity;
 		aux = new LinkedList<Task>();
-		
+
 		for(int i=0; i<size; i++) {
 			// add elements of the TaskSet to the mapping
 			currentCity = tasksArray[i].pickupCity;
 			if(this.containsKey(currentCity)) {
 				this.get(currentCity).add(tasksArray[i]);
 			} else {
-				aux.clear();
+				aux = new LinkedList<Task>();
 				aux.add(tasksArray[i]);
 				this.put(currentCity, aux);	
 			}
