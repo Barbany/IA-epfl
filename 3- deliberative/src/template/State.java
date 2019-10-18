@@ -33,12 +33,13 @@ public class State implements Comparable<State>{
 	public int compareTo(State arg0) {
 		// Returns a negative integer, zero, or a positive integer as this object is
 		// less than, equal to, or greater than the specified object.
+		// We do the reverse as we want reverse sorting
 		double metric = this.plan.totalDistance() + this.futureCost - arg0.plan.totalDistance() - arg0.futureCost;
 		//double metric = this.plan.totalDistance()  - arg0.plan.totalDistance() ;
 		if(metric > 0) {
-			return 1;
-		} else if (metric < 0) {
 			return -1;
+		} else if (metric < 0) {
+			return 1;
 		} else {
 			return 0;
 		}

@@ -5,5 +5,5 @@
 		<agent name="deliberative-main">
 			<vehicle name="A-STAR"/>
 		</agent>
-		<agent name="deliberative-BFS">
+		<agent name="deliberative-main">
 			<vehicle name="BSF"/>
