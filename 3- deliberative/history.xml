@@ -5,56 +5,5 @@
 		<agent name="deliberative-BFS">
 			<vehicle name="A-STAR"/>
 		</agent>
-	</agents>
-	<rounds>
-		<round id="1">
-			<tasks>
-				<task id="0" pickup="Aarau" delivery="Genève" weight="3" reward="36797"/>
-				<task id="1" pickup="Zürich" delivery="Sion" weight="3" reward="40875"/>
-				<task id="2" pickup="Sion" delivery="Genève" weight="3" reward="59223"/>
-				<task id="3" pickup="Basel" delivery="St-Gallen" weight="3" reward="59223"/>
-				<task id="4" pickup="Lausanne" delivery="St-Gallen" weight="3" reward="18448"/>
-				<task id="5" pickup="Sion" delivery="Basel" weight="3" reward="46991"/>
-			</tasks>
-			<events>
-				<event id="0" time="0" vehicle="A-STAR" pickup="4"/>
-				<event id="1" time="299999995" vehicle="A-STAR" move="Fribourg"/>
-				<event id="2" time="1411111073" vehicle="A-STAR" move="Bern"/>
-				<event id="3" time="1966666612" vehicle="A-STAR" move="Aarau"/>
-				<event id="4" time="3188888798" vehicle="A-STAR" pickup="0"/>
-				<event id="5" time="3488888787" vehicle="A-STAR" move="Zürich"/>
-				<event id="6" time="4155555429" vehicle="A-STAR" pickup="1"/>
-				<event id="7" time="4455555420" vehicle="A-STAR" move="Aarau"/>
-				<event id="8" time="5122222061" vehicle="A-STAR" move="Bern"/>
-				<event id="9" time="6344444244" vehicle="A-STAR" move="Thun"/>
-				<event id="10" time="6788888674" vehicle="A-STAR" move="Sion"/>
-				<event id="11" time="8122221966" vehicle="A-STAR" deliver="1"/>
-				<event id="12" time="8422221956" vehicle="A-STAR" pickup="2"/>
-				<event id="13" time="8722221948" vehicle="A-STAR" pickup="5"/>
-				<event id="14" time="9022221938" vehicle="A-STAR" move="Lausanne"/>
-				<event id="15" time="10688888554" vehicle="A-STAR" move="Genève"/>
-				<event id="16" time="11688888524" vehicle="A-STAR" deliver="0"/>
-				<event id="17" time="11988888512" vehicle="A-STAR" deliver="2"/>
-				<event id="18" time="12288888502" vehicle="A-STAR" move="Lausanne"/>
-				<event id="19" time="13288888472" vehicle="A-STAR" move="Neuchâtel"/>
-				<event id="20" time="14399999552" vehicle="A-STAR" move="Bern"/>
-				<event id="21" time="15066666201" vehicle="A-STAR" move="Basel"/>
-				<event id="22" time="16622221706" vehicle="A-STAR" deliver="5"/>
-				<event id="23" time="16922221696" vehicle="A-STAR" pickup="3"/>
-				<event id="24" time="17222221688" vehicle="A-STAR" move="Zürich"/>
-				<event id="25" time="18555554979" vehicle="A-STAR" move="St-Gallen"/>
-				<event id="26" time="19888888268" vehicle="A-STAR" deliver="4"/>
-				<event id="27" time="20188888261" vehicle="A-STAR" deliver="3"/>
-			</events>
-		</round>
-	</rounds>
-	<statistics>
-		<stat rank="1" agent="deliberative-BFS">
-			<total-tasks value="6"/>
-			<total-distance value="1520.0"/>
-			<total-cost value="7600"/>
-			<total-reward value="261557"/>
-			<total-profit value="253957"/>
-		</stat>
-	</statistics>
-</history>
+		<agent name="deliberative-main">
+			<vehicle name="BSF"/>
