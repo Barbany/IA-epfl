@@ -3,7 +3,7 @@
 <history configuration="config/deliberative.xml">
 	<agents>
 		<agent name="deliberative-main">
-			<vehicle name="Vehicle 1"/>
+			<vehicle name="A-STAR"/>
 		</agent>
-		<agent name="deliberative-main">
-			<vehicle name="Vehicle 2"/>
+		<agent name="deliberative-BFS">
+			<vehicle name="BSF"/>

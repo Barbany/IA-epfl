@@ -34,6 +34,7 @@ public class State implements Comparable<State>{
 		// Returns a negative integer, zero, or a positive integer as this object is
 		// less than, equal to, or greater than the specified object.
 		double metric = this.plan.totalDistance() + this.futureCost - arg0.plan.totalDistance() - arg0.futureCost;
+		//double metric = this.plan.totalDistance()  - arg0.plan.totalDistance() ;
 		if(metric > 0) {
 			return 1;
 		} else if (metric < 0) {
@@ -43,7 +44,7 @@ public class State implements Comparable<State>{
 		}
 	}
 	
-	private int computeH() {
+	public int computeH() {
 		int cost = 0; 
 		Iterator<City> it = pickupMapping.keySet().iterator();
 		while (it.hasNext()) {

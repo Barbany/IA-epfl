@@ -299,6 +299,8 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		// Auxiliary variables that will be used
 		Iterator<Task> it;
 		Task currentTask;
+		
+		
 
 		while (true) {
 			if (queue.isEmpty()) {
@@ -307,7 +309,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 
 			// Get current state
 			State s = queue.poll();
-
+			
 			// 1. Delivery of tasks
 			boolean deliver = false;
 			if (s.deliveryMapping.containsKey(s.currentCity)) {
@@ -332,6 +334,9 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			// 2. Check if state is terminal
 			// If it's the case, add it to final Plan list
 			if (s.deliveryMapping.isEmpty() && s.pickupMapping.isEmpty()) {
+				
+				System.out.println("cost final state " + s.futureCost);
+				
 				System.out.println("Finished A*");
 				return s.plan.asPlan();
 			} else {
@@ -369,6 +374,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 								planAux.appendMove(neigh);
 								queue.add(new State(planAux, neigh, pickupAux, deliveryAux,
 										s.freeSpace - task1.weight - task2.weight, visitedAux));
+								Collections.sort(queue);
 							} else {
 								// Otherwise, we create two neighbors, one by picking each package
 								planAux.appendPickup(task1);
@@ -395,6 +401,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 								planAux.appendMove(neigh);
 								queue.add(new State(planAux, neigh, pickupAux, deliveryAux, s.freeSpace - task2.weight,
 										visitedAux));
+								Collections.sort(queue);
 							}
 							break;
 						case 1:
@@ -410,6 +417,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 							planAux.appendMove(neigh);
 							queue.add(new State(planAux, neigh, pickupAux, deliveryAux, s.freeSpace - task.weight,
 									visitedAux));
+							Collections.sort(queue);
 							break;
 						default:
 							throw new IllegalArgumentException("Case with 3 pickup options not considered");
@@ -427,11 +435,13 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 							} else {
 								queue.add(new State(planAux, neigh, s.pickupMapping.clone(), s.deliveryMapping.clone(),
 										s.freeSpace, visitedAux));
+								Collections.sort(queue);
 							}
 						}
 					}
+					
 				}
-				Collections.sort(queue);
+				
 			}
 		}
 	}

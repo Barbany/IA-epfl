@@ -15,5 +15,11 @@
         <set class-name="template.DeliberativeTemplate"/>
         <set algorithm="ASTAR"/>
     </agent>
+    
+    <agent name="deliberative-BFS">
+        <set class-path="bin/"/>
+        <set class-name="template.DeliberativeTemplate"/>
+        <set algorithm="BFS"/>
+    </agent>
 	
 </agents>

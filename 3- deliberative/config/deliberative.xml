@@ -20,6 +20,7 @@
 		<probability distribution="uniform" min="0.0" max="1.0" />
 		<reward distribution="constant" policy="short-distances" min="100" max="99999" />
 		<weight distribution="constant" value="3" />
+        <!--weight distribution="uniform" min="3" max="50"/-->
 
 	</tasks>
 	
@@ -27,7 +28,7 @@
 	<companies>
 		<company name="Company A">
 			<!-- the first vehicle (blue) -->
-			<vehicle name="Vehicle 1">
+			<vehicle name="A-STAR">
 				<set color="#0000ff" />
 				<set home="Lausanne" />
 				<set speed="90" />
@@ -38,7 +39,7 @@
 		
 		<company name="Company B">
 			<!-- the second vehicle (red) -->
-			<vehicle name="Vehicle 2">
+			<vehicle name="BSF">
 				<set color="#ff0000" />
 				<set home="Zürich" />
 				<set speed="90" />
