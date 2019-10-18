@@ -36,9 +36,9 @@ public class State implements Comparable<State>{
 		double metric = this.plan.totalDistance() + this.futureCost - arg0.plan.totalDistance() - arg0.futureCost;
 		//double metric = this.plan.totalDistance()  - arg0.plan.totalDistance() ;
 		if(metric > 0) {
-			return 1;
-		} else if (metric < 0) {
 			return -1;
+		} else if (metric < 0) {
+			return 1;
 		} else {
 			return 0;
 		}

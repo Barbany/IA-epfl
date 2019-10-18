@@ -67,6 +67,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		case ASTAR:
 			// ...
 			plan = ASTARPlan(vehicle, tasks);
+			System.out.println(plan);
 			break;
 		case BFS:
 			plan = BSTPlan(vehicle, tasks);
@@ -122,7 +123,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		queue.add(new State(new CustomPlan(currentCity), currentCity, new Mapping(tasksArray, true),
 				new Mapping(currentTasksArray, false), vehicle.capacity(), visited));
 
-		System.out.println("Start BST");
+		System.out.println("Start BSF");
 
 		// Auxiliary variables that will be used
 		Iterator<Task> it;
@@ -153,6 +154,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 				deliver = true;
 			}
 
+			
 			// 2. Check if state is terminal
 			// If it's the case, add it to final Plan list
 			if (s.deliveryMapping.isEmpty() && s.pickupMapping.isEmpty()) {
@@ -257,7 +259,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			}
 		}
 
-		System.out.println("Finished BST");
+		System.out.println("Finished BSF");
 
 		// All terminal states found
 		// Choose best one
@@ -285,6 +287,10 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 
 		Task[] currentTasksArray = new Task[vehicle.getCurrentTasks().size()];
 		vehicle.getCurrentTasks().toArray(currentTasksArray);
+		
+		if( vehicle.getCurrentTasks().size() > 0) {
+			System.out.println(vehicle.getCurrentTasks());
+		}
 
 		LinkedList<State> queue = new LinkedList<State>();
 		LinkedList<CustomPlan> finalPlans = new LinkedList<CustomPlan>();
@@ -293,6 +299,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 
 		queue.add(new State(new CustomPlan(currentCity), currentCity, new Mapping(tasksArray, true),
 				new Mapping(currentTasksArray, false), vehicle.capacity(), visited));
+		//Collections.sort(queue);
 
 		System.out.println("Start A*");
 
@@ -334,8 +341,6 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 			// 2. Check if state is terminal
 			// If it's the case, add it to final Plan list
 			if (s.deliveryMapping.isEmpty() && s.pickupMapping.isEmpty()) {
-				
-				System.out.println("cost final state " + s.futureCost);
 				
 				System.out.println("Finished A*");
 				return s.plan.asPlan();
@@ -432,6 +437,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 								s.visited[neigh.id] = true;
 								queue.add(new State(planAux, neigh, s.pickupMapping.clone(), s.deliveryMapping.clone(),
 										s.freeSpace, s.visited));
+								Collections.sort(queue);
 							} else {
 								queue.add(new State(planAux, neigh, s.pickupMapping.clone(), s.deliveryMapping.clone(),
 										s.freeSpace, visitedAux));
