@@ -108,8 +108,10 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		Task[] tasksArray = new Task[tasks.size()];
 		tasks.toArray(tasksArray);
 		
+		Task[] currentTasksArray = new Task[vehicle.getCurrentTasks().size()];
+		vehicle.getCurrentTasks().toArray(currentTasksArray);
+		
 		for(int i=0; i<tasks.size(); i++) {
-			// add elements of the TaskSet to the mapping
 			System.out.println(tasksArray[i]);
 		}
 		
@@ -118,8 +120,8 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		
 		visited[currentCity.id] = true;
 		
-		queue.add(new State(new CustomPlan(currentCity), currentCity, new Mapping(tasksArray, tasks.size()), new Mapping(),
-				vehicle.capacity(), visited));
+		queue.add(new State(new CustomPlan(currentCity), currentCity, new Mapping(tasksArray, tasks.size(), true),
+				new Mapping(currentTasksArray, vehicle.getCurrentTasks().size(), false), vehicle.capacity(), visited));
 		
 		System.out.println("Start BST");
 		
@@ -127,7 +129,6 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 		Iterator<Task> it;
 		Task currentTask;
 		
-		int i = 0;
 		while(!queue.isEmpty()) {
 			// Get current state
 			State s = queue.poll();
@@ -284,11 +285,12 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 
 	@Override
 	public void planCancelled(TaskSet carriedTasks) {
-		
+		System.out.println("Here");
+		System.out.println(carriedTasks);
 		if (!carriedTasks.isEmpty()) {
-			// This cannot happen for this simple agent, but typically
-			// you will need to consider the carriedTasks when the next
-			// plan is computed.
+			// Agent carries some actions and tried to pickup one that was picked by another
+			System.out.println("There");
+			System.out.println(this.agent.getTasks());
 		}
 	}
 }
