@@ -14,9 +14,10 @@ public class Mapping extends HashMap<City, List<Task>> implements Cloneable{
 	private List<Task> aux;
 	
 	// Constructor for Pickup
-	public Mapping(Task[] tasksArray, int size, boolean pickup){
+	public Mapping(Task[] tasksArray, boolean pickup){
 		City currentCity;
 		aux = new LinkedList<Task>();
+		int size = tasksArray.length;
 		
 		if(pickup) {
 			for(int i=0; i<size; i++) {
@@ -60,7 +61,7 @@ public class Mapping extends HashMap<City, List<Task>> implements Cloneable{
 			cityTaskList.add(task);
 		} else {
 			// Include task in the taskSet
-			aux.clear();
+			aux = new LinkedList<Task>();
 			aux.add(task);
 			this.put(currentCity, aux);	
 		}

@@ -5,5 +5,5 @@
 		<agent name="deliberative-main">
 			<vehicle name="Vehicle 1"/>
 		</agent>
-		<agent name="deliberative-main-2">
+		<agent name="deliberative-main">
 			<vehicle name="Vehicle 2"/>
