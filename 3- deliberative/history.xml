@@ -7,3 +7,55 @@
 		</agent>
 		<agent name="deliberative-main">
 			<vehicle name="BSF"/>
+		</agent>
+	</agents>
+	<rounds>
+		<round id="1">
+			<tasks>
+				<task id="0" pickup="Aarau" delivery="Genève" weight="3" reward="36797"/>
+				<task id="1" pickup="Zürich" delivery="Sion" weight="3" reward="40875"/>
+				<task id="2" pickup="Sion" delivery="Genève" weight="3" reward="59223"/>
+				<task id="3" pickup="Basel" delivery="St-Gallen" weight="3" reward="59223"/>
+				<task id="4" pickup="Lausanne" delivery="St-Gallen" weight="3" reward="18448"/>
+				<task id="5" pickup="Sion" delivery="Basel" weight="3" reward="46991"/>
+			</tasks>
+			<events>
+				<event id="0" time="0" vehicle="A-STAR" pickup="4"/>
+				<event id="1" time="0" vehicle="BSF" pickup="1"/>
+				<event id="2" time="299999997" vehicle="A-STAR" move="Sion"/>
+				<event id="3" time="299999997" vehicle="BSF" move="Aarau"/>
+				<event id="4" time="966666634" vehicle="BSF" pickup="0"/>
+				<event id="5" time="1266666620" vehicle="BSF" move="Bern"/>
+				<event id="6" time="1966666586" vehicle="A-STAR" pickup="5"/>
+				<event id="7" time="2266666570" vehicle="A-STAR" move="Thun"/>
+				<event id="8" time="2488888782" vehicle="BSF" move="Thun"/>
+				<event id="9" time="2933333201" vehicle="BSF" move="Sion"/>
+				<event id="10" time="3599999830" vehicle="A-STAR" move="Bern"/>
+				<event id="11" time="4044444246" vehicle="A-STAR" move="Basel"/>
+				<event id="12" time="4266666457" vehicle="BSF" deliver="1"/>
+				<event id="13" time="4566666442" vehicle="BSF" pickup="2"/>
+				<event id="14" time="4866666426" vehicle="BSF" move="Lausanne"/>
+				<event id="15" time="5599999717" vehicle="A-STAR" deliver="5"/>
+				<event id="16" time="5899999701" vehicle="A-STAR" pickup="3"/>
+				<event id="17" time="6199999688" vehicle="A-STAR" move="Zürich"/>
+				<event id="18" time="6533333004" vehicle="BSF" move="Genève"/>
+			</events>
+		</round>
+	</rounds>
+	<statistics>
+		<stat rank="1" agent="deliberative-main">
+			<total-tasks value="3"/>
+			<total-distance value="570.0"/>
+			<total-cost value="2850"/>
+			<total-reward value="46991"/>
+			<total-profit value="44141"/>
+		</stat>
+		<stat rank="2" agent="deliberative-main">
+			<total-tasks value="3"/>
+			<total-distance value="570.0"/>
+			<total-cost value="2850"/>
+			<total-reward value="40875"/>
+			<total-profit value="38025"/>
+		</stat>
+	</statistics>
+</history>

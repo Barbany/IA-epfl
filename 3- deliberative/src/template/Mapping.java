@@ -1,58 +1,78 @@
 package template;
 
-import logist.topology.Topology.City;
-
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import logist.topology.Topology.City;
 import logist.task.Task;
+import logist.task.TaskSet;
 
 
+/**
+ * Mapping from city to a List of tasks related to it
+ * 
+ * @author Oriol Barbany & Natalie Bolon
+ */
 @SuppressWarnings("serial")
 public class Mapping extends HashMap<City, List<Task>> implements Cloneable{
 	private List<Task> aux;
 	
-	// Constructor for Pickup
-	public Mapping(Task[] tasksArray, boolean pickup){
+	/** Constructor for Mapping
+	 * @param tasks TaskSet of current tasks (to pickup or deliver)
+	 * @param pickup Boolean that is true for pickup (so mapping is pickupCity -> List<Task>)
+	 * For delivery, set this to false. Resulting mapping is deliveryCity -> List<Task>
+	 */
+	public Mapping(TaskSet tasks, boolean pickup){
 		City currentCity;
 		aux = new LinkedList<Task>();
-		int size = tasksArray.length;
+		
+		Iterator<Task> it = tasks.iterator();
 		
 		if(pickup) {
-			for(int i=0; i<size; i++) {
+			while(it.hasNext()) {
+				Task nextTask = it.next();
 				// add elements of the TaskSet to the mapping
-				currentCity = tasksArray[i].pickupCity;
+				currentCity = nextTask.pickupCity;
 				if(this.containsKey(currentCity)) {
-					this.get(currentCity).add(tasksArray[i]);
+					this.get(currentCity).add(nextTask);
 				} else {
 					aux = new LinkedList<Task>();
-					aux.add(tasksArray[i]);
+					aux.add(nextTask);
 					this.put(currentCity, aux);	
 				}
 			}	
 		} else {
-			for(int i=0; i<size; i++) {
+			while(it.hasNext()) {
+				Task nextTask = it.next();
 				// add elements of the TaskSet to the mapping
-				currentCity = tasksArray[i].deliveryCity;
+				currentCity = nextTask.deliveryCity;
 				if(this.containsKey(currentCity)) {
-					this.get(currentCity).add(tasksArray[i]);
+					this.get(currentCity).add(nextTask);
 				} else {
 					aux = new LinkedList<Task>();
-					aux.add(tasksArray[i]);
+					aux.add(nextTask);
 					this.put(currentCity, aux);	
 				}
 			}
 		}
 	}
 	
-	// Constructor for Delivery
+	
+	/**
+	 * Create empty mapping
+	 */
 	public Mapping() {
 		aux = new LinkedList<Task>();
 	}
 	
+	/**
+	 * If pickup mapping, parameter pickup city (sim. for delivery)
+	 * @param currentCity
+	 * @param task
+	 */
 	public void add(City currentCity, Task task) {
-		
 		List<Task> cityTaskList;
 		// If the city already has other tasks, add it to the TaskSet 
 		if (this.containsKey(currentCity)){
@@ -67,6 +87,12 @@ public class Mapping extends HashMap<City, List<Task>> implements Cloneable{
 		}
 	}
 	
+	/**
+	 * If pickup mapping, parameter is pickup city (sim. for delivery)
+	 * This method removes the key if the resulting list is empty
+	 * @param currentCity
+	 * @param task
+	 */
 	public void removeTask(City currentCity, Task task) {
 		List<Task> l = this.get(currentCity);
 		l.remove(task);
@@ -75,6 +101,10 @@ public class Mapping extends HashMap<City, List<Task>> implements Cloneable{
 		}
 	}
 	
+	/**
+	 * Clone the current mapping so its modifications won't change the original mapping
+	 * @return Cloned mapping
+	 */
 	public Mapping clone() {
 		Mapping ret = new Mapping();
 		for (City c: this.keySet()) {
