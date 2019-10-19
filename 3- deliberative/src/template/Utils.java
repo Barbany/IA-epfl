@@ -4,7 +4,19 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Class with generic methods
+ * 
+ * @author Oriol Barbany & Natalie Bolon
+ */
 public class Utils {
+	/**
+	 * Get all possible combinations of the list values of type T of up to a given size
+	 * @param <T>
+	 * @param values
+	 * @param size
+	 * @return
+	 */
 	public static <T> List<List<T>> combination(List<T> values, int size) {
 
 	    if (0 == size) {

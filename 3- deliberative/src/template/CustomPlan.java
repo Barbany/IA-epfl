@@ -16,6 +16,12 @@ import logist.plan.Action.Pickup;
 import logist.task.Task;
 import logist.topology.Topology.City;
 
+/**
+ * A sequence of actions for one vehicle.
+ * Logist object Plan with clone method
+ * 
+ * @author Oriol Barbany & Natalie Bolon
+ */
 public class CustomPlan implements Iterable<Action>, Cloneable {
 
 	/** The empty plan */
@@ -72,10 +78,17 @@ public class CustomPlan implements Iterable<Action>, Cloneable {
 		actions.add(action);
 	}
 	
+	/**
+	 * Clone the current plan so its modifications won't change the original plan
+	 * @return Cloned plan
+	 */
 	public CustomPlan clone() {
 		return new CustomPlan(this.initialCity, new ArrayList<Action>(this.actions));
 	}
 	
+	/**
+	 * @return CustomPlan in Plan format
+	 */
 	public Plan asPlan() {
 		return new Plan(this.initialCity, this.actions);
 	}
