@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- the main configuration for deliberative agents -->
+<configuration name="ex2" mode="deliberative">
+
+	<!-- global settings -->
+	<settings import="config/settings_default.xml" />
+	
+	<!-- load the topology -->
+	<topology import="config/topology/switzerland.xml" />
+	
+	<!-- load agents -->
+	<agents import="config/agents.xml" />
+	
+	<!-- define task distribution -->
+	<tasks number="10" rngSeed="99878">
+		<!--
+			the probabilities, rewards and weight of tasks
+		-->
+		<probability distribution="uniform" min="0.0" max="1.0" />
+		<reward distribution="constant" policy="short-distances" min="100" max="99999" />
+        
+        <weight distribution="constant" value="5" />
+
+	</tasks>
+	
+	<!-- the companies and vehicles in the simulation -->
+	<companies>
+        
+        <company name="Company A">
+            <!-- the first vehicle (blue) -->
+            <vehicle name="BSF1">
+                <set color="#0000ff" />
+                <set home="Fribourg" />
+                <set speed="90" />
+                <set capacity="15" />
+                <set cost-per-km="5" />
+            </vehicle>
+        </company>
+        
+        <company name="Company B">
+            <!-- the second vehicle (red) -->
+            <vehicle name="BSF2">
+                <set color="#ff0000" />
+                <set home="Aarau" />
+                <set speed="90" />
+                <set capacity="15" />
+                <set cost-per-km="5" />
+            </vehicle>
+        </company>
+		
+		
+		<company name="Company C">
+			<!-- the third vehicle (green) -->
+			<vehicle name="BSF3">
+				<set color="#00ff00" />
+				<set home="Bern" />
+				<set speed="90" />
+				<set capacity="15" />
+				<set cost-per-km="5" />
+			</vehicle>
+		</company>
+		
+		<company name="Company E">
+			<!-- the fifth vehicle (magenta) -->
+			<vehicle name="BFS">
+				<set color="#ff00ff" />
+				<set home="Thun" />
+				<set speed="220" />
+				<set capacity="80" />
+				<set cost-per-km="5" />
+			</vehicle>
+		</company>
+		
+		<company name="Company F">
+			<!-- the sixth vehicle (cyan) -->
+			<vehicle name="Vehicle 6">
+				<set color="#00ffff" />
+				<set home="Luzern" />
+				<set speed="220" />
+				<set capacity="80" />
+				<set cost-per-km="5" />
+			</vehicle>
+		</company>
+        
+        
+        
+	</companies>
+	
+</configuration>

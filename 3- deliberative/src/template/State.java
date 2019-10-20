@@ -40,9 +40,9 @@ public class State implements Comparable<State> {
 		// We do the reverse as we want reverse sorting
 		double metric = this.plan.totalDistance() + this.futureCost - arg0.plan.totalDistance() - arg0.futureCost;
 		if (metric > 0) {
-			return -1;
-		} else if (metric < 0) {
 			return 1;
+		} else if (metric < 0) {
+			return -1;
 		} else {
 			return 0;
 		}
@@ -57,6 +57,7 @@ public class State implements Comparable<State> {
 		Iterator<City> it = pickupMapping.keySet().iterator();
 		while (it.hasNext()) {
 			cost += currentCity.distanceTo(it.next());
+		
 		}
 		return cost;
 	}
@@ -89,6 +90,7 @@ public class State implements Comparable<State> {
 	 * Compute hash that defines current state
 	 */
 	private void computeHash() {
-		hash = "" + this.deliveryMapping.hashCode() + this.pickupMapping.hashCode() + currentCity.id;
+		//hash = "" + this.deliveryMapping.hashCode() + this.pickupMapping.hashCode() + currentCity.id;
+		hash = "" + this.plan.totalDistance() + this.futureCost;
 	}
 }

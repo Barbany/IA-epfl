@@ -48,18 +48,28 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 	@Override
 	public Plan plan(Vehicle vehicle, TaskSet tasks) {
 		Plan plan;
+		long startTime; 
+		long endTime; 
 
 		// Compute the plan with the selected algorithm.
 		switch (algorithm) {
 		case ASTAR:
-			plan = new PlanBuilder(vehicle, tasks).ASTARPlan();
+			startTime = System.currentTimeMillis();
+			plan = new PlanBuilder(vehicle, tasks).ASTARPlan(); 
+			endTime = System.currentTimeMillis();
+			System.out.println("Plan A*: "+ plan);
 			break;
+			
 		case BFS:
-			plan = new PlanBuilder(vehicle, tasks).BFSPlan();
+			startTime = System.currentTimeMillis();
+			plan = new PlanBuilderBFS(vehicle, tasks).BFSPlan();
+			endTime = System.currentTimeMillis();
+			System.out.println("Plan BFS: "+ plan);
 			break;
 		default:
 			throw new AssertionError("Should not happen.");
 		}
+		System.out.println("Time required " + (endTime-startTime)/1000 + " s with " + algorithm);
 		return plan;
 	}
 

@@ -1,75 +1,72 @@
 package template;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 
-import java.util.HashMap;
-
+import logist.plan.Plan;
+import logist.simulation.Vehicle;
 import logist.task.Task;
 import logist.task.TaskSet;
 import logist.topology.Topology.City;
-import logist.plan.Plan;
-import logist.simulation.Vehicle;
 
-/**
- * Build a plan using either A* or BFS algorithm
- * 
- * @author Oriol Barbany & Natalie Bolon
- */
-public class PlanBuilder {
-
-	// The queue is always ordered based on the value of the states
-	PriorityQueue<State> queue;
+public class PlanBuilderBFS {
+	
+	LinkedList<State> queue;
 	HashMap<String, Double> visited;
-	
-	/**
-	 * Initialize PlanBuilder
-	 * @param vehicle
-	 * @param tasks
-	 */
-	
-	
-	public PlanBuilder(Vehicle vehicle, TaskSet tasks) {
-		queue = new PriorityQueue<State>();
+
+	public PlanBuilderBFS(Vehicle vehicle, TaskSet tasks) {
+		
+		queue  = new LinkedList<State>(); 
 		visited = new HashMap<String, Double>();
 		
 		queue.add(new State(new CustomPlan(vehicle.getCurrentCity()), vehicle.getCurrentCity(),
 				new Mapping(tasks, true), new Mapping(vehicle.getCurrentTasks(), false), vehicle.capacity() - vehicle.getCurrentTasks().weightSum()));
-	}
-
-	/**
-	 * Create plan using A* algorithm
-	 * @return Optimal plan
-	 */
-	public Plan ASTARPlan() {
 		
-		System.out.println("Start A*");
+		
+	}
+	
+	public Plan BFSPlan() {
+		
+		// List of final plans
+		LinkedList<CustomPlan> finalPlans = new LinkedList<CustomPlan>();
+		
+		System.out.println("Start BFS");
+		
 
-		while (true) {
-			if (queue.isEmpty()) {
-				throw new IllegalArgumentException("Unexpected finishing in A*");
-			}
+		while (!queue.isEmpty()) {
 			// Get current state
 			State s = queue.poll();
-
-			// 1. Delivery of tasks
+			
 			s.deliverTasks();
 
 			// 2. Check if state is terminal
-			// If it's the case, return it
+			// If it's the case, add it to final Plan list
 			if (s.deliveryMapping.isEmpty() && s.pickupMapping.isEmpty()) {
-				System.out.println("Finished A*");
-				System.out.println("Distance of the plan: "+ s.plan.totalDistance());
-				return s.plan.asPlan();
+				finalPlans.add(s.plan);
 			} else {
 				// 3. Pickup of tasks
-				pickupTasks(s);	
+				pickupTasks(s);
 			}
 		}
+
+		System.out.println("Finished BFS");
+		
+		// All terminal states found
+		// Choose optimal one
+		CustomPlan bestPlan = finalPlans.poll();
+		CustomPlan currentPlan;
+
+		while (!finalPlans.isEmpty()) {
+			currentPlan = finalPlans.poll();
+			if (currentPlan.totalDistanceUnits() < bestPlan.totalDistanceUnits()) {
+				bestPlan = currentPlan;
+			}
+		}
+		System.out.println("Distance of the plan: "+ bestPlan.totalDistance());
+		return bestPlan.asPlan();
 	}
-	
 	
 	/**
 	 * Auxiliary functions to pickup tasks at the current state s
@@ -153,5 +150,5 @@ public class PlanBuilder {
 		}
 	}
 	
-	
+
 }
