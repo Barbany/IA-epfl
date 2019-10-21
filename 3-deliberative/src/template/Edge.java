@@ -23,4 +23,8 @@ public class Edge<T> implements Comparable<Edge<T>> {
 			return 0;	
 		}
 	}
+
+	public String toString() {
+		return "From " + this.a.toString() + " to " + this.b.toString() + " with cost " + this.weight;
+	}
 }

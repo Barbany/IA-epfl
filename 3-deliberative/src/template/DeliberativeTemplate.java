@@ -49,7 +49,7 @@ public class DeliberativeTemplate implements DeliberativeBehavior {
 	public Plan plan(Vehicle vehicle, TaskSet tasks) {
 		Plan plan;
 		long startTime; 
-		long endTime; 
+		long endTime;
 
 		// Compute the plan with the selected algorithm.
 		switch (algorithm) {

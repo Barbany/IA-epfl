@@ -58,17 +58,26 @@ public class State implements Comparable<State> {
 		PriorityQueue<Edge<City>> edges = new PriorityQueue<Edge<City>>();
 		List<City> cities = new LinkedList<City>();
 		Iterator<Task> it;
+		Set<City> s = new Set<City>();
 		Task currentTask;
+		
+		System.out.println("*******************START");
+		System.out.println(pickupMapping);
+		System.out.println(deliveryMapping);
 		
 		// Get cities involved in some open or future task
 		for(List<Task> tasks : pickupMapping.values()) {
 			it = tasks.iterator();
 			while(it.hasNext()) {
 				currentTask = it.next();
-				if(!cities.contains(currentTask.deliveryCity))
+				if(!cities.contains(currentTask.deliveryCity)) {
 					cities.add(currentTask.deliveryCity);
-				if(!cities.contains(currentTask.pickupCity))
+					s.makeSet(currentTask.deliveryCity);
+				}
+				if(!cities.contains(currentTask.pickupCity)) {
 					cities.add(currentTask.pickupCity);
+					s.makeSet(currentTask.pickupCity);
+				}
 			}
 		}
 		
@@ -76,10 +85,14 @@ public class State implements Comparable<State> {
 			it = tasks.iterator();
 			while(it.hasNext()) {
 				currentTask = it.next();
-				if(!cities.contains(currentTask.deliveryCity))
+				if(!cities.contains(currentTask.deliveryCity)) {
 					cities.add(currentTask.deliveryCity);
-				if(!cities.contains(currentTask.pickupCity))
+					s.makeSet(currentTask.deliveryCity);
+				}
+				if(!cities.contains(currentTask.pickupCity)) {
 					cities.add(currentTask.pickupCity);
+					s.makeSet(currentTask.pickupCity);
+				}
 			}
 		}
 		
@@ -89,26 +102,21 @@ public class State implements Comparable<State> {
 				edges.add(new Edge<City>(cities.get(i), cities.get(j), cities.get(i).distanceTo(cities.get(j))));
 			}
 		}
+		System.out.println(edges);
 		
 		// Compute actual MST
 		double cost = 0;
 		List<City> visitedCities = new LinkedList<City>();
 		while(visitedCities.size() < cities.size() && edges.size() > 0) {
 			Edge<City> e = edges.poll();
-			if(visitedCities.size() == 0) {
-				visitedCities.add(e.a);
-				visitedCities.add(e.b);
+			if(s.findSet(e.a) != s.findSet(e.b)) {
 				cost += e.weight;
-			} else if(!visitedCities.contains(e.a)) {
-				visitedCities.add(e.a);
-				if(!visitedCities.contains(e.b))
-					visitedCities.add(e.b);
-				cost += e.weight;
-			} else if(!visitedCities.contains(e.b)) {
-				visitedCities.add(e.b);
-				cost += e.weight;
+				s.union(e.a, e.b);
 			}
 		}
+		
+		System.out.println(cost);
+		System.out.println("END*******************");
 		
 		return cost;
 	}
@@ -141,7 +149,7 @@ public class State implements Comparable<State> {
 	 * Compute hash that defines current state
 	 */
 	private void computeHash() {
-		//hash = "" + this.deliveryMapping.hashCode() + this.pickupMapping.hashCode() + currentCity.id;
-		hash = "" + this.plan.totalDistance() + this.futureCost;
+		hash = "" + this.deliveryMapping.hashCode() + this.pickupMapping.hashCode() + currentCity.id;
+		//hash = "" + this.plan.totalDistance() + this.futureCost;
 	}
 }
