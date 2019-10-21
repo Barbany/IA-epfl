@@ -1,10 +1,22 @@
 package template;
 
+/**
+ * Model an edge joining two objects of type T
+ * 
+ * @author Oriol Barbany & Natalie Bolon
+ */
 public class Edge<T> implements Comparable<Edge<T>> {
 	T a;
 	T b;
 	double weight;
 	
+	/**
+	 * Create edge between objects a and b with a given
+	 * associated weight
+	 * @param a
+	 * @param b
+	 * @param weight
+	 */
 	public Edge(T a, T b, double weight) {
 		this.a = a;
 		this.b = b;

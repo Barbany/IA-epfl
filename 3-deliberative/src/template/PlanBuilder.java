@@ -14,7 +14,7 @@ import logist.plan.Plan;
 import logist.simulation.Vehicle;
 
 /**
- * Build a plan using either A* or BFS algorithm
+ * Build a plan using A* algorithm
  * 
  * @author Oriol Barbany & Natalie Bolon
  */
@@ -29,8 +29,6 @@ public class PlanBuilder {
 	 * @param vehicle
 	 * @param tasks
 	 */
-	
-	
 	public PlanBuilder(Vehicle vehicle, TaskSet tasks) {
 		queue = new PriorityQueue<State>();
 		visited = new HashMap<String, Double>();

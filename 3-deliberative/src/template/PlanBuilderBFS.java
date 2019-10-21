@@ -11,24 +11,36 @@ import logist.task.Task;
 import logist.task.TaskSet;
 import logist.topology.Topology.City;
 
+/**
+ * Build a plan using BFS algorithm
+ * 
+ * @author Oriol Barbany & Natalie Bolon
+ */
 public class PlanBuilderBFS {
 	
 	LinkedList<State> queue;
 	HashMap<String, Double> visited;
 
+	/**
+	 * Initialize PlanBuilderBFS
+	 * @param vehicle
+	 * @param tasks
+	 */
 	public PlanBuilderBFS(Vehicle vehicle, TaskSet tasks) {
 		
 		queue  = new LinkedList<State>(); 
 		visited = new HashMap<String, Double>();
 		
 		queue.add(new State(new CustomPlan(vehicle.getCurrentCity()), vehicle.getCurrentCity(),
-				new Mapping(tasks, true), new Mapping(vehicle.getCurrentTasks(), false), vehicle.capacity() - vehicle.getCurrentTasks().weightSum()));
-		
-		
+				new Mapping(tasks, true), new Mapping(vehicle.getCurrentTasks(), false),
+				vehicle.capacity() - vehicle.getCurrentTasks().weightSum()));	
 	}
 	
+	/**
+	 * Create plan using BFS algorithm
+	 * @return Optimal plan
+	 */
 	public Plan BFSPlan() {
-		
 		// List of final plans
 		LinkedList<CustomPlan> finalPlans = new LinkedList<CustomPlan>();
 		

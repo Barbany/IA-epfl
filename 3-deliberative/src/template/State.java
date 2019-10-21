@@ -51,16 +51,9 @@ public class State implements Comparable<State> {
 			return 0;
 		}
 	}
-
 	
 	/**
-	 * Compute cost of the state
-	 * */
-	
-	
-	
-	/**
-	 * Compute heuristics
+	 * Compute heuristics, which is based on MST implemented with Kruskal's algorithm
 	 * @return
 	 */
 	public double computeH() {
