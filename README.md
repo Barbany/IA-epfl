@@ -5,7 +5,7 @@ Each folder corresponds to one exercise and inside contains the source code but 
 
 ## Configuring Eclipse
 
-Open an existing project with the folder barbany-bolon-**{ex-num}** as root, where **ex_num** depends is the number of the exercise except in the first lab where is **in**.
+Open an existing project with the folder corresponding to each exercise as root of the project .
 
 ### Add external JARs
 
