@@ -1,7 +1,9 @@
 package template;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import logist.task.Task;
 import logist.topology.Topology.City;
@@ -16,7 +18,7 @@ public class State implements Comparable<State> {
 	public City currentCity;
 	public Mapping deliveryMapping, pickupMapping;
 	public int freeSpace;
-	public int futureCost;
+	public double futureCost;
 	public String hash;
 
 	public State(CustomPlan plan, City currentCity, Mapping pickupMapping, Mapping deliveryMapping, int freeSpace) {
@@ -52,13 +54,62 @@ public class State implements Comparable<State> {
 	 * Compute heuristics
 	 * @return
 	 */
-	public int computeH() {
-		int cost = 0;
-		Iterator<City> it = pickupMapping.keySet().iterator();
-		while (it.hasNext()) {
-			cost += currentCity.distanceTo(it.next());
+	public double computeH() {
+		PriorityQueue<Edge<City>> edges = new PriorityQueue<Edge<City>>();
+		List<City> cities = new LinkedList<City>();
+		Iterator<Task> it;
+		Task currentTask;
 		
+		// Get cities involved in some open or future task
+		for(List<Task> tasks : pickupMapping.values()) {
+			it = tasks.iterator();
+			while(it.hasNext()) {
+				currentTask = it.next();
+				if(!cities.contains(currentTask.deliveryCity))
+					cities.add(currentTask.deliveryCity);
+				if(!cities.contains(currentTask.pickupCity))
+					cities.add(currentTask.pickupCity);
+			}
 		}
+		
+		for(List<Task> tasks : deliveryMapping.values()) {
+			it = tasks.iterator();
+			while(it.hasNext()) {
+				currentTask = it.next();
+				if(!cities.contains(currentTask.deliveryCity))
+					cities.add(currentTask.deliveryCity);
+				if(!cities.contains(currentTask.pickupCity))
+					cities.add(currentTask.pickupCity);
+			}
+		}
+		
+		// Create edges between those cities
+		for(int i=0; i < cities.size(); i++) {
+			for(int j=i+1; j < cities.size(); j++) {
+				edges.add(new Edge<City>(cities.get(i), cities.get(j), cities.get(i).distanceTo(cities.get(j))));
+			}
+		}
+		
+		// Compute actual MST
+		double cost = 0;
+		List<City> visitedCities = new LinkedList<City>();
+		while(visitedCities.size() < cities.size() && edges.size() > 0) {
+			Edge<City> e = edges.poll();
+			if(visitedCities.size() == 0) {
+				visitedCities.add(e.a);
+				visitedCities.add(e.b);
+				cost += e.weight;
+			} else if(!visitedCities.contains(e.a)) {
+				visitedCities.add(e.a);
+				if(!visitedCities.contains(e.b))
+					visitedCities.add(e.b);
+				cost += e.weight;
+			} else if(!visitedCities.contains(e.b)) {
+				visitedCities.add(e.b);
+				cost += e.weight;
+			}
+		}
+		
 		return cost;
 	}
 
