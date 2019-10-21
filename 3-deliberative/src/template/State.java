@@ -70,7 +70,6 @@ public class State implements Comparable<State> {
 		Set<City> s = new Set<City>();
 		Task currentTask;
 		
-		
 		// Get cities involved in some open or future task
 		for(List<Task> tasks : pickupMapping.values()) {
 			it = tasks.iterator();
@@ -115,7 +114,6 @@ public class State implements Comparable<State> {
 				s.union(e.a, e.b);
 			}
 		}
-		
 		
 		return cost;
 	}
