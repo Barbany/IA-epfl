@@ -19,6 +19,7 @@ public class State implements Comparable<State> {
 	public Mapping deliveryMapping, pickupMapping;
 	public int freeSpace;
 	public double futureCost;
+	//public double actualCost; 
 	public String hash;
 
 	public State(CustomPlan plan, City currentCity, Mapping pickupMapping, Mapping deliveryMapping, int freeSpace) {
@@ -28,6 +29,7 @@ public class State implements Comparable<State> {
 		this.freeSpace = freeSpace;
 		this.currentCity = currentCity;
 		this.futureCost = computeH();
+		//this.actualCost = computeCost();
 		this.computeHash();
 	}
 
@@ -50,6 +52,13 @@ public class State implements Comparable<State> {
 		}
 	}
 
+	
+	/**
+	 * Compute cost of the state
+	 * */
+	
+	
+	
 	/**
 	 * Compute heuristics
 	 * @return
@@ -61,9 +70,6 @@ public class State implements Comparable<State> {
 		Set<City> s = new Set<City>();
 		Task currentTask;
 		
-		System.out.println("*******************START");
-		System.out.println(pickupMapping);
-		System.out.println(deliveryMapping);
 		
 		// Get cities involved in some open or future task
 		for(List<Task> tasks : pickupMapping.values()) {
@@ -89,10 +95,6 @@ public class State implements Comparable<State> {
 					cities.add(currentTask.deliveryCity);
 					s.makeSet(currentTask.deliveryCity);
 				}
-				if(!cities.contains(currentTask.pickupCity)) {
-					cities.add(currentTask.pickupCity);
-					s.makeSet(currentTask.pickupCity);
-				}
 			}
 		}
 		
@@ -102,7 +104,6 @@ public class State implements Comparable<State> {
 				edges.add(new Edge<City>(cities.get(i), cities.get(j), cities.get(i).distanceTo(cities.get(j))));
 			}
 		}
-		System.out.println(edges);
 		
 		// Compute actual MST
 		double cost = 0;
@@ -115,8 +116,6 @@ public class State implements Comparable<State> {
 			}
 		}
 		
-		System.out.println(cost);
-		System.out.println("END*******************");
 		
 		return cost;
 	}

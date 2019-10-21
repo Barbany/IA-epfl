@@ -1,6 +1,7 @@
 package template;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,16 +31,16 @@ public class Set<T> {
 	public void union(T a, T b) {
 		int i_a = findSet(a);
 		int i_b = findSet(b);
-		if(i_a < i_b) {
-			map_fromInt.get(i_a).add(b);
+		if (i_a != i_b) {
+			map_fromInt.get(i_a).addAll(map_fromInt.get(i_b));
+			Iterator<T> it = map_fromInt.get(i_b).iterator();
+			while(it.hasNext()) {
+				map_toInt.replace(it.next(), i_a);
+			}
 			map_fromInt.remove(i_b);
 			
-			map_toInt.replace(b, i_a);
-		} else {
-			map_fromInt.get(i_b).add(a);
-			map_fromInt.remove(i_a);
 			
-			map_toInt.replace(a, i_b);
 		}
+		
 	}
 }

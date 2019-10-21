@@ -1,6 +1,114 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<history configuration="config/deliberative.xml">
+<history configuration="config/deliberative-custom.xml">
 	<agents>
 		<agent name="deliberative-main">
-			<vehicle name="A-STAR"/>
+			<vehicle name="BSF1"/>
+		</agent>
+		<agent name="deliberative-main">
+			<vehicle name="BSF2"/>
+		</agent>
+		<agent name="deliberative-main">
+			<vehicle name="BSF3"/>
+		</agent>
+	</agents>
+	<rounds>
+		<round id="1">
+			<tasks>
+				<task id="0" pickup="Aarau" delivery="Genève" weight="5" reward="36797"/>
+				<task id="1" pickup="Zürich" delivery="Sion" weight="5" reward="40875"/>
+				<task id="2" pickup="Sion" delivery="Genève" weight="5" reward="59223"/>
+				<task id="3" pickup="Basel" delivery="St-Gallen" weight="5" reward="59223"/>
+				<task id="4" pickup="Lausanne" delivery="St-Gallen" weight="5" reward="18448"/>
+				<task id="5" pickup="Sion" delivery="Basel" weight="5" reward="46991"/>
+				<task id="6" pickup="Luzern" delivery="Basel" weight="5" reward="69417"/>
+				<task id="7" pickup="Basel" delivery="Neuchâtel" weight="5" reward="67378"/>
+				<task id="8" pickup="Neuchâtel" delivery="Genève" weight="5" reward="69417"/>
+				<task id="9" pickup="Basel" delivery="Fribourg" weight="5" reward="69417"/>
+			</tasks>
+			<events>
+				<event id="0" time="0" vehicle="BSF1" pickup="4"/>
+				<event id="1" time="0" vehicle="BSF2" pickup="1"/>
+				<event id="2" time="0" vehicle="BSF3" move="Thun"/>
+				<event id="3" time="299999996" vehicle="BSF1" move="Sion"/>
+				<event id="4" time="299999996" vehicle="BSF2" move="Luzern"/>
+				<event id="5" time="444444437" vehicle="BSF3" move="Sion"/>
+				<event id="6" time="1077777753" vehicle="BSF2" pickup="6"/>
+				<event id="7" time="1377777744" vehicle="BSF2" move="Zürich"/>
+				<event id="8" time="1777777732" vehicle="BSF3" pickup="2"/>
+				<event id="9" time="1966666614" vehicle="BSF1" pickup="5"/>
+				<event id="10" time="2077777721" vehicle="BSF3" move="Thun"/>
+				<event id="11" time="2155555498" vehicle="BSF2" move="Basel"/>
+				<event id="12" time="2266666607" vehicle="BSF1" move="Thun"/>
+				<event id="13" time="3411111013" vehicle="BSF3" move="Bern"/>
+				<event id="14" time="3488888789" vehicle="BSF2" deliver="6"/>
+				<event id="15" time="3599999896" vehicle="BSF1" move="Bern"/>
+				<event id="16" time="3788888778" vehicle="BSF2" pickup="9"/>
+				<event id="17" time="3855555442" vehicle="BSF3" move="Basel"/>
+				<event id="18" time="4044444326" vehicle="BSF1" move="Basel"/>
+				<event id="19" time="4088888768" vehicle="BSF2" move="Bern"/>
+				<event id="20" time="5411110946" vehicle="BSF3" pickup="3"/>
+				<event id="21" time="5599999832" vehicle="BSF1" deliver="5"/>
+				<event id="22" time="5644444276" vehicle="BSF2" move="Fribourg"/>
+				<event id="23" time="5711110941" vehicle="BSF3" pickup="7"/>
+				<event id="24" time="5899999825" vehicle="BSF1" move="Zürich"/>
+				<event id="25" time="6011110932" vehicle="BSF3" move="Zürich"/>
+				<event id="26" time="6199999817" vehicle="BSF2" deliver="9"/>
+				<event id="27" time="6499999809" vehicle="BSF2" move="Bern"/>
+				<event id="28" time="7055555347" vehicle="BSF2" move="Thun"/>
+				<event id="29" time="7233333120" vehicle="BSF1" move="St-Gallen"/>
+				<event id="30" time="7344444225" vehicle="BSF3" move="St-Gallen"/>
+				<event id="31" time="7499999776" vehicle="BSF2" move="Sion"/>
+				<event id="32" time="8566666413" vehicle="BSF1" deliver="4"/>
+				<event id="33" time="8677777521" vehicle="BSF3" deliver="3"/>
+				<event id="34" time="8833333070" vehicle="BSF2" deliver="1"/>
+				<event id="35" time="8866666403" vehicle="BSF1" move="Zürich"/>
+				<event id="36" time="8977777510" vehicle="BSF3" move="Zürich"/>
+				<event id="37" time="9133333060" vehicle="BSF2" move="Thun"/>
+				<event id="38" time="10199999700" vehicle="BSF1" move="Aarau"/>
+				<event id="39" time="10311110807" vehicle="BSF3" move="Aarau"/>
+				<event id="40" time="10466666357" vehicle="BSF2" move="Bern"/>
+				<event id="41" time="10866666347" vehicle="BSF1" pickup="0"/>
+				<event id="42" time="10911110789" vehicle="BSF2" move="Aarau"/>
+				<event id="43" time="10977777456" vehicle="BSF3" move="Bern"/>
+				<event id="44" time="11166666338" vehicle="BSF1" move="Bern"/>
+				<event id="45" time="12133332975" vehicle="BSF2" move="Bern"/>
+				<event id="46" time="12199999640" vehicle="BSF3" move="Neuchâtel"/>
+				<event id="47" time="12388888522" vehicle="BSF1" move="Neuchâtel"/>
+				<event id="48" time="12866666285" vehicle="BSF3" deliver="7"/>
+				<event id="49" time="13055555167" vehicle="BSF1" pickup="8"/>
+				<event id="50" time="13166666275" vehicle="BSF3" move="Lausanne"/>
+				<event id="51" time="13355555160" vehicle="BSF1" move="Lausanne"/>
+				<event id="52" time="13355555161" vehicle="BSF2" move="Neuchâtel"/>
+				<event id="53" time="14277777357" vehicle="BSF3" move="Genève"/>
+				<event id="54" time="14466666241" vehicle="BSF1" move="Genève"/>
+				<event id="55" time="15277777325" vehicle="BSF3" deliver="2"/>
+				<event id="56" time="15466666208" vehicle="BSF1" deliver="0"/>
+				<event id="57" time="15766666200" vehicle="BSF1" deliver="8"/>
+			</events>
+		</round>
+	</rounds>
+	<statistics>
+		<stat rank="1" agent="deliberative-main">
+			<total-tasks value="3"/>
+			<total-distance value="1240.0"/>
+			<total-cost value="6200"/>
+			<total-reward value="185824"/>
+			<total-profit value="179624"/>
+		</stat>
+		<stat rank="2" agent="deliberative-main">
+			<total-tasks value="3"/>
+			<total-distance value="1100.0"/>
+			<total-cost value="5500"/>
+			<total-reward value="179709"/>
+			<total-profit value="174209"/>
+		</stat>
+		<stat rank="3" agent="deliberative-main">
+			<total-tasks value="4"/>
+			<total-distance value="1230.0"/>
+			<total-cost value="6150"/>
+			<total-reward value="171653"/>
+			<total-profit value="165503"/>
+		</stat>
+	</statistics>
+</history>
