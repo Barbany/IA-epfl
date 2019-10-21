@@ -32,12 +32,12 @@ public class Set<T> {
 		int i_b = findSet(b);
 		if(i_a < i_b) {
 			map_fromInt.get(i_a).add(b);
-			map_fromInt.remove(i_b);
+			map_fromInt.remove(i_b, b);
 			
 			map_toInt.replace(b, i_a);
 		} else {
 			map_fromInt.get(i_b).add(a);
-			map_fromInt.remove(i_a);
+			map_fromInt.remove(i_a, a);
 			
 			map_toInt.replace(a, i_b);
 		}

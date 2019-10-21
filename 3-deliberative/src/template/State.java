@@ -61,10 +61,6 @@ public class State implements Comparable<State> {
 		Set<City> s = new Set<City>();
 		Task currentTask;
 		
-		System.out.println("*******************START");
-		System.out.println(pickupMapping);
-		System.out.println(deliveryMapping);
-		
 		// Get cities involved in some open or future task
 		for(List<Task> tasks : pickupMapping.values()) {
 			it = tasks.iterator();
@@ -102,7 +98,6 @@ public class State implements Comparable<State> {
 				edges.add(new Edge<City>(cities.get(i), cities.get(j), cities.get(i).distanceTo(cities.get(j))));
 			}
 		}
-		System.out.println(edges);
 		
 		// Compute actual MST
 		double cost = 0;
@@ -114,9 +109,6 @@ public class State implements Comparable<State> {
 				s.union(e.a, e.b);
 			}
 		}
-		
-		System.out.println(cost);
-		System.out.println("END*******************");
 		
 		return cost;
 	}

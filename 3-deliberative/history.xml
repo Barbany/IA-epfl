@@ -4,3 +4,54 @@
 	<agents>
 		<agent name="deliberative-main">
 			<vehicle name="A-STAR"/>
+		</agent>
+	</agents>
+	<rounds>
+		<round id="1">
+			<tasks>
+				<task id="0" pickup="Aarau" delivery="Genève" weight="3" reward="36797"/>
+				<task id="1" pickup="Zürich" delivery="Sion" weight="3" reward="40875"/>
+				<task id="2" pickup="Sion" delivery="Genève" weight="3" reward="59223"/>
+				<task id="3" pickup="Basel" delivery="St-Gallen" weight="3" reward="59223"/>
+				<task id="4" pickup="Lausanne" delivery="St-Gallen" weight="3" reward="18448"/>
+				<task id="5" pickup="Sion" delivery="Basel" weight="3" reward="46991"/>
+			</tasks>
+			<events>
+				<event id="0" time="0" vehicle="A-STAR" pickup="4"/>
+				<event id="1" time="299999998" vehicle="A-STAR" move="Sion"/>
+				<event id="2" time="1966666584" vehicle="A-STAR" pickup="5"/>
+				<event id="3" time="2266666569" vehicle="A-STAR" move="Thun"/>
+				<event id="4" time="3599999838" vehicle="A-STAR" move="Bern"/>
+				<event id="5" time="4044444261" vehicle="A-STAR" move="Basel"/>
+				<event id="6" time="5599999743" vehicle="A-STAR" deliver="5"/>
+				<event id="7" time="5899999726" vehicle="A-STAR" pickup="3"/>
+				<event id="8" time="6199999712" vehicle="A-STAR" move="Zürich"/>
+				<event id="9" time="7533332975" vehicle="A-STAR" pickup="1"/>
+				<event id="10" time="7833332956" vehicle="A-STAR" move="St-Gallen"/>
+				<event id="11" time="9166666216" vehicle="A-STAR" deliver="4"/>
+				<event id="12" time="9466666202" vehicle="A-STAR" deliver="3"/>
+				<event id="13" time="9766666191" vehicle="A-STAR" move="Zürich"/>
+				<event id="14" time="11099999458" vehicle="A-STAR" move="Aarau"/>
+				<event id="15" time="11766666087" vehicle="A-STAR" pickup="0"/>
+				<event id="16" time="12066666071" vehicle="A-STAR" move="Bern"/>
+				<event id="17" time="13288888228" vehicle="A-STAR" move="Thun"/>
+				<event id="18" time="13733332650" vehicle="A-STAR" move="Sion"/>
+				<event id="19" time="15066665909" vehicle="A-STAR" deliver="1"/>
+				<event id="20" time="15366665892" vehicle="A-STAR" pickup="2"/>
+				<event id="21" time="15666665875" vehicle="A-STAR" move="Lausanne"/>
+				<event id="22" time="17333332456" vehicle="A-STAR" move="Genève"/>
+				<event id="23" time="18333332411" vehicle="A-STAR" deliver="0"/>
+				<event id="24" time="18633332397" vehicle="A-STAR" deliver="2"/>
+			</events>
+		</round>
+	</rounds>
+	<statistics>
+		<stat rank="1" agent="deliberative-main">
+			<total-tasks value="6"/>
+			<total-distance value="1380.0"/>
+			<total-cost value="6900"/>
+			<total-reward value="261557"/>
+			<total-profit value="254657"/>
+		</stat>
+	</statistics>
+</history>
