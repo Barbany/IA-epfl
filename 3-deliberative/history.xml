@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<history configuration="config/deliberative.xml">
+	<agents>
+		<agent name="deliberative-main">
+			<vehicle name="A-STAR"/>
