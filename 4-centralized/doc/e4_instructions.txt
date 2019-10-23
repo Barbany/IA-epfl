@@ -1,0 +1,13 @@
+<pre><div class="text_to_html">1.  Download the skeleton files for the reactive exercise
+2.  Import the project in Eclipse (or another IDE, for example Netbeans).
+3.  Reference the library logist and the other libraries that you downloaded from the moodle page for this exercise
+4.  Link the javadoc for the logist library
+5.  Read carefully the documentation for logist - there you can find instructions how to execute the platform
+6.  Write your agent
+7.  The name of your agent (in agents.xml) that represents your final solution should be centralized-main
+8.  Make sure that you fulfill the requirements for the solution given in the exercise description
+9.  Perform some simulations and analyze the performance of your centralized agent according to the instructions given in the latex template for the report
+10.	Create a folder named &quot;doc&quot; in the project
+11. Write documentation using the latex template and place it into a doc folder that you created. The pdf should be named lastname1-lastname2-ex4.pdf. The report should not be longer than 3 pages.
+12.	Zip the folder lastname1-lastname2-ex4 (without the libraries) and submit it on moodle
+</div></pre>
