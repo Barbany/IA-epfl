@@ -157,18 +157,15 @@ public class SLS {
 		newSolution.nextTask.put(t1, t2);
 		newSolution.nextTaskVehicle.put(v2, t1);
 		
-		// TODO: UPDATE TIME; UPDATE TASKSET OF EACH VEHICLE; 
+		newSolution.updateTime(v1);
+		newSolution.updateTime(v2);
 		
-    	
-    	// Select plan of first vehicle
-    	
-    	// how to associate tasks list and vehicles; 
-    	// 
-    	
-    	
-    	
-    	return A; 
+		newSolution.taskVehicle.put(t1, v2);
+		
+    	return newSolution; 
     }
+	
+	
 	
 	
 	private double costVehicle(Plan plan, Vehicle vehicle) {

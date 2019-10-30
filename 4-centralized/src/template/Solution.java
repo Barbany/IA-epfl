@@ -52,6 +52,31 @@ public class Solution implements Cloneable{
 		
 	}
 	
+	public void updateTime(Vehicle v1) {
+		// Update time and vehicleTasks
+		TaskSet vehicleTasks = TaskSet.noneOf(this.vehicleTaskSet.get(v1));
+		
+		int time = 1; 
+		Task t; 
+		t = this.nextTaskVehicle.get(v1);
+		if (t!= null) {
+			vehicleTasks.add(t);
+			this.time.put(t, time);
+			time += 1; 
+			while(this.nextTask.get(t) != null) {
+				t = this.nextTask.get(t); 
+				
+				vehicleTasks.add(t);
+				this.time.put(t, time);
+				time += 1;
+			}
+			
+		}
+		this.vehicleTaskSet.put(v1, vehicleTasks); 
+		
+		
+	}
+	
 	
 	
 	
