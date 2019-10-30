@@ -59,20 +59,6 @@ public class SLS {
 
 	}
 
-	/*
-	 * private boolean constraints() { for (Task task : tasks) { // Constraint 1
-	 * if(task.equals(nextTask.get(task))) { return false; } // Constraint 3
-	 * if(time.get(nextTask.get(task)) != time.get(task) + 1) { return false; } //
-	 * Constraint 5
-	 * if(!taskVehicle.get(task).equals(taskVehicle.get(nextTask.get(task)))) {
-	 * return false; } // TODO: Constraint 6 if(!nextTask.containsValue(task)) {
-	 * return false; } } for (Vehicle v: vehicles) { // Constraint 2
-	 * if(time.get(nextTaskVehicle.get(v)) != 1) { return false; } // Constraint 4
-	 * if(!v.equals(taskVehicle.get(nextTaskVehicle.get(v)))) { return false; } }
-	 * 
-	 * return true; }
-	 */
-
 	private Solution SelectInitialSolution() {
 		long time_start = System.currentTimeMillis();
 
@@ -203,6 +189,9 @@ public class SLS {
 		newSolution.updateTime(v2);
 
 		newSolution.taskVehicle.put(t1, v2);
+		
+		newSolution.updatePlan(v1);
+		newSolution.updatePlan(v2);
 
 		return newSolution;
 	}
@@ -247,6 +236,8 @@ public class SLS {
 		}
 
 		A1.updateTime(v_i);
+		A1.updatePlan(v_i);
+		
 		return A1;
 	}
 }

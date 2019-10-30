@@ -9,6 +9,7 @@ import logist.plan.Plan;
 import logist.simulation.Vehicle;
 import logist.task.Task;
 import logist.task.TaskSet;
+import logist.topology.Topology.City;
 
 public class Solution implements Cloneable{
 	public List<Plan> plans; 
@@ -73,6 +74,33 @@ public class Solution implements Cloneable{
 			
 		}
 		this.vehicleTaskSet.put(v1, vehicleTasks);		
+	}
+	
+	public void updatePlan(Vehicle v) {
+		Task task = nextTaskVehicle.get(v);
+		Plan plan = new Plan(v.getCurrentCity());
+		
+		while (task != null) {
+
+			// move: current city => pickup location
+			for (City city : v.getCurrentCity().pathTo(task.pickupCity)) {
+				plan.appendMove(city);
+			}
+
+			plan.appendPickup(task);
+
+			// move: pickup location => delivery location
+			for (City city : task.path()) {
+				plan.appendMove(city);
+			}
+
+			plan.appendDelivery(task);
+
+			// Update previous task
+			task = nextTask.get(task);
+		}
+		
+		plans.set(v.id(), plan);
 	}
 	
 	public double totalCost(List<Vehicle> vehicles) {
