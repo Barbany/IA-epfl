@@ -149,9 +149,16 @@ public class SLS {
 	
 	
 	private Solution ChangingVehicles(Solution A, Vehicle v1, Vehicle v2) {
-		Solution oldSolution = A; //create copy method
-    	Plan p1; 
-    	Iterator<Action> it_plan; 
+		Solution newSolution = A.clone(); 
+		Task t1 = A.nextTask.get(v1);
+		Task t2 = A.nextTask.get(v2);
+		
+		newSolution.nextTaskVehicle.put(v1, A.nextTask.get(t1));
+		newSolution.nextTask.put(t1, t2);
+		newSolution.nextTaskVehicle.put(v2, t1);
+		
+		// TODO: UPDATE TIME; UPDATE TASKSET OF EACH VEHICLE; 
+		
     	
     	// Select plan of first vehicle
     	
