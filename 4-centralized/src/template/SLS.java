@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import logist.plan.Action;
 import logist.plan.Plan;
@@ -15,10 +16,12 @@ import logist.topology.Topology.City;
 public class SLS {
 	List<Vehicle> vehicles;
 	TaskSet tasks;
+	Random rn;
 	
 	public SLS(List<Vehicle> vehicles, TaskSet tasks) {
 		this.vehicles = vehicles;
 		this.tasks = tasks;
+		this.rn = new Random();
 	}
 	
 	public List<Plan> build(){
@@ -27,7 +30,7 @@ public class SLS {
     	
     	boolean end_condition = false;
     	while(!end_condition) {
-    		localChoice(chooseNeighbors());
+    		localChoice(chooseNeighbors(A));
     	}
     	return A.plans;
     }
@@ -145,8 +148,41 @@ public class SLS {
         return plan;
     }
 
-	
-	
+	private List<Solution> chooseNeighbors(Solution A_old) {
+		List<Solution> N = new ArrayList<Solution>();
+		
+		// Choose random vehicles from the ones that have a task
+		List<Vehicle> usedVehicles = new ArrayList<Vehicle>();
+		for(Vehicle v: vehicles) {
+			if(A_old.nextTaskVehicle.get(v) != null) {
+				usedVehicles.add(v);
+			}
+		}
+		Vehicle v_i = usedVehicles.get(rn.nextInt(usedVehicles.size()));
+		
+		// Applying the changing vehicle operator
+		for(Vehicle v_j: vehicles) {
+			if(!v_j.equals(v_i)) {
+				Task t = A_old.nextTaskVehicle.get(v_j);
+				if(t.weight <= v_j.capacity()) {
+					Solution A = ChangingVehicles(A_old, v_i, v_j);
+					N.add(A);
+				}
+			}
+		}
+		
+		// Applying changing task order operator
+		int length = A_old.vehicleTaskSet.get(v_i).size();
+		if(length >= 2) {
+			for(int tIdx1 = 1; tIdx1 < length; tIdx1++) {
+				for(int tIdx2 = tIdx1 + 1; tIdx2 <= length; tIdx2++) {
+					Solution A = changingTaskOrder(A_old, v_i, tIdx1, tIdx2);
+					N.add(A);
+				}
+			}
+		}
+		return N;
+	}
 	
 	private Solution ChangingVehicles(Solution A, Vehicle v1, Vehicle v2) {
 		Solution oldSolution = A; //create copy method
@@ -163,6 +199,43 @@ public class SLS {
     	return A; 
     }
 	
+	private Solution changingTaskOrder(Solution A, Vehicle v_i, int tIdx1, int tIdx2) {
+		Solution A1 = A.clone();
+		
+		Task tPre1, tPre2;
+		Task t1 = A1.nextTask.get(A1.nextTaskVehicle.get(v_i));
+		int count = 1;
+		while(count < tIdx1) {
+			tPre1 = t1;
+			t1 = A1.nextTask.get(t1);
+			count++;
+		}
+		Task tPost1 = A1.nextTask.get(t1);
+		
+		Task t2 = A1.nextTask.get(t1);
+		while(count < tIdx2) {
+			tPre2 = t2;
+			t2 = A1.nextTask.get(t2);
+			count++;
+		}
+		Task tPost2 = A1.nextTask.get(t2);
+		
+		// Exchanging two tasks
+		if(tPost1.equals(t2)) {
+			// The task t2 is delivered immediately after t1
+			A1.nextTask.replace(tPre1, t2);
+			A1.nextTask.replace(t2, t1);
+			A1.nextTask.replace(t1, tPost1);
+		} else {
+			A1.nextTask.replace(tPre1, t2);
+			A1.nextTask.replace(tPre2, t1);
+			A1.nextTask.replace(t2, tPost1);
+			A1.nextTask.replace(t1, tPost2);
+		}
+		
+		A1.updateTime(v_i);
+		return A1;
+	}
 	
 	private double costVehicle(Plan plan, Vehicle vehicle) {
     	// cost for a single vehicle's plan
