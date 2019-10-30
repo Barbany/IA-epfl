@@ -33,7 +33,7 @@
 				<set home="Newcastle" />
 				<set speed="90" />
 				<set capacity="30" />
-				<set cost-per-km="5" />
+				<set cost-per-km="50" />
 			</vehicle>
 			
 			<!-- the second vehicle (red) -->
@@ -42,7 +42,7 @@
 				<set home="Cardiff" />
 				<set speed="90" />
 				<set capacity="30" />
-				<set cost-per-km="5" />
+				<set cost-per-km="25" />
 			</vehicle>
 			
 			<!-- the third vehicle (green) -->
@@ -60,7 +60,7 @@
 				<set home="Norwich" />
 				<set speed="90" />
 				<set capacity="30" />
-				<set cost-per-km="5" />
+				<set cost-per-km="1" />
 			</vehicle>
 			
 		</company>
