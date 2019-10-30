@@ -13,26 +13,101 @@ import logist.topology.Topology.City;
 
 public class Solution implements Cloneable{
 	public List<Plan> plans; 
-	public HashMap<Task, Integer> time;
-	public HashMap<Task, Vehicle> taskVehicle;
-	public HashMap<Task, Task> nextTask;
-	public HashMap<Vehicle, Task> nextTaskVehicle;
-	public HashMap<Vehicle, TaskSet> vehicleTaskSet;
+	List<Vehicle> vehicles;
+	public HashMap<Action, Integer> time;
+	public HashMap<Action, Vehicle> actionVehicle;
+	public HashMap<Action, Action> nextAction;
+	public HashMap<Vehicle, Action> nextActionVehicle;
 	
-	
-	public Solution() {
+	public Solution(List<Vehicle> vehicles) {
 		this.plans = new ArrayList<Plan>();
-		this.time = new HashMap<Task, Integer>();
-		this.taskVehicle = new HashMap<Task, Vehicle>();
-		this.nextTask = new HashMap<Task, Task>();
-		this.nextTaskVehicle = new HashMap<Vehicle, Task>();
-		this.vehicleTaskSet = new HashMap<Vehicle, TaskSet>();
+		this.vehicles = vehicles;
+		this.time = new HashMap<Action, Integer>();
+		this.actionVehicle = new HashMap<Action, Vehicle>();
+		this.nextAction = new HashMap<Action, Action>();
+		this.nextActionVehicle = new HashMap<Vehicle, Action>();
+	}
+	
+	/**
+	 * Initiate all attributes of the solution by putting all the tasks in the largest vehicle
+	 */
+	public void selectInitialSolution(TaskSet tasks) {
+		int indexBiggestVehicle = -1;
+		int maxCapacity = 0;
+
+		for (int i = 0; i < vehicles.size(); i++) {
+			if (vehicles.get(i).capacity() > maxCapacity) {
+				indexBiggestVehicle = i;
+				maxCapacity = vehicles.get(i).capacity();
+			}
+		}
+
+		// Assign all tasks to biggest vehicles
+		Plan planBiggestVehicle = naivePlan(vehicles.get(indexBiggestVehicle), tasks);
+
+		// Initialize plan and nextTask for vehicles
+		for (int i = 0; i < vehicles.size(); i++) {
+			if (i == indexBiggestVehicle) {
+				plans.add(planBiggestVehicle);
+			} else {
+				plans.add(Plan.EMPTY);
+				nextActionVehicle.put(vehicles.get(i), null);
+			}
+		}
+	}
+
+	/**
+	 * Put all the tasks in the given vehicle and generate its plan
+	 * @param vehicle
+	 * @param tasks
+	 * @return
+	 */
+	private Plan naivePlan(Vehicle vehicle, TaskSet tasks) {
+		City current = vehicle.getCurrentCity();
+		Plan plan = new Plan(current);
+
+		Action lastAction = null;
+		for (Task task : tasks) {
+			if (lastAction != null) {
+				// Next pickups and deliveries
+				nextAction.put(lastAction, new Action.Pickup(task));
+				lastAction = new Action.Delivery(task);
+				nextAction.put(new Action.Pickup(task), lastAction);
+			} else {
+				// First Action is pickup of first task
+				lastAction = new Action.Delivery(task);
+				nextActionVehicle.put(vehicle, new Action.Pickup(task));
+				nextAction.put(new Action.Pickup(task), lastAction);
+			}
+
+			// move: current city => pickup location
+			for (City city : current.pathTo(task.pickupCity)) {
+				plan.appendMove(city);
+			}
+
+			plan.appendPickup(task);
+
+			// move: pickup location => delivery location
+			for (City city : task.path()) {
+				plan.appendMove(city);
+			}
+
+			plan.appendDelivery(task);
+
+			// set current city
+			current = task.deliveryCity;
+		}
+
+		// Last Action is followed by null
+		nextAction.put(lastAction, null);
+
+		return plan;
 	}
 	
 	public Solution clone() {
 		Iterator<Plan> it_plans; 
 		
-		Solution A = new Solution(); 
+		Solution A = new Solution(vehicles); 
 		
 		// copy plans
 		A.plans = new ArrayList<Plan>(); 
@@ -42,67 +117,44 @@ public class Solution implements Cloneable{
 		}
 		
 		// copy time, taksVehicle, nextTask, nextTaskVehicle, vehicleTaskSet
-		A.time = new HashMap<Task, Integer>(this.time);
-		A.taskVehicle = new HashMap<Task, Vehicle>(this.taskVehicle); 
-		A.nextTask = new HashMap<Task, Task>(this.nextTask);
-		A.nextTaskVehicle = new HashMap<Vehicle, Task>(this.nextTaskVehicle); 
-		A.vehicleTaskSet = new HashMap<Vehicle, TaskSet>(this.vehicleTaskSet);
+		A.time = new HashMap<Action, Integer>(this.time);
+		A.actionVehicle = new HashMap<Action, Vehicle>(this.actionVehicle); 
+		A.nextAction = new HashMap<Action, Action>(this.nextAction);
+		A.nextActionVehicle = new HashMap<Vehicle, Action>(this.nextActionVehicle);
 		
-		return A;
-		
+		return A;	
 	}
 	
-	public void updateTime(Vehicle v1) {
-		// Update time and vehicleTasks
-		TaskSet vehicleTasks = TaskSet.noneOf(this.vehicleTaskSet.get(v1));
-		
-		int time = 1;
-		Task t;
-		t = this.nextTaskVehicle.get(v1);
-		if (t!= null) {
-			vehicleTasks.add(t);
-			this.time.put(t, time);
-			time += 1;
-			while(this.nextTask.get(t) != null) {
-				t = this.nextTask.get(t); 
-				
-				vehicleTasks.add(t);
-				this.time.put(t, time);
-				time += 1;
-			}
-		}
-		this.vehicleTaskSet.put(v1, vehicleTasks);		
-	}
-	
+	/**
+	 * Update plan for vehicle v
+	 * @param v
+	 */
 	public void updatePlan(Vehicle v) {
-		Task task = nextTaskVehicle.get(v);
+		Action a = nextActionVehicle.get(v);
 		Plan plan = new Plan(v.getCurrentCity());
 		
 		City currentCity = v.getCurrentCity();
 		
-		while (task != null) {
+		while(a != null) {
 
-			// move: current city => pickup location
-			for (City city : currentCity.pathTo(task.pickupCity)) {
-				plan.appendMove(city);
-			}
-
-			plan.appendPickup(task);
-
-			// move: pickup location => delivery location
-			for (City city : task.path()) {
+			// move: current city => next location
+			for (City city : currentCity.pathTo(a.city)) {
 				plan.appendMove(city);
 				currentCity = city;
 			}
 
-			plan.appendDelivery(task);
+			// Perform action
+			if(a.pickup) {
+				plan.appendPickup(a.task);
+			} else {
+				plan.appendDelivery(a.task);
+			}
 
-			// Update previous task
-			task = nextTask.get(task);
+			// Check next action
+			a = nextAction.get(a);
 		}
-		if (v.getCurrentCity().name == "London") {
-			System.out.println("here");
-		}
+		
+		// Set the previously computed plan for current vehicle
 		plans.set(v.id(), plan);
 	}
 	
