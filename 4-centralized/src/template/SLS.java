@@ -23,13 +23,19 @@ public class SLS {
 	}
 
 	public List<Plan> build() {
+		long time_start = System.currentTimeMillis();
 		// Select Initial Solution
 		Solution A = SelectInitialSolution();
 
 		//boolean end_condition = false;
-		for (int i=0; i<= 1000; i++) {
+		for (int i=0; i<= 10000; i++) {
 			A = localChoice(chooseNeighbors(A));
 		}
+		
+		long time_end = System.currentTimeMillis();
+		long duration = time_end - time_start;
+		System.out.println("The plan was generated in " + duration + " milliseconds.");
+		
 		return A.plans;
 	}
 
@@ -60,8 +66,6 @@ public class SLS {
 	}
 
 	private Solution SelectInitialSolution() {
-		long time_start = System.currentTimeMillis();
-
 		Solution A = new Solution();
 
 		int indexBiggestVehicle = -1;
@@ -87,11 +91,6 @@ public class SLS {
 				A.vehicleTaskSet.put(vehicles.get(i), TaskSet.noneOf(tasks));
 			}
 		}
-
-		long time_end = System.currentTimeMillis();
-		long duration = time_end - time_start;
-		System.out.println("The plan was generated in " + duration + " milliseconds.");
-
 		return A;
 	}
 
@@ -159,7 +158,6 @@ public class SLS {
 					Solution A = ChangingVehicles(A_old, v_i, v_j);
 					N.add(A);
 				}
-
 			}
 		}
 
@@ -176,14 +174,14 @@ public class SLS {
 		return N;
 	}
 
-	private Solution ChangingVehicles(Solution A, Vehicle v1, Vehicle v2) {
+	private Solution ChangingVehicles(Solution A, Vehicle v1, Vehicle v2) {		
 		Solution newSolution = A.clone();
 		Task t1 = A.nextTaskVehicle.get(v1);
 		Task t2 = A.nextTaskVehicle.get(v2);
 
-		newSolution.nextTaskVehicle.put(v1, A.nextTask.get(t1));
-		newSolution.nextTask.put(t1, t2);
-		newSolution.nextTaskVehicle.put(v2, t1);
+		newSolution.nextTaskVehicle.replace(v1, A.nextTask.get(t1));
+		newSolution.nextTask.replace(t1, t2);
+		newSolution.nextTaskVehicle.replace(v2, t1);
 
 		newSolution.updateTime(v1);
 		newSolution.updateTime(v2);
@@ -198,10 +196,6 @@ public class SLS {
 
 	private Solution changingTaskOrder(Solution A, Vehicle v_i, int tIdx1, int tIdx2) {
 		Solution A1 = A.clone();
-		
-		if(tIdx1 == 29) {
-			System.out.println("hi");
-		}
 
 		Task tPre1 = A1.nextTaskVehicle.get(v_i);
 		Task t1 = A1.nextTask.get(tPre1);
@@ -215,6 +209,7 @@ public class SLS {
 
 		Task tPre2 = t1;
 		Task t2 = A1.nextTask.get(t1);
+		count++;
 		while (count < tIdx2) {
 			tPre2 = t2;
 			t2 = A1.nextTask.get(t2);
@@ -227,7 +222,7 @@ public class SLS {
 			// The task t2 is delivered immediately after t1
 			A1.nextTask.replace(tPre1, t2);
 			A1.nextTask.replace(t2, t1);
-			A1.nextTask.replace(t1, tPost1);
+			A1.nextTask.replace(t1, tPost2);
 		} else {
 			A1.nextTask.replace(tPre1, t2);
 			A1.nextTask.replace(tPre2, t1);

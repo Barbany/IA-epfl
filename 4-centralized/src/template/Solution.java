@@ -48,7 +48,6 @@ public class Solution implements Cloneable{
 		A.nextTaskVehicle = new HashMap<Vehicle, Task>(this.nextTaskVehicle); 
 		A.vehicleTaskSet = new HashMap<Vehicle, TaskSet>(this.vehicleTaskSet);
 		
-		
 		return A;
 		
 	}
@@ -57,13 +56,13 @@ public class Solution implements Cloneable{
 		// Update time and vehicleTasks
 		TaskSet vehicleTasks = TaskSet.noneOf(this.vehicleTaskSet.get(v1));
 		
-		int time = 1; 
-		Task t; 
+		int time = 1;
+		Task t;
 		t = this.nextTaskVehicle.get(v1);
 		if (t!= null) {
 			vehicleTasks.add(t);
 			this.time.put(t, time);
-			time += 1; 
+			time += 1;
 			while(this.nextTask.get(t) != null) {
 				t = this.nextTask.get(t); 
 				
@@ -71,7 +70,6 @@ public class Solution implements Cloneable{
 				this.time.put(t, time);
 				time += 1;
 			}
-			
 		}
 		this.vehicleTaskSet.put(v1, vehicleTasks);		
 	}
@@ -80,10 +78,12 @@ public class Solution implements Cloneable{
 		Task task = nextTaskVehicle.get(v);
 		Plan plan = new Plan(v.getCurrentCity());
 		
+		City currentCity = v.getCurrentCity();
+		
 		while (task != null) {
 
 			// move: current city => pickup location
-			for (City city : v.getCurrentCity().pathTo(task.pickupCity)) {
+			for (City city : currentCity.pathTo(task.pickupCity)) {
 				plan.appendMove(city);
 			}
 
@@ -92,6 +92,7 @@ public class Solution implements Cloneable{
 			// move: pickup location => delivery location
 			for (City city : task.path()) {
 				plan.appendMove(city);
+				currentCity = city;
 			}
 
 			plan.appendDelivery(task);
@@ -108,7 +109,7 @@ public class Solution implements Cloneable{
     	double cost = 0;
     	
     	Iterator<Vehicle> it_vehicle = vehicles.iterator(); 
-    	Iterator<Plan>    it_plan = this.plans.iterator();
+    	Iterator<Plan> it_plan = this.plans.iterator();
     	while(it_vehicle.hasNext() && it_plan.hasNext()) {
     		cost += it_plan.next().totalDistance() * it_vehicle.next().costPerKm();
     	}
