@@ -2,6 +2,7 @@ package template;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import logist.plan.Plan;
@@ -12,6 +13,7 @@ import logist.topology.Topology.City;
 
 public class SLS {
 	List<Vehicle> vehicles;
+	List<Plan> plans; 
 	TaskSet tasks;
 	HashMap<Task, Integer> time;
 	HashMap<Task, Vehicle> taskVehicle;
@@ -24,18 +26,17 @@ public class SLS {
 		// Initialize time and vehicle arrays
     	this.time = new HashMap<Task, Integer>();
     	this.taskVehicle = new HashMap<Task, Vehicle>();
+    	this.plans = SelectInitialSolution();
 	}
 	
 	public List<Plan> build(){
     	// Select Initial Solution
-    	List<Plan> a = SelectInitialSolution();
-    	
     	
     	boolean end_condition = false;
     	while(!end_condition) {
-    		a = localChoice(chooseNeighbors(a));
+    		localChoice(chooseNeighbors());
     	}
-    	return a;
+    	return plans;
     }
 	
 	/*private boolean constraints() {
@@ -104,6 +105,42 @@ public class SLS {
         
         return plans;
 	}
+	
+	private List<Plan> ChangingVehicles(List<Plan> solution, List<Vehicle> vehicles, Vehicle v1, Vehicle v2) {
+    	Task t1; 
+    	Plan p1; 
+    	
+    	
+    	List<Plan> oldSolution = solution;
+    	// 
+    	p1 = oldSolution.get(vehicles.indexOf(v1));
+    	// how to associate tasks list and vehicles; 
+    	// 
+    	
+    	
+    	
+    	return solution; 
+    }
+	
+	
+	private double costVehicle(Plan plan, Vehicle vehicle) {
+    	// cost for a single vehicle's plan
+    	double cost = plan.totalDistance() * vehicle.costPerKm();
+    	return cost; 
+    }
+    
+    private double totalCost() {
+    	// cost for the agent
+    	double cost = 0; 
+    	
+    	Iterator<Vehicle> it_vehicle = vehicles.iterator(); 
+    	Iterator<Plan>    it_plan = plans.iterator();
+    	while(it_vehicle.hasNext() && it_plan.hasNext()) {
+    		cost += costVehicle(it_plan.next(), it_vehicle.next());
+    	}
+    	
+    	return cost; 
+    }
 	
 	private Plan naivePlan(Vehicle vehicle) {
         City current = vehicle.getCurrentCity();
