@@ -186,8 +186,8 @@ public class SLS {
 	
 	private Solution ChangingVehicles(Solution A, Vehicle v1, Vehicle v2) {
 		Solution newSolution = A.clone(); 
-		Task t1 = A.nextTask.get(v1);
-		Task t2 = A.nextTask.get(v2);
+		Task t1 = A.nextTaskVehicle.get(v1);
+		Task t2 = A.nextTaskVehicle.get(v2);
 		
 		newSolution.nextTaskVehicle.put(v1, A.nextTask.get(t1));
 		newSolution.nextTask.put(t1, t2);
@@ -204,8 +204,8 @@ public class SLS {
 	private Solution changingTaskOrder(Solution A, Vehicle v_i, int tIdx1, int tIdx2) {
 		Solution A1 = A.clone();
 		
-		Task tPre1, tPre2;
-		Task t1 = A1.nextTask.get(A1.nextTaskVehicle.get(v_i));
+		Task tPre1 = A1.nextTaskVehicle.get(v_i);
+		Task t1 = A1.nextTask.get(tPre1);
 		int count = 1;
 		while(count < tIdx1) {
 			tPre1 = t1;
@@ -214,6 +214,7 @@ public class SLS {
 		}
 		Task tPost1 = A1.nextTask.get(t1);
 		
+		Task tPre2 = t1;
 		Task t2 = A1.nextTask.get(t1);
 		while(count < tIdx2) {
 			tPre2 = t2;
@@ -237,27 +238,5 @@ public class SLS {
 		
 		A1.updateTime(v_i);
 		return A1;
-	}
-	
-	
-	
-	private double costVehicle(Plan plan, Vehicle vehicle) {
-    	// cost for a single vehicle's plan
-    	double cost = plan.totalDistance() * vehicle.costPerKm();
-    	return cost; 
-    }
-    
-    private double totalCost(Solution A) {
-    	// cost for the agent
-    	double cost = 0; 
-    	
-    	Iterator<Vehicle> it_vehicle = vehicles.iterator(); 
-    	Iterator<Plan>    it_plan = A.plans.iterator();
-    	while(it_vehicle.hasNext() && it_plan.hasNext()) {
-    		cost += costVehicle(it_plan.next(), it_vehicle.next());
-    	}
-    	
-    	return cost; 
-    }
-		
+	}		
 }

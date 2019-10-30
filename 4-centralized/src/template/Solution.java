@@ -41,11 +41,11 @@ public class Solution implements Cloneable{
 		}
 		
 		// copy time, taksVehicle, nextTask, nextTaskVehicle, vehicleTaskSet
-		A.time = (HashMap<Task, Integer>) this.time.clone();
-		A.taskVehicle = (HashMap<Task, Vehicle>) this.taskVehicle.clone(); 
-		A.nextTask = (HashMap<Task, Task>) this.nextTask.clone();
-		A.nextTaskVehicle = (HashMap<Vehicle, Task>) this.nextTaskVehicle.clone(); 
-		A.vehicleTaskSet = (HashMap<Vehicle, TaskSet>) this.vehicleTaskSet.clone();
+		A.time = new HashMap<Task, Integer>(this.time);
+		A.taskVehicle = new HashMap<Task, Vehicle>(this.taskVehicle); 
+		A.nextTask = new HashMap<Task, Task>(this.nextTask);
+		A.nextTaskVehicle = new HashMap<Vehicle, Task>(this.nextTaskVehicle); 
+		A.vehicleTaskSet = new HashMap<Vehicle, TaskSet>(this.vehicleTaskSet);
 		
 		
 		return A;
@@ -72,15 +72,19 @@ public class Solution implements Cloneable{
 			}
 			
 		}
-		this.vehicleTaskSet.put(v1, vehicleTasks); 
-		
-		
+		this.vehicleTaskSet.put(v1, vehicleTasks);		
 	}
 	
-	
-	
-	
-	
-	
+	public double totalCost(List<Vehicle> vehicles) {
+    	// cost for the agent
+    	double cost = 0;
+    	
+    	Iterator<Vehicle> it_vehicle = vehicles.iterator(); 
+    	Iterator<Plan>    it_plan = this.plans.iterator();
+    	while(it_vehicle.hasNext() && it_plan.hasNext()) {
+    		cost += it_plan.next().totalDistance() * it_vehicle.next().costPerKm();
+    	}
+    	return cost; 
+    }
 
 }
