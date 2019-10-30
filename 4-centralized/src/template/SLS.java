@@ -27,8 +27,9 @@ public class SLS {
 		Solution A = SelectInitialSolution();
 
 		//boolean end_condition = false;
-		for (int i=0; i<= 1000; i++) {
+		for (int i=0; i<= 10; i++) {
 			A = localChoice(chooseNeighbors(A));
+			
 		}
 		return A.plans;
 	}
@@ -199,9 +200,6 @@ public class SLS {
 	private Solution changingTaskOrder(Solution A, Vehicle v_i, int tIdx1, int tIdx2) {
 		Solution A1 = A.clone();
 		
-		if(tIdx1 == 29) {
-			System.out.println("hi");
-		}
 
 		Task tPre1 = A1.nextTaskVehicle.get(v_i);
 		Task t1 = A1.nextTask.get(tPre1);
@@ -215,6 +213,7 @@ public class SLS {
 
 		Task tPre2 = t1;
 		Task t2 = A1.nextTask.get(t1);
+		count++; 
 		while (count < tIdx2) {
 			tPre2 = t2;
 			t2 = A1.nextTask.get(t2);
@@ -227,7 +226,7 @@ public class SLS {
 			// The task t2 is delivered immediately after t1
 			A1.nextTask.replace(tPre1, t2);
 			A1.nextTask.replace(t2, t1);
-			A1.nextTask.replace(t1, tPost1);
+			A1.nextTask.replace(t1, tPost2);
 		} else {
 			A1.nextTask.replace(tPre1, t2);
 			A1.nextTask.replace(tPre2, t1);

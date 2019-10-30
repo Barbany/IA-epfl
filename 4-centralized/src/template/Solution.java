@@ -99,7 +99,9 @@ public class Solution implements Cloneable{
 			// Update previous task
 			task = nextTask.get(task);
 		}
-		
+		if (v.getCurrentCity().name == "London") {
+			System.out.println("here");
+		}
 		plans.set(v.id(), plan);
 	}
 	
