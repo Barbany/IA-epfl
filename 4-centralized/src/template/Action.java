@@ -16,6 +16,10 @@ public abstract class Action {
 			this.pickup = true;
 			this.capacity = -task.weight;
 		}
+		
+		public String toString() {
+			return "Pickup in " + this.city + ": Task " + task.id;
+		}
 	}
 	
 	public static final class Delivery extends Action{
@@ -24,6 +28,10 @@ public abstract class Action {
 			this.city = task.deliveryCity;
 			this.pickup = false;
 			this.capacity = task.weight; 
+		}
+		
+		public String toString() {
+			return "Delivery to " + this.city + ": Task " + task.id;
 		}
 	}
 }

@@ -14,7 +14,6 @@ import logist.topology.Topology.City;
 public class Solution implements Cloneable{
 	public List<Plan> plans; 
 	List<Vehicle> vehicles;
-	public HashMap<Action, Integer> time;
 	public HashMap<Action, Vehicle> actionVehicle;
 	public HashMap<Action, Action> nextAction;
 	public HashMap<Vehicle, Action> nextActionVehicle;
@@ -22,7 +21,6 @@ public class Solution implements Cloneable{
 	public Solution(List<Vehicle> vehicles) {
 		this.plans = new ArrayList<Plan>();
 		this.vehicles = vehicles;
-		this.time = new HashMap<Action, Integer>();
 		this.actionVehicle = new HashMap<Action, Vehicle>();
 		this.nextAction = new HashMap<Action, Action>();
 		this.nextActionVehicle = new HashMap<Vehicle, Action>();
@@ -65,19 +63,22 @@ public class Solution implements Cloneable{
 	private Plan naivePlan(Vehicle vehicle, TaskSet tasks) {
 		City current = vehicle.getCurrentCity();
 		Plan plan = new Plan(current);
+		Action aux;
 
 		Action lastAction = null;
 		for (Task task : tasks) {
 			if (lastAction != null) {
 				// Next pickups and deliveries
-				nextAction.put(lastAction, new Action.Pickup(task));
+				aux = new Action.Pickup(task);
+				nextAction.put(lastAction, aux);
 				lastAction = new Action.Delivery(task);
-				nextAction.put(new Action.Pickup(task), lastAction);
+				nextAction.put(aux, lastAction);
 			} else {
 				// First Action is pickup of first task
 				lastAction = new Action.Delivery(task);
-				nextActionVehicle.put(vehicle, new Action.Pickup(task));
-				nextAction.put(new Action.Pickup(task), lastAction);
+				aux = new Action.Pickup(task);
+				nextActionVehicle.put(vehicle, aux);
+				nextAction.put(aux, lastAction);
 			}
 
 			// move: current city => pickup location
@@ -117,7 +118,6 @@ public class Solution implements Cloneable{
 		}
 		
 		// copy time, taksVehicle, nextTask, nextTaskVehicle, vehicleTaskSet
-		A.time = new HashMap<Action, Integer>(this.time);
 		A.actionVehicle = new HashMap<Action, Vehicle>(this.actionVehicle); 
 		A.nextAction = new HashMap<Action, Action>(this.nextAction);
 		A.nextActionVehicle = new HashMap<Vehicle, Action>(this.nextActionVehicle);
@@ -169,5 +169,17 @@ public class Solution implements Cloneable{
     	}
     	return cost; 
     }
+	
+	public void printNumberOfTasks() {
+		int n = 0;
+		for (Plan p: plans) {
+			Iterator<logist.plan.Action> it = p.iterator();
+			while(it.hasNext()) {
+				if(it.next().getClass().getName().equals("logist.plan.Action$Delivery"))
+					n++;
+			}
+		}
+		System.out.println(n);
+	}
 
 }
