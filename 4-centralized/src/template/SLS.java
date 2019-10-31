@@ -43,11 +43,15 @@ public class SLS {
 		A.selectInitialSolution(tasks);
 		double bestCost = A.totalCost(vehicles);
 		Solution bestSolution = A;
+		double probability = 0.1;
+		int maxIterations = 50000;
 
 		// Until termination condition met
 		// TODO: Run for all possible runtime
-		for (int i = 0; i <= 5000; i++) {
-			A = localChoice(chooseNeighbors(A));
+		for (int i = 0; i <= maxIterations; i++) {
+			probability = 0.9 - Math.log(1/maxIterations)*0.1; 
+			A = localChoice(chooseNeighbors(A), probability);
+			
 			if (A.totalCost(vehicles) < bestCost) {
 				bestCost = A.totalCost(vehicles);
 				bestSolution = A; 
@@ -136,6 +140,7 @@ public class SLS {
 			if (pickFirst) {
 				A1.nextActionVehicle.put(v, pick);
 				A1.nextAction.put(pick, aux);
+				capacity += pick.capacity;
 				pickFirst = false;
 			} else {
 				A1 = A11.clone();
@@ -151,7 +156,6 @@ public class SLS {
 			while (aux2 != null) {
 				auxCapacity += aux2.capacity;
 				if (auxCapacity < 0) {
-					System.out.println("Break");
 					break;
 				}
 				A2 = A1.clone();
@@ -245,12 +249,11 @@ public class SLS {
 		return A1;
 	}
 
-	private Solution localChoice(List<Solution> neighbors) {
+	private Solution localChoice(List<Solution> neighbors, double p) {
 		Solution solution;
 		Solution bestSolution = neighbors.get(0);
 		double bestCost = neighbors.get(0).totalCost(vehicles);
 		double cost;
-		double p = 0.3;
 
 		Iterator<Solution> it_neighbors = neighbors.iterator();
 		while (it_neighbors.hasNext()) {
