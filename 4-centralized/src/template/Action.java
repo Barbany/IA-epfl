@@ -7,12 +7,14 @@ public abstract class Action {
 	public Task task;
 	public City city;
 	public boolean pickup;
+	public int capacity;
 	
 	public static final class Pickup extends Action{
 		public Pickup(Task task) {
 			this.task = task;
 			this.city = task.pickupCity;
 			this.pickup = true;
+			this.capacity = -task.weight;
 		}
 	}
 	
@@ -21,6 +23,7 @@ public abstract class Action {
 			this.task = task;
 			this.city = task.deliveryCity;
 			this.pickup = false;
+			this.capacity = task.weight; 
 		}
 	}
 }

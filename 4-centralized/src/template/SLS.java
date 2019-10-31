@@ -86,31 +86,76 @@ public class SLS {
 				if (a.task.weight <= v_j.capacity()) {
 					Solution A = changingVehicles(A_old, v_i, v_j);
 					N.add(A);
-					
+					// Applying changing task order operator
+					List<Solution> newN = changingOrder(A, v_j);
+					for (Solution sol : newN) {
+						N.add(sol);
+					}
+
 				}
 			}
 		}
 
-		// Applying changing task order operator
-		int length = 0;
-		Action a = A_old.nextActionVehicle.get(v_i);
-		while (a != null) {
-			a = A_old.nextAction.get(a);
-			length++;
-		}
-
-		if (length >= 2) {
-			for (int tIdx1 = 1; tIdx1 < length; tIdx1++) {
-				for (int tIdx2 = tIdx1 + 1; tIdx2 <= length; tIdx2++) {
-					// TODO: Check that it's a valid change according to constraints
-					// e.g. cannot deliver before picking up
-					Solution A = permuteTask(A_old, v_i, tIdx1, tIdx2);
-					N.add(A);
-					
-				}
-			}
-		}
 		return N;
+	}
+
+	/**
+	 * Generate neighbors with different task order
+	 * 
+	 * @param A solution
+	 * @param v vehicle in which we perform the order modification
+	 */
+	private List<Solution> changingOrder(Solution A, Vehicle v) {
+		List<Solution> solutions = new ArrayList<Solution>();
+		Solution A1 = A.clone();
+		Solution A2;
+		Action pick = A.nextActionVehicle.get(v);
+		Action drop = A.nextAction.get(pick);
+		Action aux = A.nextAction.get(drop);
+		Action aux2;
+		int capacity = v.capacity();
+
+		A1.nextActionVehicle.put(v, aux);
+		capacity += aux.capacity;
+		int nPick = 1;
+		// Compute length of the list of pickup and delivery actions
+		while (aux != null) {
+			// Update capacity
+			if (nPick == 1) {
+				A1.nextActionVehicle.put(v, pick);
+				A1.nextAction.put(pick, aux);
+
+			} else {
+				A1 = A.clone();
+				A1.nextAction.put(aux, pick);
+				A1.nextAction.put(pick, A.nextAction.get(aux));
+
+			}
+			capacity += pick.capacity;
+
+			int auxCapacity = capacity;
+			aux = A1.nextAction.get(aux);
+
+			aux2 = pick;
+			while (aux2 != null) {
+				auxCapacity += aux2.capacity;
+				if (auxCapacity < 0) {
+					break;
+				}
+				A2 = A1.clone();
+				A2.nextAction.put(aux2, drop);
+				A2.nextAction.put(drop, A1.nextAction.get(aux2));
+				A2.updatePlan(v);
+				solutions.add(A2);
+
+				aux2 = A2.nextAction.get(aux2);
+
+			}
+
+		}
+
+		return solutions;
+
 	}
 
 	/**
@@ -262,7 +307,6 @@ public class SLS {
 		}
 
 	}
-	
 
 	private Solution permuteTask(Solution A, Vehicle v_i, int actIdx, int moveToIdx) {
 		Solution A1 = A.clone();
@@ -274,33 +318,33 @@ public class SLS {
 		Action aPre1;
 		Action act1 = A.nextActionVehicle.get(v_i);
 		capacity -= act1.task.weight; // first action should always be pickup
-		
+
 		int count = 0;
 		while (count < actIdx) {
 			aPre1 = act1;
 			act1 = A.nextAction.get(aPre1);
-			if(act1.pickup) {
+			if (act1.pickup) {
 				capacity -= act1.task.weight;
-			}else {
+			} else {
 				capacity += act1.task.weight;
 			}
 			count++;
 		}
-		
+
 		// act1 is the action we were looking for
 		Task task = act1.task; // task with which we are performing the action
-		
+
 		// Look for the counter task
 		int counterAux = count + 1;
-		Action aux = A1.nextAction.get(act1); 
-		Action preAux = act1; 
-		
-		while((act1.pickup && aux.task != task) || (counterAux < moveToIdx) ) {
+		Action aux = A1.nextAction.get(act1);
+		Action preAux = act1;
+
+		while ((act1.pickup && aux.task != task) || (counterAux < moveToIdx)) {
 			preAux = aux;
 			aux = A.nextAction.get(aux);
-			if(aux.pickup) {
+			if (aux.pickup) {
 				capacity -= aux.task.weight;
-			}else {
+			} else {
 				capacity += aux.task.weight;
 			}
 			if (capacity < 1) {
@@ -308,21 +352,21 @@ public class SLS {
 			}
 			counterAux++;
 		}
-		
+
 		if (counterAux != moveToIdx) {
 			return null; // move is not feasible
 		}
-		
+
 		// if solution is valid, update relations
 		if (actIdx == 0) {
 			A1.nextActionVehicle.put(v_i, A.nextAction.get(act1));
-		}else {
-			A1.nextAction.put(aPre1, A.nextAction.get(act1));
+		} else {
+			// A1.nextAction.put(aPre1, A.nextAction.get(act1));
+			A1.nextAction.put(act1, A.nextAction.get(act1));
 		}
 		A1.nextAction.put(preAux, act1);
 		A1.nextAction.put(act1, aux);
-		
-		
+
 		return A1;
 	}
 
