@@ -170,7 +170,7 @@ public class Solution implements Cloneable{
     	return cost; 
     }
 	
-	public void printNumberOfTasks() {
+	public int printNumberOfTasks() {
 		int n = 0;
 		for (Plan p: plans) {
 			Iterator<logist.plan.Action> it = p.iterator();
@@ -180,6 +180,7 @@ public class Solution implements Cloneable{
 			}
 		}
 		System.out.println(n);
+		return n;
 	}
 
 }

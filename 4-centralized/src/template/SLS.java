@@ -41,18 +41,25 @@ public class SLS {
 		// Select Initial Solution
 		Solution A = new Solution(vehicles);
 		A.selectInitialSolution(tasks);
+		double bestCost = A.totalCost(vehicles);
+		Solution bestSolution = A;
 
 		// Until termination condition met
 		// TODO: Run for all possible runtime
-		for (int i = 0; i <= 10000; i++) {
+		for (int i = 0; i <= 5000; i++) {
 			A = localChoice(chooseNeighbors(A));
+			if (A.totalCost(vehicles) < bestCost) {
+				bestCost = A.totalCost(vehicles);
+				bestSolution = A; 
+			}
 		}
 
 		long time_end = System.currentTimeMillis();
 		long duration = time_end - time_start;
 		System.out.println("The plan was generated in " + duration + " milliseconds.");
+		System.out.println("Best plan cost: " + bestCost);
 
-		return A.plans;
+		return bestSolution.plans;
 	}
 
 	/**
@@ -84,16 +91,16 @@ public class SLS {
 				// Check if task fits in empty vehicle (in worst case append pickup and delivery in beginning)
 				if (a.task.weight <= v_j.capacity()) {
 					Solution A = changingVehicles(A_old, v_i, v_j);
-					System.out.println("Before changing order");
-					A.printNumberOfTasks();
-					N.add(A);
-					// Applying changing task order operator
-					List<Solution> newN = changingOrder(A, v_j);
-					for (Solution sol : newN) {
-						N.add(sol);
-						sol.printNumberOfTasks();
+					if(A != null) {
+						N.add(A);
+						// Applying changing task order operator
+						List<Solution> newN = changingOrder(A, v_j);
+						for (Solution sol : newN) {
+							N.add(sol);
+						}
+						
 					}
-					System.out.println("After changing order");
+					
 				}
 			}
 		}
@@ -109,6 +116,7 @@ public class SLS {
 	private List<Solution> changingOrder(Solution A, Vehicle v) {
 		List<Solution> solutions = new ArrayList<Solution>();
 		Solution A1 = A.clone();
+		Solution A11 = A.clone();
 		Solution A2;
 		Action pick = A.nextActionVehicle.get(v);
 		Action drop = A.nextAction.get(pick);
@@ -120,7 +128,7 @@ public class SLS {
 			return solutions;
 		}
 
-		A1.nextActionVehicle.put(v, aux);
+		A11.nextActionVehicle.put(v, aux);
 		boolean pickFirst = true;
 		// Compute length of the list of pickup and delivery actions
 		while (aux != null) {
@@ -130,7 +138,7 @@ public class SLS {
 				A1.nextAction.put(pick, aux);
 				pickFirst = false;
 			} else {
-				A1 = A.clone();
+				A1 = A11.clone();
 				A1.nextAction.put(aux, pick);
 				A1.nextAction.put(pick, A.nextAction.get(aux));
 				capacity += aux.capacity;
@@ -149,7 +157,11 @@ public class SLS {
 				A2 = A1.clone();
 				A2.nextAction.put(aux2, drop);
 				A2.nextAction.put(drop, A1.nextAction.get(aux2));
+				//int i = A2.printNumberOfTasks();
 				A2.updatePlan(v);
+				//if (i!= A2.printNumberOfTasks()) {
+				//	System.out.println("HERE PROBLEM!");
+				//}
 				solutions.add(A2);
 
 				aux2 = A1.nextAction.get(aux2);
@@ -173,6 +185,10 @@ public class SLS {
 		assert(pickup1.pickup);
 		Action pickup2 = A1.nextActionVehicle.get(v_j);
 		assert(pickup2.pickup);
+		
+		if(pickup1.task.weight > v_j.capacity()) {
+			return null;
+		}
 
 		// Find delivery of task first picked up by v1 [pickup1, a, ..., delivery1, ...]
 		Action a = A1.nextAction.get(pickup1);
@@ -224,6 +240,7 @@ public class SLS {
 		// TODO: Check-proof that A1 is valid according to constraints
 		A1.updatePlan(v_i);
 		A1.updatePlan(v_j);
+		
 
 		return A1;
 	}
@@ -233,7 +250,7 @@ public class SLS {
 		Solution bestSolution = neighbors.get(0);
 		double bestCost = neighbors.get(0).totalCost(vehicles);
 		double cost;
-		double p = 0.9;
+		double p = 0.3;
 
 		Iterator<Solution> it_neighbors = neighbors.iterator();
 		while (it_neighbors.hasNext()) {
