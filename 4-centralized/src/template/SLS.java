@@ -7,6 +7,7 @@ import java.util.Random;
 
 import logist.plan.Plan;
 import logist.simulation.Vehicle;
+import logist.task.Task;
 import logist.task.TaskSet;
 
 /**
@@ -21,6 +22,7 @@ public class SLS {
 
 	/**
 	 * Create SLS object. Call build to get the joint optimal plan
+	 * 
 	 * @param vehicles
 	 * @param tasks
 	 */
@@ -32,6 +34,7 @@ public class SLS {
 
 	/**
 	 * Run SLS algorithm
+	 * 
 	 * @return Optimal plan in form of list of plan objects (one for each vehicle)
 	 */
 	public List<Plan> build() {
@@ -41,20 +44,22 @@ public class SLS {
 		A.selectInitialSolution(tasks);
 
 		// Until termination condition met
-		// TODO: Check e.g. number of changes or improvement and add it to termination condition
-		for (int i=0; i<= 10000; i++) {
+		// TODO: Check e.g. number of changes or improvement and add it to termination
+		// condition
+		for (int i = 0; i <= 10000; i++) {
 			A = localChoice(chooseNeighbors(A));
 		}
-		
+
 		long time_end = System.currentTimeMillis();
 		long duration = time_end - time_start;
 		System.out.println("The plan was generated in " + duration + " milliseconds.");
-		
+
 		return A.plans;
 	}
-	
+
 	/**
 	 * Choose one vehicle u.a.r. and perform local operators on this vehicle
+	 * 
 	 * @param A_old
 	 * @return
 	 */
@@ -81,6 +86,7 @@ public class SLS {
 				if (a.task.weight <= v_j.capacity()) {
 					Solution A = changingVehicles(A_old, v_i, v_j);
 					N.add(A);
+					
 				}
 			}
 		}
@@ -88,32 +94,34 @@ public class SLS {
 		// Applying changing task order operator
 		int length = 0;
 		Action a = A_old.nextActionVehicle.get(v_i);
-		while(a != null) {
+		while (a != null) {
 			a = A_old.nextAction.get(a);
 			length++;
 		}
-		
+
 		if (length >= 2) {
 			for (int tIdx1 = 1; tIdx1 < length; tIdx1++) {
 				for (int tIdx2 = tIdx1 + 1; tIdx2 <= length; tIdx2++) {
 					// TODO: Check that it's a valid change according to constraints
 					// e.g. cannot deliver before picking up
-					Solution A = changingTaskOrder(A_old, v_i, tIdx1, tIdx2);
+					Solution A = permuteTask(A_old, v_i, tIdx1, tIdx2);
 					N.add(A);
+					
 				}
 			}
 		}
 		return N;
 	}
-	
+
 	/**
 	 * Put first task of vehicle 1 to vehicle 2
+	 * 
 	 * @param A
 	 * @param v1
 	 * @param v2
 	 * @return
 	 */
-	private Solution changingVehicles(Solution A, Vehicle v1, Vehicle v2) {		
+	private Solution changingVehicles(Solution A, Vehicle v1, Vehicle v2) {
 		Solution A1 = A.clone();
 		// Get first actions (pickups) for each vehicle
 		Action pickup1 = A1.nextActionVehicle.get(v1);
@@ -123,22 +131,24 @@ public class SLS {
 		Action a = A1.nextAction.get(pickup1);
 		Action delivery1 = a;
 		// If it's immediately delivered, just go to next one (that has to be a pickup)
-		if(a.task.equals(pickup1.task)) {
+		if (a.task.equals(pickup1.task)) {
 			a = A1.nextAction.get(a);
 			A1.nextActionVehicle.replace(v1, a);
-			
+
 			// Compute decrease factor in time
 			int decrease = 0;
-			if(A1.time.get(delivery1).equals(A1.time.get(a))) {
-				// Time was [1, 2, 2, ...] so decrease by 1 and get (first two actions deleted) -> [1, ...]
+			if (A1.time.get(delivery1).equals(A1.time.get(a))) {
+				// Time was [1, 2, 2, ...] so decrease by 1 and get (first two actions deleted)
+				// -> [1, ...]
 				decrease = 1;
 			} else {
-				// Time was [1, 2, 3, ...] so decrease by 2 and get (first two actions deleted) -> [1, ...]
+				// Time was [1, 2, 3, ...] so decrease by 2 and get (first two actions deleted)
+				// -> [1, ...]
 				decrease = 2;
 			}
-			
+
 			// Update time for vehicle 1
-			while(a != null) {
+			while (a != null) {
 				int t = A1.time.get(a);
 				A1.time.replace(a, t - decrease);
 				a = A1.nextAction.get(a);
@@ -146,11 +156,11 @@ public class SLS {
 		} else {
 			// a has to be a pickup, hence it will be the first one for v1
 			A1.nextActionVehicle.replace(v1, a);
-			
+
 			// Iterate tasks until we find it
 			boolean found = false;
-			while(!found) {
-				if(A1.nextAction.get(a).task.equals(pickup1.task)) {
+			while (!found) {
+				if (A1.nextAction.get(a).task.equals(pickup1.task)) {
 					// Delivery found: Update initial value
 					delivery1 = A1.nextAction.get(a);
 					// Link task previous to delivery to the next to delivery
@@ -160,49 +170,54 @@ public class SLS {
 					a = A1.nextAction.get(a);
 				}
 			}
-			
-			// TODO: Can do function in solution with predicate as parameter e.g. (a) -> A1.time.get(delivery1).equals(A1.time.get(a))
+
+			// TODO: Can do function in solution with predicate as parameter e.g. (a) ->
+			// A1.time.get(delivery1).equals(A1.time.get(a))
 			// Now we have [pickup1, ...(part1)..., delivery1, ...(part2)...]
 			// Compute decrease factor in time for part1
 			int decrease = 0;
 			a = A1.nextAction.get(pickup1);
-			if(A1.time.get(pickup1).equals(A1.time.get(a))) {
-				// Time was [1, 1, ...] so decrease by 0 and get (first two actions deleted) -> [1, ...]
+			if (A1.time.get(pickup1).equals(A1.time.get(a))) {
+				// Time was [1, 1, ...] so decrease by 0 and get (first two actions deleted) ->
+				// [1, ...]
 				decrease = 0;
 			} else {
-				// Time was [1, 2, ...] so decrease by 1 and get (first two actions deleted) -> [1, ...]
+				// Time was [1, 2, ...] so decrease by 1 and get (first two actions deleted) ->
+				// [1, ...]
 				decrease = 1;
 			}
-						
+
 			// Update time for vehicle 1, part1
-			while(!a.equals(delivery1)) {
+			while (!a.equals(delivery1)) {
 				int t = A1.time.get(a);
 				A1.time.replace(a, t - decrease);
 				a = A1.nextAction.get(a);
 			}
-			
+
 			// Now we have [pickup1, ...(part1)..., delivery1, ...(part2)...]
 			// Compute decrease factor in time for part1
 			decrease = 0;
 			a = A1.nextAction.get(delivery1);
-			if(A1.time.get(delivery1).equals(A1.time.get(a))) {
-				// Time was [1, 1, ...] so decrease by 0 and get (first two actions deleted) -> [1, ...]
+			if (A1.time.get(delivery1).equals(A1.time.get(a))) {
+				// Time was [1, 1, ...] so decrease by 0 and get (first two actions deleted) ->
+				// [1, ...]
 				decrease = 0;
 			} else {
-				// Time was [1, 2, ...] so decrease by 1 and get (first two actions deleted) -> [1, ...]
+				// Time was [1, 2, ...] so decrease by 1 and get (first two actions deleted) ->
+				// [1, ...]
 				decrease = 1;
 			}
-					
+
 			// Update time for vehicle 1, part1
-			while(a != null) {
+			while (a != null) {
 				int t = A1.time.get(a);
 				A1.time.replace(a, t - decrease);
 				a = A1.nextAction.get(a);
 			}
 		}
-		
+
 		// Assign pickup and delivery to vehicle 2
-		if(pickup2 == null) {
+		if (pickup2 == null) {
 			// Only one way to locate the task
 			A1.nextActionVehicle.replace(v2, pickup1);
 			A1.nextAction.put(pickup1, delivery1);
@@ -210,8 +225,11 @@ public class SLS {
 		} else {
 			// TODO: Think good way to allocate pickup and delivery
 			// Can interleave with other pickup-delivery pair
+			A1.nextActionVehicle.replace(v2, pickup1);
+			A1.nextAction.replace(pickup1, delivery1);
+			A1.nextAction.replace(delivery1, pickup2);
 		}
-		
+
 		// TODO: Check-proof that A1 is valid according to constraints
 		A1.updatePlan(v1);
 		A1.updatePlan(v2);
@@ -230,7 +248,7 @@ public class SLS {
 		while (it_neighbors.hasNext()) {
 			solution = it_neighbors.next();
 			cost = solution.totalCost(vehicles);
-			if ( cost < bestCost) {
+			if (cost < bestCost) {
 				bestCost = solution.totalCost(vehicles);
 				bestSolution = solution;
 			}
@@ -244,46 +262,150 @@ public class SLS {
 		}
 
 	}
+	
+
+	private Solution permuteTask(Solution A, Vehicle v_i, int actIdx, int moveToIdx) {
+		Solution A1 = A.clone();
+		int capacity = v_i.capacity();
+		boolean valid = true;
+
+		// Look for action we want to move
+		// Move action along the actions vector
+		Action aPre1;
+		Action act1 = A.nextActionVehicle.get(v_i);
+		capacity -= act1.task.weight; // first action should always be pickup
+		
+		int count = 0;
+		while (count < actIdx) {
+			aPre1 = act1;
+			act1 = A.nextAction.get(aPre1);
+			if(act1.pickup) {
+				capacity -= act1.task.weight;
+			}else {
+				capacity += act1.task.weight;
+			}
+			count++;
+		}
+		
+		// act1 is the action we were looking for
+		Task task = act1.task; // task with which we are performing the action
+		
+		// Look for the counter task
+		int counterAux = count + 1;
+		Action aux = A1.nextAction.get(act1); 
+		Action preAux = act1; 
+		
+		while((act1.pickup && aux.task != task) || (counterAux < moveToIdx) ) {
+			preAux = aux;
+			aux = A.nextAction.get(aux);
+			if(aux.pickup) {
+				capacity -= aux.task.weight;
+			}else {
+				capacity += aux.task.weight;
+			}
+			if (capacity < 1) {
+				return null; // move is not feasible
+			}
+			counterAux++;
+		}
+		
+		if (counterAux != moveToIdx) {
+			return null; // move is not feasible
+		}
+		
+		// if solution is valid, update relations
+		if (actIdx == 0) {
+			A1.nextActionVehicle.put(v_i, A.nextAction.get(act1));
+		}else {
+			A1.nextAction.put(aPre1, A.nextAction.get(act1));
+		}
+		A1.nextAction.put(preAux, act1);
+		A1.nextAction.put(act1, aux);
+		
+		
+		return A1;
+	}
 
 	private Solution changingTaskOrder(Solution A, Vehicle v_i, int tIdx1, int tIdx2) {
 		Solution A1 = A.clone();
-		/*
-		Task tPre1 = A1.nextActionVehicle.get(v_i);
-		Task t1 = A1.nextAction.get(tPre1);
+		int capacity = v_i.capacity();
+		List<Task> carry = new ArrayList<Task>();
+
+		Action aux1;
+		Action aux2;
+
+		// Move action along the actions vector
+		Action aPre1 = A1.nextActionVehicle.get(v_i);
+		if (aPre1.pickup) {
+			capacity -= aPre1.task.weight;
+			carry.add(aPre1.task);
+		}
+		Action act1 = A1.nextAction.get(aPre1);
+		// Update capacity - should always do;
 		int count = 1;
 		while (count < tIdx1) {
-			tPre1 = t1;
-			t1 = A1.nextAction.get(t1);
+			aPre1 = act1;
+			act1 = A1.nextAction.get(aPre1);
+			// Update capacity of the vehicle
+			if (aPre1.pickup) {
+				capacity -= aPre1.task.weight;
+				carry.add(aPre1.task);
+
+			}
 			count++;
 		}
-		Task tPost1 = A1.nextAction.get(t1);
 
-		Task tPre2 = t1;
-		Task t2 = A1.nextAction.get(t1);
+		Action aPost1 = A1.nextAction.get(act1);
+
+		Action aPre2 = act1;
+		Action act2 = aPost1;
 		count++;
+		int capacity_post1 = capacity;
+		if (aPre2.pickup) {
+			capacity_post1 -= aPre2.task.weight;
+		}
 		while (count < tIdx2) {
-			tPre2 = t2;
-			t2 = A1.nextAction.get(t2);
+			aPre2 = act2;
+			act2 = A1.nextAction.get(aPre2);
+			// Update capacity of the vehicle
+			if (aPre2.pickup) {
+				capacity_post1 -= aPre2.task.weight;
+			}
 			count++;
 		}
-		Task tPost2 = A1.nextAction.get(t2);
 
-		// Exchanging two tasks
-		if (tPost1.equals(t2)) {
-			// The task t2 is delivered immediately after t1
-			A1.nextAction.replace(tPre1, t2);
-			A1.nextAction.replace(t2, t1);
-			A1.nextAction.replace(t1, tPost2);
-		} else {
-			A1.nextAction.replace(tPre1, t2);
-			A1.nextAction.replace(tPre2, t1);
-			A1.nextAction.replace(t2, tPost1);
-			A1.nextAction.replace(t1, tPost2);
+		// We have found action 1 and 2 to interchange.
+		// Now we need to verify constraints
+		if (act1.pickup) {
+			if (act2.pickup) {
+				// see if time D1 > time P2
+				aux1 = new Action.Pickup(act1.task);
+				int t1 = A1.time.get(aux1);
+				if (t1 > A1.time.get(act2)) {
+
+				}
+
+			}
 		}
 
-		A1.updateTime(v_i);
-		A1.updatePlan(v_i);*/
-		
+		/*
+		 * Task tPre1 = A1.nextActionVehicle.get(v_i); Task t1 =
+		 * A1.nextAction.get(tPre1); int count = 1; while (count < tIdx1) { tPre1 = t1;
+		 * t1 = A1.nextAction.get(t1); count++; } Task tPost1 = A1.nextAction.get(t1);
+		 * 
+		 * Task tPre2 = t1; Task t2 = A1.nextAction.get(t1); count++; while (count <
+		 * tIdx2) { tPre2 = t2; t2 = A1.nextAction.get(t2); count++; } Task tPost2 =
+		 * A1.nextAction.get(t2);
+		 * 
+		 * // Exchanging two tasks if (tPost1.equals(t2)) { // The task t2 is delivered
+		 * immediately after t1 A1.nextAction.replace(tPre1, t2);
+		 * A1.nextAction.replace(t2, t1); A1.nextAction.replace(t1, tPost2); } else {
+		 * A1.nextAction.replace(tPre1, t2); A1.nextAction.replace(tPre2, t1);
+		 * A1.nextAction.replace(t2, tPost1); A1.nextAction.replace(t1, tPost2); }
+		 * 
+		 * A1.updateTime(v_i); A1.updatePlan(v_i);
+		 */
+
 		return A1;
 	}
 }
