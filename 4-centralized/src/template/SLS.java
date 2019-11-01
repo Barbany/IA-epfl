@@ -44,6 +44,12 @@ public class SLS {
 		double bestCost = A.totalCost(vehicles);
 		Solution bestSolution = A;
 		double probability = 0.1;
+
+		List<Object> costEvolution = new ArrayList<Object>();
+		List<Object> bestEvolution = new ArrayList<Object>();
+		
+		costEvolution.add(bestCost);
+		bestEvolution.add(bestCost);
 		
 		long maxDuration = 0;
 		long totalDuration = 0;
@@ -53,11 +59,16 @@ public class SLS {
 			timeStart = System.currentTimeMillis();
 			probability = 0.9 - Math.log(1/(i + 1))*0.1; 
 			A = localChoice(chooseNeighbors(A), probability);
-			
+			costEvolution.add(A.totalCost(vehicles));
 			if (A.totalCost(vehicles) < bestCost) {
 				bestCost = A.totalCost(vehicles);
 				bestSolution = A; 
-			}
+				
+		}
+		bestEvolution.add(bestCost);
+	
+		System.out.println("cost_99 = " + costEvolution +";");
+		System.out.println("cost_99_best = " + bestEvolution+";");
 			duration = System.currentTimeMillis() - timeStart;
 			if(maxDuration < duration) {
 				maxDuration = duration;
