@@ -66,7 +66,7 @@ public class CentralizedTemplate implements CentralizedBehavior {
 //		System.out.println("Agent " + agent.id() + " has tasks " + tasks);
 
         
-        List<Plan> plans = new SLS(vehicles, tasks).build();
+        List<Plan> plans = new SLS(vehicles, tasks).build(timeout_plan);
         
         long time_end = System.currentTimeMillis();
         long duration = time_end - time_start;
