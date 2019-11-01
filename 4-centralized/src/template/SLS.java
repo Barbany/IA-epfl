@@ -36,31 +36,34 @@ public class SLS {
 	 * 
 	 * @return Optimal plan in form of list of plan objects (one for each vehicle)
 	 */
-	public List<Plan> build() {
-		long time_start = System.currentTimeMillis();
+	public List<Plan> build(long timeOutPlan) {
+		long timeStart, duration;
 		// Select Initial Solution
 		Solution A = new Solution(vehicles);
 		A.selectInitialSolution(tasks);
 		double bestCost = A.totalCost(vehicles);
 		Solution bestSolution = A;
 		double probability = 0.1;
-		int maxIterations = 50000;
+		
+		long maxDuration = 0;
+		long totalDuration = 0;
 
 		// Until termination condition met
-		// TODO: Run for all possible runtime
-		for (int i = 0; i <= maxIterations; i++) {
-			probability = 0.9 - Math.log(1/maxIterations)*0.1; 
+		for (int i = 0; totalDuration + maxDuration < timeOutPlan; i++) {
+			timeStart = System.currentTimeMillis();
+			probability = 0.9 - Math.log(1/(i + 1))*0.1; 
 			A = localChoice(chooseNeighbors(A), probability);
 			
 			if (A.totalCost(vehicles) < bestCost) {
 				bestCost = A.totalCost(vehicles);
 				bestSolution = A; 
 			}
+			duration = System.currentTimeMillis() - timeStart;
+			if(maxDuration < duration) {
+				maxDuration = duration;
+			}
+			totalDuration += duration;
 		}
-
-		long time_end = System.currentTimeMillis();
-		long duration = time_end - time_start;
-		System.out.println("The plan was generated in " + duration + " milliseconds.");
 		System.out.println("Best plan cost: " + bestCost);
 
 		return bestSolution.plans;
