@@ -105,12 +105,69 @@ public class SLS {
 						for (Solution sol : newN) {
 							N.add(sol);
 						}
-						
 					}
-					
 				}
 			}
 		}
+		
+		Action pickup = A_old.nextActionVehicle.get(v_i);
+		Action firstAction = A_old.nextActionVehicle.get(v_i);
+		assert(pickup.pickup);
+		
+		Action delivery;
+		Action prePickup = null, preDelivery = null;
+		Solution A1;
+		
+		// Put pickup and delivery that we want to permute as first and second tasks
+		// Then call changingOrder
+		while(pickup != null) {
+			// Find its correspondent delivery
+			if(pickup.pickup) {
+				delivery = A_old.nextAction.get(pickup);
+				if(delivery.task.equals(pickup.task)) {
+					// Delivery of task in pickup is the next action
+					A1 = A_old.clone();
+					if(!firstAction.equals(pickup)) {
+						A1.nextActionVehicle.replace(v_i, pickup);
+						A1.nextAction.replace(pickup, delivery);
+						A1.nextAction.replace(delivery, firstAction);
+						A1.nextAction.replace(prePickup, A_old.nextAction.get(delivery));
+					}
+					List<Solution> newN = changingOrder(A1, v_i);
+					for (Solution sol : newN) {
+						N.add(sol);
+					}
+					
+				} else {
+					// Delivery of task in pickup is not next action
+					while(delivery != null && !delivery.task.equals(pickup.task)) {
+						preDelivery = delivery;
+						delivery = A_old.nextAction.get(delivery);
+					}
+					
+					// Every pickup has to have a delivery (pairs)
+					assert(delivery != null);
+					A1 = A_old.clone();
+					if(!firstAction.equals(pickup)) {
+						A1.nextActionVehicle.replace(v_i, pickup);
+						A1.nextAction.replace(prePickup, A_old.nextAction.get(pickup));
+						A1.nextAction.replace(delivery, firstAction);
+					} else {
+						A1.nextAction.replace(delivery, A_old.nextAction.get(pickup));
+					}
+					A1.nextAction.replace(pickup, delivery);
+					A1.nextAction.replace(preDelivery, A_old.nextAction.get(delivery));
+					
+					List<Solution> newN = changingOrder(A1, v_i);
+					for (Solution sol : newN) {
+						N.add(sol);
+					}
+				}
+			}
+			prePickup = pickup;
+			pickup = A_old.nextAction.get(pickup);
+		}
+		
 		return N;
 	}
 
