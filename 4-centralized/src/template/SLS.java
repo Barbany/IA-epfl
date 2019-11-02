@@ -43,7 +43,8 @@ public class SLS {
 		A.selectInitialSolution(tasks);
 		double bestCost = A.totalCost(vehicles);
 		Solution bestSolution = A;
-		double probability = 0.1;
+		double probability = 0.5;
+		int stuck = 0; 
 
 		List<Object> costEvolution = new ArrayList<Object>();
 		List<Object> bestEvolution = new ArrayList<Object>();
@@ -55,10 +56,21 @@ public class SLS {
 		long totalDuration = 0;
 
 		// Until termination condition met
-		for (int i = 0; totalDuration + maxDuration < timeOutPlan; i++) {
+		for (int i = 0; totalDuration + maxDuration < timeOutPlan*0.9; i++) {
 			timeStart = System.currentTimeMillis();
-			probability = 0.9 - Math.log(1/(i + 1))*0.1; 
+			//if (i > 50) {
+			//probability = 0.3 - Math.log(10/(i + 1))*0.075;
+				
+			//}
+			
+			
+			
+			probability = Math.min(0.3 + 0.1*i/75, 0.95);
 			A = localChoice(chooseNeighbors(A), probability);
+			//if (A.totalCost(vehicles) == (double) costEvolution.get(costEvolution.size() - 1)) {
+			//	stuck++;
+			//}
+			costEvolution.get(i); 
 			costEvolution.add(A.totalCost(vehicles));
 			if (A.totalCost(vehicles) < bestCost) {
 				bestCost = A.totalCost(vehicles);
@@ -67,16 +79,18 @@ public class SLS {
 		}
 		bestEvolution.add(bestCost);
 	
-		System.out.println("cost_99 = " + costEvolution +";");
-		System.out.println("cost_99_best = " + bestEvolution+";");
 			duration = System.currentTimeMillis() - timeStart;
 			if(maxDuration < duration) {
 				maxDuration = duration;
 			}
 			totalDuration += duration;
 		}
-		System.out.println("Best plan cost: " + bestCost);
+		
 
+
+		System.out.println("cost_varlin = " + costEvolution +";");
+		System.out.println("cost_varlin_best = " + bestEvolution+";");
+		System.out.println("Best plan cost: " + bestCost);
 		return bestSolution.plans;
 	}
 
@@ -121,63 +135,6 @@ public class SLS {
 			}
 		}
 		
-		Action pickup = A_old.nextActionVehicle.get(v_i);
-		Action firstAction = A_old.nextActionVehicle.get(v_i);
-		assert(pickup.pickup);
-		
-		Action delivery;
-		Action prePickup = null, preDelivery = null;
-		Solution A1;
-		
-		// Put pickup and delivery that we want to permute as first and second tasks
-		// Then call changingOrder
-		while(pickup != null) {
-			// Find its correspondent delivery
-			if(pickup.pickup) {
-				delivery = A_old.nextAction.get(pickup);
-				if(delivery.task.equals(pickup.task)) {
-					// Delivery of task in pickup is the next action
-					A1 = A_old.clone();
-					if(!firstAction.equals(pickup)) {
-						A1.nextActionVehicle.replace(v_i, pickup);
-						A1.nextAction.replace(pickup, delivery);
-						A1.nextAction.replace(delivery, firstAction);
-						A1.nextAction.replace(prePickup, A_old.nextAction.get(delivery));
-					}
-					List<Solution> newN = changingOrder(A1, v_i);
-					for (Solution sol : newN) {
-						N.add(sol);
-					}
-					
-				} else {
-					// Delivery of task in pickup is not next action
-					while(delivery != null && !delivery.task.equals(pickup.task)) {
-						preDelivery = delivery;
-						delivery = A_old.nextAction.get(delivery);
-					}
-					
-					// Every pickup has to have a delivery (pairs)
-					assert(delivery != null);
-					A1 = A_old.clone();
-					if(!firstAction.equals(pickup)) {
-						A1.nextActionVehicle.replace(v_i, pickup);
-						A1.nextAction.replace(prePickup, A_old.nextAction.get(pickup));
-						A1.nextAction.replace(delivery, firstAction);
-					} else {
-						A1.nextAction.replace(delivery, A_old.nextAction.get(pickup));
-					}
-					A1.nextAction.replace(pickup, delivery);
-					A1.nextAction.replace(preDelivery, A_old.nextAction.get(delivery));
-					
-					List<Solution> newN = changingOrder(A1, v_i);
-					for (Solution sol : newN) {
-						N.add(sol);
-					}
-				}
-			}
-			prePickup = pickup;
-			pickup = A_old.nextAction.get(pickup);
-		}
 		
 		return N;
 	}
@@ -325,6 +282,7 @@ public class SLS {
 		Solution bestSolution = neighbors.get(0);
 		double bestCost = neighbors.get(0).totalCost(vehicles);
 		double cost;
+		//System.out.println("neighbors: " + neighbors.size());
 
 		Iterator<Solution> it_neighbors = neighbors.iterator();
 		while (it_neighbors.hasNext()) {
