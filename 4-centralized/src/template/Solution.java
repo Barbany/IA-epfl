@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import logist.LogistException;
 import logist.plan.Plan;
 import logist.simulation.Vehicle;
 import logist.task.Task;
@@ -51,6 +52,48 @@ public class Solution implements Cloneable{
 				plans.add(Plan.EMPTY);
 				nextActionVehicle.put(vehicles.get(i), null);
 			}
+		}
+	}
+	
+	public void initSolution(TaskSet tasks) {
+		// assign tasks to all vehicles with naive plan (pickup_i --> delivery_i)
+		List<Integer> capacities = new ArrayList<Integer>();
+		Task task; 
+		Plan plan; 
+
+		
+		int numVehicles = vehicles.size();
+		List<TaskSet> taskVehicle = new ArrayList<TaskSet>();
+		for(int i=0; i<numVehicles; i++) {
+			taskVehicle.add(TaskSet.noneOf(tasks));
+			capacities.add(vehicles.get(i).capacity());
+		}
+		
+		
+		Iterator<Task> it_task = tasks.iterator();
+		int j = 0;
+		int check = 0; 
+		while(it_task.hasNext()) {
+			task = it_task.next();
+			while(capacities.get(j%numVehicles) < task.weight && check < numVehicles) {
+				j++;
+				check++;
+			}
+			if(check == numVehicles) {
+				throw new LogistException("Non feasible solution");
+			} 
+			check = 0; 
+			taskVehicle.get(j % numVehicles).add(task);
+			j++;
+		}
+
+		for (int i= 0; i < numVehicles; i++) {
+			if(taskVehicle.get(i).size() > 0) {
+				plan = naivePlan(vehicles.get(i), taskVehicle.get(i));
+			} else {
+				plan = Plan.EMPTY;
+			}
+			plans.add(plan);
 		}
 	}
 
