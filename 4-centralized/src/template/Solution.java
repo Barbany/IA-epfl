@@ -63,7 +63,8 @@ public class Solution implements Cloneable{
 
 		
 		int numVehicles = vehicles.size();
-		List<TaskSet> taskVehicle = new ArrayList<TaskSet>();
+		List<TaskSet> taskVehicle = new ArrayList<TaskSet>(numVehicles);
+		
 		for(int i=0; i<numVehicles; i++) {
 			taskVehicle.add(TaskSet.noneOf(tasks));
 			capacities.add(vehicles.get(i).capacity());

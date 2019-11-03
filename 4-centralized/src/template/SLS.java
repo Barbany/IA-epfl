@@ -38,12 +38,13 @@ public class SLS {
 	 */
 	public List<Plan> build(long timeOutPlan) {
 		long timeStart, duration;
+		double probability = 0.5;
+
 		// Select Initial Solution
 		Solution A = new Solution(vehicles);
 		A.initSolution(tasks);
 		double bestCost = A.totalCost(vehicles);
 		Solution bestSolution = A;
-		double probability = 0.8;
 
 		List<Object> costEvolution = new ArrayList<Object>();
 		List<Object> bestEvolution = new ArrayList<Object>();
@@ -55,12 +56,12 @@ public class SLS {
 		long totalDuration = 0;
 
 		// Until termination condition met
-		for (int i = 0; totalDuration + maxDuration < 20000; i++) {
+		// totalDuration + maxDuration < timeOutPlan*0.9
+		for (int i = 0; totalDuration + maxDuration < 30000; i++) {
 			timeStart = System.currentTimeMillis();
 			probability = 0.3 - Math.log(10 / (i + 1)) * 0.075;
-			
+			// probability = Math.min(0.3 + 0.1*i/75, 0.95);
 
-			//probability = Math.min(0.3 + 0.1*i/75, 0.95);
 			A = localChoice(chooseNeighbors(A), probability);
 
 			costEvolution.get(i);
@@ -78,8 +79,8 @@ public class SLS {
 			totalDuration += duration;
 		}
 
-		System.out.println("cost_varlin = " + costEvolution + ";");
-		System.out.println("cost_varlin_best = " + bestEvolution + ";");
+		//System.out.println("cost_50_6 = " + costEvolution + ";");
+		//System.out.println("cost_50_6_best = " + bestEvolution + ";");
 		System.out.println("Best plan cost: " + bestCost);
 		return bestSolution.plans;
 
@@ -94,39 +95,109 @@ public class SLS {
 	private List<Solution> chooseNeighbors(Solution A_old) {
 		List<Solution> N = new ArrayList<Solution>();
 
-		// Choose random vehicles from the ones that have a task
-		List<Vehicle> usedVehicles = new ArrayList<Vehicle>();
-		for (Vehicle v : vehicles) {
-			if (A_old.nextActionVehicle.get(v) != null) {
-				usedVehicles.add(v);
+		// If there is a single vehicle, perform only permutations among task order
+		if (vehicles.size() == 1) {
+			N = changeOneVehicle(A_old, vehicles.get(0));
+		} else {
+			// Choose random vehicles from the ones that have a task
+			List<Vehicle> usedVehicles = new ArrayList<Vehicle>();
+			for (Vehicle v : vehicles) {
+				if (A_old.nextActionVehicle.get(v) != null) {
+					usedVehicles.add(v);
+				}
 			}
-		}
-		Vehicle v_i = usedVehicles.get(rn.nextInt(usedVehicles.size()));
+			usedVehicles.remove(null);
+			Vehicle v_i = usedVehicles.get(rn.nextInt(usedVehicles.size()));
 
-		// Applying the changing vehicle operator
-		// Note that we are moving one whole task, so change pickup and delivery actions
-		for (Vehicle v_j : vehicles) {
-			if (!v_j.equals(v_i)) {
-				// This has to be a pickup action since it's the first of a vehicle
-				Action a = A_old.nextActionVehicle.get(v_i);
-				assert (a.pickup);
+			// Applying the changing vehicle operator
+			// Note that we are moving one whole task, so change pickup and delivery actions
+			for (Vehicle v_j : vehicles) {
+				if (!v_j.equals(v_i)) {
+					// This has to be a pickup action since it's the first of a vehicle
+					Action a = A_old.nextActionVehicle.get(v_i);
+					assert (a.pickup);
 
-				// Check if task fits in empty vehicle (in worst case append pickup and delivery
-				// in beginning)
-				if (a.task.weight <= v_j.capacity()) {
-					Solution A = changingVehicles(A_old, v_i, v_j);
-					if (A != null) {
-						N.add(A);
-						// Applying changing task order operator
-						List<Solution> newN = changingOrder(A, v_j);
-						for (Solution sol : newN) {
-							N.add(sol);
+					// Check if task fits in empty vehicle (in worst case append pickup and delivery
+					// in beginning)
+					if (a.task.weight <= v_j.capacity()) {
+						Solution A = changingVehicles(A_old, v_i, v_j);
+						if (A != null) {
+							N.add(A);
+							// Applying changing task order operator
+							List<Solution> newN = changingOrder(A, v_j);
+							for (Solution sol : newN) {
+								N.add(sol);
+							}
 						}
 					}
 				}
 			}
 		}
 
+		return N;
+	}
+
+	private List<Solution> changeOneVehicle(Solution A_old, Vehicle v_i) {
+		List<Solution> N = new ArrayList<Solution>();
+
+		Action pickup = A_old.nextActionVehicle.get(v_i);
+		Action firstAction = A_old.nextActionVehicle.get(v_i);
+		assert (pickup.pickup);
+
+		Action delivery;
+		Action prePickup = null, preDelivery = null;
+		Solution A1;
+
+		// Put pickup and delivery that we want to permute as first and second tasks
+		// Then call changingOrder
+		while (pickup != null) {
+			// Find its correspondent delivery
+			if (pickup.pickup) {
+				delivery = A_old.nextAction.get(pickup);
+				if (delivery.task.equals(pickup.task)) {
+					// Delivery of task in pickup is the next action
+					A1 = A_old.clone();
+					if (!firstAction.equals(pickup)) {
+						A1.nextActionVehicle.replace(v_i, pickup);
+						A1.nextAction.replace(pickup, delivery);
+						A1.nextAction.replace(delivery, firstAction);
+						A1.nextAction.replace(prePickup, A_old.nextAction.get(delivery));
+					}
+					List<Solution> newN = changingOrder(A1, v_i);
+					for (Solution sol : newN) {
+						N.add(sol);
+					}
+
+				} else {
+					// Delivery of task in pickup is not next action
+					while (delivery != null && !delivery.task.equals(pickup.task)) {
+						preDelivery = delivery;
+						delivery = A_old.nextAction.get(delivery);
+					}
+
+					// Every pickup has to have a delivery (pairs)
+					assert (delivery != null);
+					A1 = A_old.clone();
+					if (!firstAction.equals(pickup)) {
+						A1.nextActionVehicle.replace(v_i, pickup);
+						A1.nextAction.replace(prePickup, A_old.nextAction.get(pickup));
+						A1.nextAction.replace(delivery, firstAction);
+					} else {
+						A1.nextAction.replace(delivery, A_old.nextAction.get(pickup));
+					}
+					A1.nextAction.replace(pickup, delivery);
+					A1.nextAction.replace(preDelivery, A_old.nextAction.get(delivery));
+
+					List<Solution> newN = changingOrder(A1, v_i);
+					for (Solution sol : newN) {
+						N.add(sol);
+					}
+				}
+			}
+			prePickup = pickup;
+			pickup = A_old.nextAction.get(pickup);
+
+		}
 		return N;
 	}
 
@@ -137,6 +208,7 @@ public class SLS {
 	 * @param v vehicle in which we perform the order modification
 	 */
 	private List<Solution> changingOrder(Solution A, Vehicle v) {
+		
 		List<Solution> solutions = new ArrayList<Solution>();
 		Solution A1 = A.clone();
 		Solution A11 = A.clone();
@@ -180,11 +252,7 @@ public class SLS {
 				A2 = A1.clone();
 				A2.nextAction.put(aux2, drop);
 				A2.nextAction.put(drop, A1.nextAction.get(aux2));
-				// int i = A2.printNumberOfTasks();
 				A2.updatePlan(v);
-				// if (i!= A2.printNumberOfTasks()) {
-				// System.out.println("HERE PROBLEM!");
-				// }
 				solutions.add(A2);
 
 				aux2 = A1.nextAction.get(aux2);
@@ -220,10 +288,10 @@ public class SLS {
 		if (a.task.equals(pickup1.task)) {
 			// delivery1 = a
 			a = A1.nextAction.get(a);
-			A1.nextActionVehicle.replace(v_i, a);
+			A1.nextActionVehicle.put(v_i, a);
 		} else {
 			// a has to be a pickup, hence it will be the first one for v1
-			A1.nextActionVehicle.replace(v_i, a);
+			A1.nextActionVehicle.put(v_i, a);
 			assert (a.pickup);
 
 			// Iterate tasks until we find it
@@ -249,7 +317,7 @@ public class SLS {
 		// Assign pickup and delivery to vehicle 2
 		if (pickup2 == null) {
 			// Only one way to locate the task
-			A1.nextActionVehicle.replace(v_j, pickup1);
+			A1.nextActionVehicle.put(v_j, pickup1);
 			A1.nextAction.put(pickup1, delivery1);
 			A1.nextAction.put(delivery1, null);
 		} else {

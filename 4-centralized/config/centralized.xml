@@ -13,13 +13,13 @@
 	<agents import="config/agents.xml" />
 	
 	<!-- define task distribution -->
-	<tasks number="10" rngSeed="12345">
+	<tasks number="1" rngSeed="12345">
 		<!--
 			the probabilities, rewards and weight of tasks
 		-->
 		<probability distribution="uniform" min="0.0" max="1.0" />
 		<reward distribution="constant" policy="short-distances" min="100" max="99999" />
-		<weight distribution="constant" value="15" />
+		<weight distribution="constant" value="3" />
 
 	</tasks>
 	
@@ -41,16 +41,16 @@
                 <set color="#ff0000" />
                 <set home="Cardiff" />
                 <set speed="90" />
-                <set capacity="3" />
+                <set capacity="30" />
                 <set cost-per-km="5" />
             </vehicle>
-            
+
             <!-- the third vehicle (green) -->
             <vehicle name="Vehicle 3">
                 <set color="#00ff00" />
                 <set home="Plymouth" />
                 <set speed="90" />
-                <set capacity="5" />
+                <set capacity="30" />
                 <set cost-per-km="5" />
             </vehicle>
             
@@ -59,9 +59,27 @@
                 <set color="#ff00ff" />
                 <set home="Norwich" />
                 <set speed="90" />
-                <set capacity="15" />
+                <set capacity="30" />
                 <set cost-per-km="5" />
             </vehicle>
+            
+            <vehicle name="Vehicle 5">
+                <set color="#296D79" />
+                <set home="Manchester" />
+                <set speed="90" />
+                <set capacity="30" />
+                <set cost-per-km="5" />
+            </vehicle>
+            
+            <vehicle name="Vehicle 6">
+                <set color="#7523bd" />
+                <set home="Birmingham" />
+                <set speed="90" />
+                <set capacity="30" />
+                <set cost-per-km="5" />
+            </vehicle>
+            
+            
             
 			
 		</company>

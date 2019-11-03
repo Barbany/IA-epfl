@@ -83,3 +83,31 @@
 	</companies>
 	
 </configuration>
+
+
+<!-- the second vehicle (red) -->
+<vehicle name="Vehicle 2">
+    <set color="#ff0000" />
+    <set home="Cardiff" />
+    <set speed="90" />
+    <set capacity="30" />
+    <set cost-per-km="5" />
+</vehicle>
+
+<!-- the third vehicle (green) -->
+<vehicle name="Vehicle 3">
+    <set color="#00ff00" />
+    <set home="Plymouth" />
+    <set speed="90" />
+    <set capacity="30" />
+    <set cost-per-km="5" />
+</vehicle>
+
+<!-- the fourth vehicle (magenta) -->
+<vehicle name="Vehicle 4">
+    <set color="#ff00ff" />
+    <set home="Norwich" />
+    <set speed="90" />
+    <set capacity="30" />
+    <set cost-per-km="5" />
+</vehicle>
