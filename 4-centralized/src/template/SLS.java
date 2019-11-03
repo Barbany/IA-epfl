@@ -42,13 +42,14 @@ public class SLS {
 
 		// Select Initial Solution
 		Solution A = new Solution(vehicles);
-		A.initSolution(tasks);
+		A.initSolutionMultiple(tasks); // for single vehicle solution: A.initSolutionSingle(tasks)
 		double bestCost = A.totalCost(vehicles);
 		Solution bestSolution = A;
 
 		List<Object> costEvolution = new ArrayList<Object>();
 		List<Object> bestEvolution = new ArrayList<Object>();
 
+		// Store results to analyze exploration/ exploitation with different policies
 		costEvolution.add(bestCost);
 		bestEvolution.add(bestCost);
 
@@ -56,11 +57,10 @@ public class SLS {
 		long totalDuration = 0;
 
 		// Until termination condition met
-		// totalDuration + maxDuration < timeOutPlan*0.9
-		for (int i = 0; totalDuration + maxDuration < 30000; i++) {
+		for (int i = 0; totalDuration + maxDuration < timeOutPlan*0.9; i++) {
 			timeStart = System.currentTimeMillis();
-			probability = 0.3 - Math.log(10 / (i + 1)) * 0.075;
-			// probability = Math.min(0.3 + 0.1*i/75, 0.95);
+			probability = 0.3 - Math.log(10 / (i + 1)) * 0.075; // logarithmic variation
+			//probability = Math.min(0.3 + 0.1*i/75, 0.95); // linear variation
 
 			A = localChoice(chooseNeighbors(A), probability);
 
@@ -79,8 +79,6 @@ public class SLS {
 			totalDuration += duration;
 		}
 
-		//System.out.println("cost_50_6 = " + costEvolution + ";");
-		//System.out.println("cost_50_6_best = " + bestEvolution + ";");
 		System.out.println("Best plan cost: " + bestCost);
 		return bestSolution.plans;
 
@@ -321,14 +319,12 @@ public class SLS {
 			A1.nextAction.put(pickup1, delivery1);
 			A1.nextAction.put(delivery1, null);
 		} else {
-			// TODO: Think good way to allocate pickup and delivery
 			// Can interleave with other pickup-delivery pair
 			A1.nextActionVehicle.replace(v_j, pickup1);
 			A1.nextAction.replace(pickup1, delivery1);
 			A1.nextAction.replace(delivery1, pickup2);
 		}
 
-		// TODO: Check-proof that A1 is valid according to constraints
 		A1.updatePlan(v_i);
 		A1.updatePlan(v_j);
 
