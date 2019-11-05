@@ -38,7 +38,7 @@ public class SLS {
 	 */
 	public List<Plan> build(long timeOutPlan) {
 		long timeStart, duration;
-		double probability = 0.5;
+		double probability = 0.8;
 
 		// Select Initial Solution
 		Solution A = new Solution(vehicles);
@@ -63,9 +63,8 @@ public class SLS {
 			//probability = Math.min(0.3 + 0.1*i/75, 0.95); // linear variation
 
 			A = localChoice(chooseNeighbors(A), probability);
-
-			costEvolution.get(i);
 			costEvolution.add(A.totalCost(vehicles));
+			
 			if (A.totalCost(vehicles) < bestCost) {
 				bestCost = A.totalCost(vehicles);
 				bestSolution = A;
@@ -80,6 +79,8 @@ public class SLS {
 		}
 
 		System.out.println("Best plan cost: " + bestCost);
+		//System.out.println("cost_08 = " + costEvolution + ";");
+		//System.out.println("cost_08_best = " + bestEvolution + ";");
 		return bestSolution.plans;
 
 	}
@@ -88,7 +89,7 @@ public class SLS {
 	 * Choose one vehicle u.a.r. and perform local operators on this vehicle
 	 * 
 	 * @param A_old
-	 * @return
+	 * @return List of neighboring solutions
 	 */
 	private List<Solution> chooseNeighbors(Solution A_old) {
 		List<Solution> N = new ArrayList<Solution>();
@@ -135,6 +136,14 @@ public class SLS {
 		return N;
 	}
 
+	
+	/**
+	 * Generate neighbor solutions corresponding to all feasible permutations of tasks for a given vehicle
+	 * 
+	 * @param A_old
+	 * @param v_i Vehicle in which we perform the task order modification
+	 * @return List of neighboring solutions
+	 */
 	private List<Solution> changeOneVehicle(Solution A_old, Vehicle v_i) {
 		List<Solution> N = new ArrayList<Solution>();
 
@@ -331,6 +340,13 @@ public class SLS {
 		return A1;
 	}
 
+	/**
+	 * Select next neighbor to explore
+	 * 
+	 * @param neighbors. List of Solutions
+	 * @param p. Probability of selecting best solution among the neighbors provided
+	 * @return Solution
+	 */
 	private Solution localChoice(List<Solution> neighbors, double p) {
 		Solution solution;
 		Solution bestSolution = neighbors.get(0);

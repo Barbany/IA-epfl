@@ -75,6 +75,13 @@ public class CentralizedTemplate implements CentralizedBehavior {
         return plans;
     }
 
+    /**
+     * Generate plan moving between cities using the shortest path
+     * 
+     * @param vehicle
+     * @param tasks. Taskset with the set of tasks t
+     * @return
+     */
     private Plan naivePlan(Vehicle vehicle, TaskSet tasks) {
         City current = vehicle.getCurrentCity();
         Plan plan = new Plan(current);

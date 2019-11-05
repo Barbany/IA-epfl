@@ -105,7 +105,7 @@ public class Solution implements Cloneable {
 	 * 
 	 * @param vehicle
 	 * @param tasks
-	 * @return
+	 * @return Plan
 	 */
 	private Plan naivePlan(Vehicle vehicle, TaskSet tasks) {
 		City current = vehicle.getCurrentCity();
@@ -152,6 +152,10 @@ public class Solution implements Cloneable {
 		return plan;
 	}
 
+	
+	/**
+	 * Clone current solution
+	 */
 	public Solution clone() {
 		Iterator<Plan> it_plans;
 
@@ -206,6 +210,7 @@ public class Solution implements Cloneable {
 		plans.set(v.id(), plan);
 	}
 
+	
 	public double totalCost(List<Vehicle> vehicles) {
 		// cost for the agent
 		double cost = 0;
