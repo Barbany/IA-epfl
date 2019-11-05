@@ -46,13 +46,6 @@ public class SLS {
 		double bestCost = A.totalCost(vehicles);
 		Solution bestSolution = A;
 
-		List<Object> costEvolution = new ArrayList<Object>();
-		List<Object> bestEvolution = new ArrayList<Object>();
-
-		// Store results to analyze exploration/ exploitation with different policies
-		costEvolution.add(bestCost);
-		bestEvolution.add(bestCost);
-
 		long maxDuration = 0;
 		long totalDuration = 0;
 
@@ -63,13 +56,11 @@ public class SLS {
 			//probability = Math.min(0.3 + 0.1*i/75, 0.95); // linear variation
 
 			A = localChoice(chooseNeighbors(A), probability);
-			costEvolution.add(A.totalCost(vehicles));
 			
 			if (A.totalCost(vehicles) < bestCost) {
 				bestCost = A.totalCost(vehicles);
 				bestSolution = A;
 			}
-			bestEvolution.add(bestCost);
 
 			duration = System.currentTimeMillis() - timeStart;
 			if (maxDuration < duration) {
@@ -79,8 +70,6 @@ public class SLS {
 		}
 
 		System.out.println("Best plan cost: " + bestCost);
-		//System.out.println("cost_08 = " + costEvolution + ";");
-		//System.out.println("cost_08_best = " + bestEvolution + ";");
 		return bestSolution.plans;
 
 	}
@@ -132,13 +121,13 @@ public class SLS {
 				}
 			}
 		}
-
 		return N;
 	}
 
 	
 	/**
 	 * Generate neighbor solutions corresponding to all feasible permutations of tasks for a given vehicle
+	 * This method is only used when we don't have a fleet but a vehicle
 	 * 
 	 * @param A_old
 	 * @param v_i Vehicle in which we perform the task order modification
@@ -369,6 +358,5 @@ public class SLS {
 		} else {
 			return neighbors.get(rn.nextInt(neighbors.size()));
 		}
-
 	}
 }

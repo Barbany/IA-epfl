@@ -12,6 +12,12 @@ import logist.task.Task;
 import logist.task.TaskSet;
 import logist.topology.Topology.City;
 
+/**
+ * Solution Class
+ * Store sequences of actions and its correspondent plans
+ * 
+ * @author Oriol Barbany & Natalie Bolon
+ */
 public class Solution implements Cloneable {
 	public List<Plan> plans;
 	List<Vehicle> vehicles;
@@ -19,6 +25,11 @@ public class Solution implements Cloneable {
 	public HashMap<Action, Action> nextAction;
 	public HashMap<Vehicle, Action> nextActionVehicle;
 
+	/**
+	 * Create empty Solution with the given fleet
+	 * 
+	 * @param vehicles
+	 */
 	public Solution(List<Vehicle> vehicles) {
 		this.plans = new ArrayList<Plan>();
 		this.vehicles = vehicles;
@@ -30,6 +41,8 @@ public class Solution implements Cloneable {
 	/**
 	 * Initiate all attributes of the solution by putting all the tasks in the
 	 * largest vehicle
+	 * 
+	 * @param tasks
 	 */
 	public void initSolutionSingle(TaskSet tasks) {
 		int indexBiggestVehicle = -1;
@@ -58,6 +71,8 @@ public class Solution implements Cloneable {
 
 	/**
 	 * Initiate tasks distributed sequentially along all possible vehicles
+	 * 
+	 * @param tasks
 	 */
 	public void initSolutionMultiple(TaskSet tasks) {
 		// assign tasks to all vehicles with naive plan (pickup_i --> delivery_i)
@@ -101,7 +116,7 @@ public class Solution implements Cloneable {
 	}
 
 	/**
-	 * Put all the tasks in the given vehicle and generate its plan
+	 * Put all the tasks in the given vehicle and return its plan
 	 * 
 	 * @param vehicle
 	 * @param tasks
@@ -152,10 +167,6 @@ public class Solution implements Cloneable {
 		return plan;
 	}
 
-	
-	/**
-	 * Clone current solution
-	 */
 	public Solution clone() {
 		Iterator<Plan> it_plans;
 
@@ -211,6 +222,13 @@ public class Solution implements Cloneable {
 	}
 
 	
+	/**
+	 * Get the total cost, computed from the plan of this Solution
+	 * Vehicles are given to weight the cost per kilometer of each one
+	 * 
+	 * @param vehicles
+	 * @return
+	 */
 	public double totalCost(List<Vehicle> vehicles) {
 		// cost for the agent
 		double cost = 0;
@@ -221,19 +239,6 @@ public class Solution implements Cloneable {
 			cost += it_plan.next().totalDistance() * it_vehicle.next().costPerKm();
 		}
 		return cost;
-	}
-
-	public int printNumberOfTasks() {
-		int n = 0;
-		for (Plan p : plans) {
-			Iterator<logist.plan.Action> it = p.iterator();
-			while (it.hasNext()) {
-				if (it.next().getClass().getName().equals("logist.plan.Action$Delivery"))
-					n++;
-			}
-		}
-		System.out.println(n);
-		return n;
 	}
 
 }

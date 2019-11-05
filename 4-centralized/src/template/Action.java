@@ -3,6 +3,11 @@ package template;
 import logist.task.Task;
 import logist.topology.Topology.City;
 
+/**
+ * Class to represent Pickup and Delivery Actions for SLS representation
+ * 
+ * @author Oriol Barbany & Natalie Bolon
+ */
 public abstract class Action {
 	public Task task;
 	public City city;
