@@ -1,7 +1,7 @@
 # IA-epfl
 Repository for the programming exercises of the Intelligent Agents course (CS-430) at EPFL.
 
-Each folder corresponds to one exercise and inside contains the source code but also the report, especifications and the needed libraries in the folder `lib/`.
+Each folder corresponds to one exercise and inside contains the source code, the configuration files and the report.
 
 ## Configuring Eclipse
 
@@ -11,11 +11,11 @@ Open an existing project with the folder corresponding to each exercise as root 
 
 Right click in the Package Explorer > Build Path > Configure Build Path...
 
-Move to the Libraries tab and click Add external JARs. Then go to the folder of the exercise and import the JARs in the `lib/` folder.
+Move to the Libraries tab and click Add external JARs. Then go to the folder of the exercise and import the JARs.
 
 ### Adding Javadoc to external JARs
 
-It's useful to at least add the Javadoc for Repast, which is a zip file located in the `lib/` folder. Open the Referenced Libraries in the Package Explorer, Right click Repast > Properties > Javadoc Location.
+It's useful to at least add the Javadoc for Repast, which is a zip file located in the `lib/` folder of exercise 1. Open the Referenced Libraries in the Package Explorer, Right click Repast > Properties > Javadoc Location.
 
 Select Javadoc in archive and browse to find the zip folder with the documentation in the Archive Path. Then, browse in Path within archive and select the sub-folder `api`. Finally validate and if it's correctly imported hit Apply and close.
 
