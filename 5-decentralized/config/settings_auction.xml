@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- defines global settings in the platform -->
+<settings name="auction">		
+		
+	<!-- Sizes -->
+	<set world-width="1040" />
+	<set world-height="480" />		
+	<set city-radius="8" />		
+	<set route-width="8" />
+	
+	<!-- Colors -->
+	<set color-background="#ffffff" />
+	<set color-foreground="#000000" />
+	<set color-city="#00aaff" />
+	<set color-city-name="#002233" />
+	<set color-city-circumference="#556677" />
+	<set color-task-text="#000000" />
+	<set color-task-pickup="#ff0000" />
+	<set color-task-deliver="#0000ff" />
+	<set color-task-indicator="#000000" />
+	<set color-route="#99aabb" />
+	
+	<!-- Timeouts -->
+	<set timeout-setup="300000" />
+	<set timeout-plan="300000" />
+	<set timeout-bid="300000" />
+	
+	<!-- Flags -->
+	<set flag-show-ui="true" />
+	
+</settings>
