@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<topology name="england" >
+
+	<!-- the list of cities in the topology -->
+	<cities>
+		<city x="484" y="565" name="London"/>
+		<city x="349" y= "36" name="Newcastle"/>
+		<city x="355" y="220" name="Leeds"/>
+		<city x="362" y="284" name="Sheffield"/>
+		<city x="323" y="420" name="Birmingham"/>
+		<city x="206" y="568" name="Cardiff"/>
+		<city x="118" y="729" name="Plymouth"/>
+		<city x="613" y="399" name="Norwich"/>
+		<city x="225" y="279" name="Liverpool"/>
+		<city x="292" y="270" name="Manchester"/>
+		<city x="397" y="667" name="Portsmouth"/>
+	</cities>
+
+	<!-- the list of routes in the topology 
+	
+		@note: All distances are given in miles !!!
+	-->
+	<routes>
+		<route distance="170"  from="Plymouth" to="Portsmouth"/>
+		<route distance="74.8" from="Portsmouth" to="London"/>
+		<route distance="115"  from="London" to="Norwich"/>
+		<route distance="118"  from="London" to="Birmingham"/>
+		<route distance="115"  from="Birmingham" to="Cardiff"/>
+		<route distance="94.9" from="Birmingham" to="Manchester"/>
+		<route distance="90.2" from="Birmingham" to="Sheffield"/>
+		<route distance="34.7" from="Manchester" to="Liverpool"/>
+		<route distance="72.5" from="Liverpool" to="Leeds"/>
+		<route distance="41.3" from="Sheffield" to="Leeds"/>
+		<route distance="98.5" from="Leeds" to="Newcastle"/>
+	</routes>
+
+</topology>

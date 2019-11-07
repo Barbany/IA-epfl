@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- the topology of 'the netherlands' -->
+<topology name="the netherlands">
+
+	<!-- the list of cities in the topology -->
+	<cities>
+		<city x="252" y="255" name="Amsterdam" />
+		<city x="183" y="362" name="Rotterdam"/>
+		<city x="158" y="322" name="Den Haag"/>
+		<city x="288" y="318" name="Utrecht"/>
+		<city x="345" y="487" name="Eindhoven"/>
+		<city x="302" y="240" name="Almere"/>
+		<city x="520" y= "21" name="Groningen"/>
+		<city x="407" y="383" name="Nijmegen"/>
+	<!-- <city x="414" y="348" name="Arnhem"/> -->
+		<city x="233" y="448" name="Breda"/>
+		<city x="424" y="287" name="Apeldoorn"/>
+	</cities>
+
+	<!-- the list of routes in the topology -->
+	<routes>
+		<route distance="65.2" from="Amsterdam" to="Den Haag"/>
+		<route distance="45.6" from="Amsterdam" to="Utrecht"/>
+		<route distance="90.2" from="Amsterdam" to="Apeldoorn"/>
+	<!-- <route distance="181" from="Amsterdam" to="Groningen"/> -->
+		<route distance="31.9" from="Amsterdam" to="Almere"/>
+		
+		<route distance="25.4" from="Rotterdam" to="Den Haag"/>
+		<route distance="48.6" from="Rotterdam" to="Breda"/>
+		<route distance="62.3" from="Rotterdam" to="Utrecht"/>
+		<route distance="112" from="Rotterdam" to="Nijmegen"/>
+		
+		<route distance="67.0" from="Utrecht" to="Apeldoorn"/>
+		<route distance="86.4" from="Utrecht" to="Nijmegen"/>
+		<route distance="91.9" from="Utrecht" to="Eindhoven"/>
+		<route distance="73.5" from="Utrecht" to="Breda"/>
+		<route distance="43.3" from="Utrecht" to="Almere"/>
+		
+		<route distance="62.2" from="Eindhoven" to="Breda"/>
+		<route distance="70.2" from="Eindhoven" to="Nijmegen"/>
+		
+		<route distance="154" from="Almere" to="Groningen"/>
+		<route distance="80.1" from="Almere" to="Apeldoorn"/>
+		
+		<route distance="141" from="Groningen" to="Apeldoorn"/>
+		
+		<route distance="96.2" from="Nijmegen" to="Breda"/>
+		<route distance="57.1" from="Nijmegen" to="Apeldoorn"/>
+	</routes>
+
+</topology>
