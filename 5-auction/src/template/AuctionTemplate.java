@@ -1,12 +1,15 @@
 package template;
 
+import java.io.File;
 //the list of imports
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import logist.LogistSettings;
 import logist.Measures;
 import logist.behavior.AuctionBehavior;
+import logist.config.Parsers;
 import logist.agent.Agent;
 import logist.simulation.Vehicle;
 import logist.plan.Plan;
@@ -28,61 +31,77 @@ public class AuctionTemplate implements AuctionBehavior {
 	private TaskDistribution distribution;
 	private Agent agent;
 	private Random random;
-	private Vehicle vehicle;
-	private City currentCity;
+	private List<Vehicle> vehicles;
+	
+	private long timeoutPlan;
+	private SLS plan;
+	double[][] pmf;
 
 	@Override
-	public void setup(Topology topology, TaskDistribution distribution,
-			Agent agent) {
+	public void setup(Topology topology, TaskDistribution distribution, Agent agent) {
 
 		this.topology = topology;
 		this.distribution = distribution;
 		this.agent = agent;
-		this.vehicle = agent.vehicles().get(0);
-		this.currentCity = vehicle.homeCity();
+		
+		this.vehicles = agent.vehicles();
+		
+		// this code is used to get the timeouts
+        LogistSettings ls = null;
+        try {
+            ls = Parsers.parseSettings("config" + File.separator + "settings_auction.xml");
+        }
+        catch (Exception exc) {
+            System.out.println("There was a problem loading the configuration file.");
+        }
+        // the plan method cannot execute more than timeout_plan milliseconds
+        timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
 
-		long seed = -9019554669489983951L * currentCity.hashCode() * agent.id();
+		long seed = -9019554669489983951L * agent.id();
 		this.random = new Random(seed);
+		
+		initPmf();
+		
+		this.plan = new SLS(vehicles, timeoutPlan);
+	}
+	
+	private void initPmf() {
+		this.pmf = new double[topology.size()][topology.size()];
+		
+		// TODO: Weight probability of task by reward and connectivity of path (at least endpoints)
+		// Normalize everything so we have an actual pmf (easier when generating randoms)
+		for (City city1 : topology.cities()) {
+			for (City city2 : topology.cities()) {
+				pmf[city1.id][city2.id] = distribution.probability(city1, city2);
+			}
+		}
 	}
 
 	@Override
 	public void auctionResult(Task previous, int winner, Long[] bids) {
 		if (winner == agent.id()) {
-			currentCity = previous.deliveryCity;
+			// Assign plan in askPrice
+			plan.consolidatePlan();
 		}
+		// TODO: Analyze bids and winner bid
+		long lowestBid = bids[winner];
 	}
 	
 	@Override
 	public Long askPrice(Task task) {
-
-		if (vehicle.capacity() < task.weight)
-			return null;
-
-		long distanceTask = task.pickupCity.distanceUnitsTo(task.deliveryCity);
-		long distanceSum = distanceTask
-				+ currentCity.distanceUnitsTo(task.pickupCity);
-		double marginalCost = Measures.unitsToKM(distanceSum
-				* vehicle.costPerKm());
-
-		double ratio = 1.0 + (random.nextDouble() * 0.05 * task.id);
-		double bid = ratio * marginalCost;
-
-		return (long) Math.round(bid);
+		// Insert new task into current plan
+		long min_cost = plan.addTask(task);
+		
+		// TODO: Think smart way to estimate price (use pmf)
+		return min_cost * 2;
 	}
 
+	/**
+	 * This is called after all bids have been placed
+	 */
 	@Override
 	public List<Plan> plan(List<Vehicle> vehicles, TaskSet tasks) {
-		
-//		System.out.println("Agent " + agent.id() + " has tasks " + tasks);
-
-		Plan planVehicle1 = naivePlan(vehicle, tasks);
-
-		List<Plan> plans = new ArrayList<Plan>();
-		plans.add(planVehicle1);
-		while (plans.size() < vehicles.size())
-			plans.add(Plan.EMPTY);
-
-		return plans;
+        return plan.getFinalPlan();
 	}
 
 	private Plan naivePlan(Vehicle vehicle, TaskSet tasks) {
