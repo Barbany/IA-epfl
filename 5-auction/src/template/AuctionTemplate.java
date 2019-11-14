@@ -56,6 +56,8 @@ public class AuctionTemplate implements AuctionBehavior {
         }
         // the plan method cannot execute more than timeout_plan milliseconds
         timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
+        // TODO: Debugging
+        timeoutPlan = 500;
 
 		long seed = -9019554669489983951L * agent.id();
 		this.random = new Random(seed);
@@ -93,7 +95,8 @@ public class AuctionTemplate implements AuctionBehavior {
 		long min_cost = plan.addTask(task);
 		
 		// TODO: Think smart way to estimate price (use pmf)
-		return min_cost * 2;
+		System.out.println(min_cost);
+		return min_cost;
 	}
 
 	/**
@@ -101,7 +104,7 @@ public class AuctionTemplate implements AuctionBehavior {
 	 */
 	@Override
 	public List<Plan> plan(List<Vehicle> vehicles, TaskSet tasks) {
-        return plan.getFinalPlan();
+        return plan.getFinalPlan(tasks);
 	}
 
 	private Plan naivePlan(Vehicle vehicle, TaskSet tasks) {

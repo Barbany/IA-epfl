@@ -1,6 +1,7 @@
 package template;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -8,6 +9,7 @@ import java.util.Random;
 import logist.plan.Plan;
 import logist.simulation.Vehicle;
 import logist.task.Task;
+import logist.task.TaskSet;
 
 /**
  * Stochastic Local Search Algorithm
@@ -42,7 +44,7 @@ public class SLS {
 	 */
 	public long addTask(Task task) {
 		// Create potential plan
-		this.build();
+		this.build(task);
 		return (long) (potential.totalCost(vehicles) - best.totalCost(vehicles));
 	}
 	
@@ -57,8 +59,16 @@ public class SLS {
 	 * Get plan after all bids have been placed
 	 * @return
 	 */
-	public List<Plan> getFinalPlan(){
-		// TODO: Could this be further optimized with more time?
+	public List<Plan> getFinalPlan(TaskSet tasks){
+		HashMap<Integer, Task> int_task = new HashMap<Integer, Task>();
+		for(Task t: tasks) {
+			int_task.put(t.id, t);
+		}
+		
+		for(Vehicle v: vehicles) {
+			best.finalPlan(v, int_task);	
+		}
+		
 		return best.plans;
 	}
 
@@ -67,11 +77,12 @@ public class SLS {
 	 * 
 	 * @return Optimal plan in form of list of plan objects (one for each vehicle)
 	 */
-	private void build() {
+	private void build(Task task) {
 		long timeStart, duration;
 		double probability = 0.8;
 
 		// Select Initial Solution
+		// Best have to remain untouched!
 		potential = best.clone();
 		double bestCost = potential.totalCost(vehicles);
 		Solution bestSolution = potential;
@@ -80,19 +91,39 @@ public class SLS {
 		long totalDuration = 0;
 		
 		if(potential.totalCost(vehicles) == 0) {
-			// First action to be added
-			int maxCapacity = 0;
-			int argMax = -1;
+			// First action to be added	
+			double min_cost = Double.MAX_VALUE, cost;
+			Vehicle best_vehicle = null;
 			
 			for(Vehicle v: vehicles) {
-				if(maxCapacity < v.capacity()) {
-					maxCapacity = v.capacity();
-					argMax = v.id();
+				cost = 0;
+				if(task.weight <= v.capacity()) {
+					cost += v.getCurrentCity().distanceTo(task.pickupCity);
+					cost += task.pickupCity.distanceTo(task.deliveryCity);
+					if(cost < min_cost) {
+						min_cost = cost;
+						best_vehicle = v;
+					}
 				}
 			}
-			// potential.actionVehicle.put(argMax, )
+			
+			// null best_vehicle handled in naivePlan
+			potential.initSolutionSingle(best_vehicle, task);
 			
 		} else {
+			// Add new task to random vehicle
+			// TODO: Can do better or enough to try all plans with all vehicles including task?
+			Vehicle v = vehicles.get(rn.nextInt(vehicles.size()));
+			
+			Action prev_pickup = potential.nextActionVehicle.get(v);
+			Action pickup = new Action.Pickup(task);
+			Action delivery = new Action.Delivery(task);
+			
+			potential.nextActionVehicle.put(v, pickup);
+			potential.nextAction.put(pickup, delivery);
+			potential.nextAction.put(delivery, prev_pickup);
+			
+			
 			// Until termination condition met
 			for (int i = 0; totalDuration + maxDuration < timeoutPlan*0.9; i++) {
 				timeStart = System.currentTimeMillis();
@@ -113,8 +144,6 @@ public class SLS {
 				totalDuration += duration;
 			}
 		}
-
-		System.out.println("Best plan cost: " + bestCost);
 		
 		potential = bestSolution;
 	}

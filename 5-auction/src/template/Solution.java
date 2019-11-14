@@ -5,23 +5,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import logist.LogistException;
 import logist.plan.Plan;
 import logist.simulation.Vehicle;
 import logist.task.Task;
-import logist.task.TaskSet;
 import logist.topology.Topology.City;
 
 /**
- * Solution Class
- * Store sequences of actions and its correspondent plans
+ * Solution Class Store sequences of actions and its correspondent plans
  * 
  * @author Oriol Barbany & Natalie Bolon
  */
 public class Solution implements Cloneable {
 	public List<Plan> plans;
 	List<Vehicle> vehicles;
-	public HashMap<Action, Vehicle> actionVehicle;
 	public HashMap<Action, Action> nextAction;
 	public HashMap<Vehicle, Action> nextActionVehicle;
 
@@ -33,7 +29,6 @@ public class Solution implements Cloneable {
 	public Solution(List<Vehicle> vehicles) {
 		this.plans = new ArrayList<Plan>();
 		this.vehicles = vehicles;
-		this.actionVehicle = new HashMap<Action, Vehicle>();
 		this.nextAction = new HashMap<Action, Action>();
 		this.nextActionVehicle = new HashMap<Vehicle, Action>();
 	}
@@ -44,104 +39,39 @@ public class Solution implements Cloneable {
 	 * 
 	 * @param tasks
 	 */
-	public void initSolutionSingle(TaskSet tasks) {
-		int indexBiggestVehicle = -1;
-		int maxCapacity = 0;
-
-		for (int i = 0; i < vehicles.size(); i++) {
-			if (vehicles.get(i).capacity() > maxCapacity) {
-				indexBiggestVehicle = i;
-				maxCapacity = vehicles.get(i).capacity();
-			}
-		}
-
-		// Assign all tasks to biggest vehicles
-		Plan planBiggestVehicle = naivePlan(vehicles.get(indexBiggestVehicle), tasks);
-
+	public void initSolutionSingle(Vehicle v, Task task) {
 		// Initialize plan and nextTask for vehicles
-		for (int i = 0; i < vehicles.size(); i++) {
-			if (i == indexBiggestVehicle) {
-				plans.add(planBiggestVehicle);
+		for (Vehicle u : vehicles) {
+			if (u.equals(v)) {
+				plans.add(naivePlan(v, task));
 			} else {
 				plans.add(Plan.EMPTY);
-				nextActionVehicle.put(vehicles.get(i), null);
+				nextActionVehicle.put(u, null);
 			}
 		}
 	}
 
 	/**
-	 * Initiate tasks distributed sequentially along all possible vehicles
-	 * 
-	 * @param tasks
-	 */
-	public void initSolutionMultiple(TaskSet tasks) {
-		// assign tasks to all vehicles with naive plan (pickup_i --> delivery_i)
-		List<Integer> capacities = new ArrayList<Integer>();
-		Task task;
-		Plan plan;
-
-		int numVehicles = vehicles.size();
-		List<TaskSet> taskVehicle = new ArrayList<TaskSet>(numVehicles);
-
-		for (int i = 0; i < numVehicles; i++) {
-			taskVehicle.add(TaskSet.noneOf(tasks));
-			capacities.add(vehicles.get(i).capacity());
-		}
-
-		Iterator<Task> it_task = tasks.iterator();
-		int j = 0;
-		int check = 0;
-		while (it_task.hasNext()) {
-			task = it_task.next();
-			while (capacities.get(j % numVehicles) < task.weight && check < numVehicles) {
-				j++;
-				check++;
-			}
-			if (check == numVehicles) {
-				throw new LogistException("Non feasible solution");
-			}
-			check = 0;
-			taskVehicle.get(j % numVehicles).add(task);
-			j++;
-		}
-
-		for (int i = 0; i < numVehicles; i++) {
-			if (taskVehicle.get(i).size() > 0) {
-				plan = naivePlan(vehicles.get(i), taskVehicle.get(i));
-			} else {
-				plan = Plan.EMPTY;
-			}
-			plans.add(plan);
-		}
-	}
-
-	/**
-	 * Put all the tasks in the given vehicle and return its plan
+	 * Put the task in the given vehicle and return its plan
 	 * 
 	 * @param vehicle
-	 * @param tasks
+	 * @param task
 	 * @return Plan
 	 */
-	private Plan naivePlan(Vehicle vehicle, TaskSet tasks) {
-		City current = vehicle.getCurrentCity();
-		Plan plan = new Plan(current);
-		Action aux;
+	private Plan naivePlan(Vehicle vehicle, Task task) {
+		if (vehicle == null) {
+			return Plan.EMPTY;
+		} else {
+			City current = vehicle.getCurrentCity();
+			Plan plan = new Plan(current);
 
-		Action lastAction = null;
-		for (Task task : tasks) {
-			if (lastAction != null) {
-				// Next pickups and deliveries
-				aux = new Action.Pickup(task);
-				nextAction.put(lastAction, aux);
-				lastAction = new Action.Delivery(task);
-				nextAction.put(aux, lastAction);
-			} else {
-				// First Action is pickup of first task
-				lastAction = new Action.Delivery(task);
-				aux = new Action.Pickup(task);
-				nextActionVehicle.put(vehicle, aux);
-				nextAction.put(aux, lastAction);
-			}
+			// First Action is pickup of first task
+			Action lastAction = new Action.Delivery(task);
+			Action aux = new Action.Pickup(task);
+			;
+			nextActionVehicle.put(vehicle, aux);
+			nextAction.put(aux, lastAction);
+			nextAction.put(lastAction, null);
 
 			// move: current city => pickup location
 			for (City city : current.pathTo(task.pickupCity)) {
@@ -157,14 +87,8 @@ public class Solution implements Cloneable {
 
 			plan.appendDelivery(task);
 
-			// set current city
-			current = task.deliveryCity;
+			return plan;
 		}
-
-		// Last Action is followed by null
-		nextAction.put(lastAction, null);
-
-		return plan;
 	}
 
 	public Solution clone() {
@@ -180,7 +104,6 @@ public class Solution implements Cloneable {
 		}
 
 		// copy time, taksVehicle, nextTask, nextTaskVehicle, vehicleTaskSet
-		A.actionVehicle = new HashMap<Action, Vehicle>(this.actionVehicle);
 		A.nextAction = new HashMap<Action, Action>(this.nextAction);
 		A.nextActionVehicle = new HashMap<Vehicle, Action>(this.nextActionVehicle);
 
@@ -220,11 +143,44 @@ public class Solution implements Cloneable {
 		// Set the previously computed plan for current vehicle
 		plans.set(v.id(), plan);
 	}
-
 	
 	/**
-	 * Get the total cost, computed from the plan of this Solution
-	 * Vehicles are given to weight the cost per kilometer of each one
+	 * Create final plan with new Task objects
+	 * 
+	 * @param v
+	 */
+	public void finalPlan(Vehicle v, HashMap<Integer, Task> int_task) {
+		Action a = nextActionVehicle.get(v);
+		Plan plan = new Plan(v.getCurrentCity());
+
+		City currentCity = v.getCurrentCity();
+
+		while (a != null) {
+
+			// move: current city => next location
+			for (City city : currentCity.pathTo(a.city)) {
+				plan.appendMove(city);
+				currentCity = city;
+			}
+
+			// Perform action
+			if (a.pickup) {
+				plan.appendPickup(int_task.get(a.task.id));
+			} else {
+				plan.appendDelivery(int_task.get(a.task.id));
+			}
+
+			// Check next action
+			a = nextAction.get(a);
+		}
+
+		// Set the previously computed plan for current vehicle
+		plans.set(v.id(), plan);
+	}
+
+	/**
+	 * Get the total cost, computed from the plan of this Solution Vehicles are
+	 * given to weight the cost per kilometer of each one
 	 * 
 	 * @param vehicles
 	 * @return
