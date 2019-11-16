@@ -112,7 +112,7 @@ public class SLS {
 			
 		} else {
 			// Add new task to random vehicle
-			// TODO: Can do better or enough to try all plans with all vehicles including task?
+			// TODO: Can do better or enough to try all plans with all vehicles including task?			
 			Vehicle v = vehicles.get(rn.nextInt(vehicles.size()));
 			
 			Action prev_pickup = potential.nextActionVehicle.get(v);
@@ -123,6 +123,7 @@ public class SLS {
 			potential.nextAction.put(pickup, delivery);
 			potential.nextAction.put(delivery, prev_pickup);
 			
+			potential.updatePlan(v);
 			
 			// Until termination condition met
 			for (int i = 0; totalDuration + maxDuration < timeoutPlan*0.9; i++) {
