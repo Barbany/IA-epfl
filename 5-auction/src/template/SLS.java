@@ -45,7 +45,11 @@ public class SLS {
 	public long addTask(Task task) {
 		// Create potential plan
 		this.build(task);
-		return (long) (potential.totalCost(vehicles) - best.totalCost(vehicles));
+		if(potential != null) {
+			return (long) (potential.totalCost(vehicles) - best.totalCost(vehicles));
+		} else {
+			return Long.MAX_VALUE;
+		}
 	}
 	
 	/**
@@ -107,46 +111,64 @@ public class SLS {
 				}
 			}
 			
-			// null best_vehicle handled in naivePlan
-			potential.initSolutionSingle(best_vehicle, task);
+			if(best_vehicle != null) {
+				potential.initSolutionSingle(best_vehicle, task);	
+			} else {
+				potential = null;
+			}
 			
 		} else {
 			// Add new task to random vehicle
-			// TODO: Can do better or enough to try all plans with all vehicles including task?			
-			Vehicle v = vehicles.get(rn.nextInt(vehicles.size()));
+			// TODO: Can do better or enough to try all plans with all vehicles including task?
+			List<Vehicle> shuffled_vehicles = new ArrayList<Vehicle>(vehicles);
 			
-			Action prev_pickup = potential.nextActionVehicle.get(v);
-			Action pickup = new Action.Pickup(task);
-			Action delivery = new Action.Delivery(task);
+			java.util.Collections.shuffle(shuffled_vehicles);
+			Iterator<Vehicle> it = shuffled_vehicles.iterator();
 			
-			potential.nextActionVehicle.put(v, pickup);
-			potential.nextAction.put(pickup, delivery);
-			potential.nextAction.put(delivery, prev_pickup);
+			boolean assigned = false;
+			while(it.hasNext() && !assigned) {
+				Vehicle v = it.next();
+				if(v.capacity() >= task.weight) {
+					Action prev_pickup = potential.nextActionVehicle.get(v);
+					Action pickup = new Action.Pickup(task);
+					Action delivery = new Action.Delivery(task);
+					
+					potential.nextActionVehicle.put(v, pickup);
+					potential.nextAction.put(pickup, delivery);
+					potential.nextAction.put(delivery, prev_pickup);
+					
+					potential.updatePlan(v);
+					
+					assigned = true;
+				}
+			}
 			
-			potential.updatePlan(v);
-			
-			// Until termination condition met
-			for (int i = 0; totalDuration + maxDuration < timeoutPlan*0.9; i++) {
-				timeStart = System.currentTimeMillis();
-				probability = 0.3 - Math.log(10 / (i + 1)) * 0.075; // logarithmic variation
-				//probability = Math.min(0.3 + 0.1*i/75, 0.95); // linear variation
+			if(assigned) {
+				// Until termination condition met
+				for (int i = 0; totalDuration + maxDuration < timeoutPlan*0.9; i++) {
+					timeStart = System.currentTimeMillis();
+					probability = 0.3 - Math.log(10 / (i + 1)) * 0.075; // logarithmic variation
+					//probability = Math.min(0.3 + 0.1*i/75, 0.95); // linear variation
 
-				potential = localChoice(chooseNeighbors(potential), probability);
+					potential = localChoice(chooseNeighbors(potential), probability);
+					
+					if (potential.totalCost(vehicles) < bestCost) {
+						bestCost = potential.totalCost(vehicles);
+						bestSolution = potential;
+					}
+
+					duration = System.currentTimeMillis() - timeStart;
+					if (maxDuration < duration) {
+						maxDuration = duration;
+					}
+					totalDuration += duration;
+				}
 				
-				if (potential.totalCost(vehicles) < bestCost) {
-					bestCost = potential.totalCost(vehicles);
-					bestSolution = potential;
-				}
-
-				duration = System.currentTimeMillis() - timeStart;
-				if (maxDuration < duration) {
-					maxDuration = duration;
-				}
-				totalDuration += duration;
+				potential = bestSolution;
+			} else {
+				potential = null;
 			}
 		}
-		
-		potential = bestSolution;
 	}
 
 	/**

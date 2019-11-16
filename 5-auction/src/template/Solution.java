@@ -59,36 +59,32 @@ public class Solution implements Cloneable {
 	 * @return Plan
 	 */
 	private Plan naivePlan(Vehicle vehicle, Task task) {
-		if (vehicle == null) {
-			return Plan.EMPTY;
-		} else {
-			City current = vehicle.getCurrentCity();
-			Plan plan = new Plan(current);
+		City current = vehicle.getCurrentCity();
+		Plan plan = new Plan(current);
 
-			// First Action is pickup of first task
-			Action lastAction = new Action.Delivery(task);
-			Action aux = new Action.Pickup(task);
-			;
-			nextActionVehicle.put(vehicle, aux);
-			nextAction.put(aux, lastAction);
-			nextAction.put(lastAction, null);
+		// First Action is pickup of first task
+		Action lastAction = new Action.Delivery(task);
+		Action aux = new Action.Pickup(task);
+		;
+		nextActionVehicle.put(vehicle, aux);
+		nextAction.put(aux, lastAction);
+		nextAction.put(lastAction, null);
 
-			// move: current city => pickup location
-			for (City city : current.pathTo(task.pickupCity)) {
-				plan.appendMove(city);
-			}
-
-			plan.appendPickup(task);
-
-			// move: pickup location => delivery location
-			for (City city : task.path()) {
-				plan.appendMove(city);
-			}
-
-			plan.appendDelivery(task);
-
-			return plan;
+		// move: current city => pickup location
+		for (City city : current.pathTo(task.pickupCity)) {
+			plan.appendMove(city);
 		}
+
+		plan.appendPickup(task);
+
+		// move: pickup location => delivery location
+		for (City city : task.path()) {
+			plan.appendMove(city);
+		}
+
+		plan.appendDelivery(task);
+
+		return plan;
 	}
 
 	public Solution clone() {
@@ -143,7 +139,7 @@ public class Solution implements Cloneable {
 		// Set the previously computed plan for current vehicle
 		plans.set(v.id(), plan);
 	}
-	
+
 	/**
 	 * Create final plan with new Task objects
 	 * 
