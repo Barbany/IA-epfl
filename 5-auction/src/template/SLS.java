@@ -84,7 +84,8 @@ public class SLS {
 		// Select Initial Solution
 		// Best have to remain untouched!
 		potential = best.clone();
-		double bestCost = potential.totalCost(vehicles);
+		//double bestCost = potential.totalCost(vehicles);
+		double bestCost = Double.MAX_VALUE;
 		Solution bestSolution = potential;
 
 		long maxDuration = 0;
