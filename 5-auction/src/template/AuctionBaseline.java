@@ -27,8 +27,6 @@ import logist.topology.Topology.City;
 @SuppressWarnings("unused")
 public class AuctionBaseline implements AuctionBehavior {
 	// Basic information about the problem
-	private Topology topology;
-	private TaskDistribution distribution;
 	private Agent agent;
 	private List<Vehicle> vehicles;
 	private int numTasks;
@@ -49,12 +47,7 @@ public class AuctionBaseline implements AuctionBehavior {
 
 	@Override
 	public void setup(Topology topology, TaskDistribution distribution, Agent agent) {
-		// Start timer
-		long timeStart = System.currentTimeMillis();
-
 		// Initialize basic information about the problem
-		this.topology = topology;
-		this.distribution = distribution;
 		this.agent = agent;
 		this.vehicles = agent.vehicles();
 		this.numTasks = 0; 
@@ -100,7 +93,7 @@ public class AuctionBaseline implements AuctionBehavior {
 		
 		System.out.println("Minimum cost is: " + min_cost);
 		
-		return (long) (min_cost * (1.0 + STD * (random.nextDouble() - GAIN_MARGIN)) / (numTasks + 1));
+		return (long) (min_cost * (1.0 + STD * (random.nextDouble() - GAIN_MARGIN)) / ((double) numTasks + 1));
 	}
 
 	/**
