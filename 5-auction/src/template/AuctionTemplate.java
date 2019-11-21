@@ -34,9 +34,8 @@ public class AuctionTemplate implements AuctionBehavior {
 	private List<Vehicle> vehicles;
 	private List<Vehicle> vehiclesToBeat;
 	
-	private long timeoutPlan;
-	private SLS plan;
-	private SLS planToBeat;
+	private long timeoutSetup, timeoutBid, timeoutPlan;
+	private SLS plan, planToBeat;
 	double[][] pmf;
 	private long minCostToBeat;
 	private double marginToBeat;
@@ -47,6 +46,7 @@ public class AuctionTemplate implements AuctionBehavior {
 
 	@Override
 	public void setup(Topology topology, TaskDistribution distribution, Agent agent) {
+		long timeStart = System.currentTimeMillis();
 
 		this.topology = topology;
 		this.distribution = distribution;
@@ -69,27 +69,42 @@ public class AuctionTemplate implements AuctionBehavior {
             System.out.println("There was a problem loading the configuration file.");
         }
         // the plan method cannot execute more than timeout_plan milliseconds
-        //timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
-        // TODO: Debugging
-        timeoutPlan = 3000;
+        timeoutSetup = ls.get(LogistSettings.TimeoutKey.SETUP);
+        timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
+        timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
 
 		long seed = -9019554669489983951L * agent.id();
 		this.random = new Random(seed);
 		
-		initPmf();
+		this.plan = new SLS(vehicles, timeoutBid, timeoutPlan);
+		this.planToBeat = new SLS(vehiclesToBeat, timeoutBid, timeoutPlan);
 		
-		this.plan = new SLS(vehicles, timeoutPlan);
-		this.planToBeat = new SLS(vehiclesToBeat, timeoutPlan);
+		initPmf(timeoutSetup - (System.currentTimeMillis() - timeStart));
 	}
 	
-	private void initPmf() {
+	private void initPmf(float timeout) {
 		this.pmf = new double[topology.size()][topology.size()];
+		float timeStart, duration;
+		float totalDuration = 0;
+		float maxDuration = 0;
 		
 		// TODO: Weight probability of task by reward and connectivity of path (at least endpoints)
 		// Normalize everything so we have an actual pmf (easier when generating randoms)
 		for (City city1 : topology.cities()) {
 			for (City city2 : topology.cities()) {
+				timeStart = System.currentTimeMillis();
+				
 				pmf[city1.id][city2.id] = distribution.probability(city1, city2);
+
+				duration = System.currentTimeMillis() - timeStart;
+				if (maxDuration < duration) {
+					maxDuration = duration;
+				}
+				totalDuration += duration;
+				
+				if (totalDuration + maxDuration < timeout*0.9) {
+					return;
+				}
 			}
 		}
 	}
@@ -155,20 +170,7 @@ public class AuctionTemplate implements AuctionBehavior {
 				return (long) (min_cost);
 				
 			}
-			
 		}
-		
-		
-		
-		/**
-		if(min_cost < min_costToBeat) {
-			return min_cost;
-			
-		}else {
-			return (long) (min_costToBeat*0.9);
-		}
-		*/
-		//return min_cost + 100;
 	}
 
 	/**
