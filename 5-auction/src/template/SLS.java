@@ -20,7 +20,7 @@ public class SLS {
 	private List<Vehicle> vehicles;
 	private Random rn;
 	
-	private long timeoutPlan;
+	private long timeoutBid, timeoutPlan;
 	private Solution best, potential;
 
 	/**
@@ -28,9 +28,10 @@ public class SLS {
 	 * 
 	 * @param vehicles
 	 */
-	public SLS(List<Vehicle> vehicles, long timeoutPlan) {
+	public SLS(List<Vehicle> vehicles, long timeoutBid, long timeoutPlan) {
 		this.vehicles = vehicles;
 		this.rn = new Random();
+		this.timeoutBid = timeoutBid;
 		this.timeoutPlan = timeoutPlan;
 		
 		best = new Solution(vehicles);
@@ -64,6 +65,8 @@ public class SLS {
 	 * @return
 	 */
 	public List<Plan> getFinalPlan(TaskSet tasks){
+		float timeStart = System.currentTimeMillis();
+		
 		HashMap<Integer, Task> int_task = new HashMap<Integer, Task>();
 		for(Task t: tasks) {
 			int_task.put(t.id, t);
@@ -72,6 +75,9 @@ public class SLS {
 		for(Vehicle v: vehicles) {
 			best.finalPlan(v, int_task);	
 		}
+		
+		// Further improve plan for the remaining time
+		findBestsolution(best, timeoutPlan - (System.currentTimeMillis() - timeStart));
 		
 		return best.plans;
 	}
@@ -82,18 +88,12 @@ public class SLS {
 	 * @return Optimal plan in form of list of plan objects (one for each vehicle)
 	 */
 	private void build(Task task) {
-		long timeStart, duration;
-		double probability = 0.8;
-
+		float timeStart = System.currentTimeMillis();
+		
 		// Select Initial Solution
 		// Best have to remain untouched!
 		potential = best.clone();
 		//double bestCost = potential.totalCost(vehicles);
-		double bestCost = Double.MAX_VALUE;
-		Solution bestSolution = potential;
-
-		long maxDuration = 0;
-		long totalDuration = 0;
 		
 		if(potential.totalCost(vehicles) == 0) {
 			// First action to be added	
@@ -145,31 +145,44 @@ public class SLS {
 			}
 			
 			if(assigned) {
-				// Until termination condition met
-				for (int i = 0; totalDuration + maxDuration < timeoutPlan*0.9; i++) {
-					timeStart = System.currentTimeMillis();
-					probability = 0.3 - Math.log(10 / (i + 1)) * 0.075; // logarithmic variation
-					//probability = Math.min(0.3 + 0.1*i/75, 0.95); // linear variation
-
-					potential = localChoice(chooseNeighbors(potential), probability);
-					
-					if (potential.totalCost(vehicles) < bestCost) {
-						bestCost = potential.totalCost(vehicles);
-						bestSolution = potential;
-					}
-
-					duration = System.currentTimeMillis() - timeStart;
-					if (maxDuration < duration) {
-						maxDuration = duration;
-					}
-					totalDuration += duration;
-				}
-				
-				potential = bestSolution;
+				findBestsolution(potential, timeoutBid - (System.currentTimeMillis() - timeStart));
 			} else {
 				potential = null;
 			}
 		}
+	}
+	
+	private void findBestsolution(Solution initSol, float timeout) {
+		long timeStart, duration;
+		double probability = 0.8;
+
+		double bestCost = Double.MAX_VALUE;
+		Solution bestSolution = initSol;
+
+		long maxDuration = 0;
+		long totalDuration = 0;
+		
+		// Until termination condition met
+		for (int i = 0; totalDuration + maxDuration < timeout*0.9; i++) {
+			timeStart = System.currentTimeMillis();
+			probability = 0.3 - Math.log(10 / (i + 1)) * 0.075; // logarithmic variation
+			//probability = Math.min(0.3 + 0.1*i/75, 0.95); // linear variation
+
+			initSol = localChoice(chooseNeighbors(initSol), probability);
+			
+			if (initSol.totalCost(vehicles) < bestCost) {
+				bestCost = initSol.totalCost(vehicles);
+				bestSolution = initSol;
+			}
+
+			duration = System.currentTimeMillis() - timeStart;
+			if (maxDuration < duration) {
+				maxDuration = duration;
+			}
+			totalDuration += duration;
+		}
+		
+		initSol = bestSolution;
 	}
 
 	/**
