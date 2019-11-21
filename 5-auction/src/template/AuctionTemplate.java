@@ -38,10 +38,11 @@ public class AuctionTemplate implements AuctionBehavior {
 	private SLS plan;
 	private SLS planToBeat;
 	double[][] pmf;
-	private long minCostToBeat;
-	private double marginToBeat;
-	private long diffBidToBeat;
-	private long stdBidToBeat = 0;
+	
+	private List<Long> marginsCostToBeat = new ArrayList<Long>(); // actual bid / estimated marginal cost
+	private long minCostToBeat; // estimated marginal cost for the current task
+	private long marginToBeat = 1; // correction factor between bid and estimated marginal cost
+	private long stdToBeat = 0;
 	private int numTasks;
 	
 
@@ -98,7 +99,7 @@ public class AuctionTemplate implements AuctionBehavior {
 	public void auctionResult(Task previous, int winner, Long[] bids) {
 		long bidToBeat; 
 		this.numTasks ++; 
-		long diff; 
+		long ratio = 0; 
 		
 		//System.out.println(bids.toString());
 		if (winner == agent.id()) {
@@ -115,16 +116,20 @@ public class AuctionTemplate implements AuctionBehavior {
 			bidToBeat = bids[1];
 		}
 		
-		
-		diff = (long) (bidToBeat - marginToBeat);
-		System.out.println("number of processed tasks:"+numTasks);
-		
-		// update statistics about the opponent
-		if(numTasks > 2) {
-			stdBidToBeat = (numTasks - 2)/(numTasks - 1) * stdBidToBeat + (1/numTasks)*(diff - diffBidToBeat);
+		// Analyze opponent bid
+		if(minCostToBeat != 0) {
+			ratio = bidToBeat/minCostToBeat;
 		}
-		diffBidToBeat = (1/numTasks)*(diff - (numTasks - 1)*diffBidToBeat);
+		marginsCostToBeat.add(ratio);
 		
+		// Update std of the estimate
+		if(numTasks > 2) {
+			stdToBeat = (numTasks - 2)/(numTasks - 1) * stdToBeat + (1/numTasks)*(marginToBeat - ratio);
+		}
+		// Update estimate
+		marginToBeat = (1/numTasks)*(ratio - (numTasks - 1)*marginToBeat);
+		
+		System.out.println("number of processed tasks:"+numTasks);
 		
 		
 	}
@@ -132,10 +137,12 @@ public class AuctionTemplate implements AuctionBehavior {
 	@Override
 	public Long askPrice(Task task) {
 		// Insert new task into current plan
-		long min_cost = plan.addTask(task);
-		long min_costToBeat = planToBeat.addTask(task);
+		long min_cost = plan.addTask(task); // marginal cost for us
+		minCostToBeat = planToBeat.addTask(task); //marginal cost of the opponent 
 		
-		long expectedCost = min_costToBeat + diffBidToBeat; 
+		long expectedCost = (marginToBeat - stdToBeat)*minCostToBeat; //expected bid of the opponent
+		
+		System.out.println(min_cost);
 		
 		// TODO: Think smart way to estimate price (use pmf)
 		//System.out.println(min_cost);
@@ -148,9 +155,12 @@ public class AuctionTemplate implements AuctionBehavior {
 		} else {
 			if (expectedCost > min_cost) {
 				System.out.println(agent.name() + " Bid for task "+ numTasks + " is " + expectedCost*0.9 + " with mincost " + min_cost);
+				// raise bid up to a certain safety margin
 				return (long) (expectedCost*0.9);
 				
 			} else {
+				// Mirar si ens val la pena baixar la bid pero en general no! 
+				
 				System.out.println(agent.name() + " Bid for task "+ numTasks + " is " + min_cost + " with mincost " + min_cost);
 				return (long) (min_cost);
 				
