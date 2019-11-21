@@ -26,42 +26,49 @@ import logist.topology.Topology.City;
  */
 @SuppressWarnings("unused")
 public class AuctionTemplate implements AuctionBehavior {
-
+	// Basic information about the problem
 	private Topology topology;
 	private TaskDistribution distribution;
 	private Agent agent;
-	private Random random;
 	private List<Vehicle> vehicles;
-	private List<Vehicle> vehiclesToBeat;
+	private int numTasks;
 	
-	private long timeoutSetup, timeoutBid, timeoutPlan;
+	// Solution representation
 	private SLS plan, planToBeat;
+	
+	// Timeouts
+	private long timeoutSetup, timeoutBid, timeoutPlan;
+	
+	// Preference matrix
 	double[][] pmf;
 	
+	// Opponent's model
+	private List<Vehicle> vehiclesToBeat;
 	private List<Long> marginsCostToBeat = new ArrayList<Long>(); // actual bid / estimated marginal cost
 	private long minCostToBeat; // estimated marginal cost for the current task
-	private long marginToBeat = 1; // correction factor between bid and estimated marginal cost
-	private long stdToBeat = 0;
-	private int numTasks;
+	// Correction factor between bid and estimated marginal cost
+	private long marginToBeat;
+	// 
+	private long stdToBeat;
+	
+	/*************************** Constants ***************************/
+	// Fraction of time spent in computing our optimal plan
+	private final static float TIME_FRACTION = 0.7f;
 	
 
 	@Override
 	public void setup(Topology topology, TaskDistribution distribution, Agent agent) {
+		// Start timer
 		long timeStart = System.currentTimeMillis();
 
+		// Initialize basic information about the problem
 		this.topology = topology;
 		this.distribution = distribution;
 		this.agent = agent;
-		
 		this.vehicles = agent.vehicles();
-		this.vehiclesToBeat = agent.vehicles(); 
-		
-		this.marginToBeat = 1; 
 		this.numTasks = 0; 
 		
-		
-		
-		// this code is used to get the timeouts
+		// Get the timeouts
         LogistSettings ls = null;
         try {
             ls = Parsers.parseSettings("config" + File.separator + "settings_auction.xml");
@@ -69,27 +76,34 @@ public class AuctionTemplate implements AuctionBehavior {
         catch (Exception exc) {
             System.out.println("There was a problem loading the configuration file.");
         }
-        // the plan method cannot execute more than timeout_plan milliseconds
         timeoutSetup = ls.get(LogistSettings.TimeoutKey.SETUP);
         timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
         timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
-
-		long seed = -9019554669489983951L * agent.id();
-		this.random = new Random(seed);
 		
-		this.plan = new SLS(vehicles, timeoutBid, timeoutPlan);
-		this.planToBeat = new SLS(vehiclesToBeat, timeoutBid, timeoutPlan);
+        // Initialize solution representation
+		this.plan = new SLS(vehicles, timeoutPlan);
 		
+		// Initialize opponent's model
+		this.vehiclesToBeat = agent.vehicles(); 
+		this.marginToBeat = 1;
+		this.stdToBeat = 0;
+		this.planToBeat = new SLS(vehiclesToBeat, timeoutPlan);
+		
+		// Compute preference matrix spending at most the rest of the setup time
 		initPmf(timeoutSetup - (System.currentTimeMillis() - timeStart));
 	}
 	
+	/**
+	 * Compute a matrix indicating the preferred tasks without exceeding the timeout
+	 * @param timeout
+	 */
 	private void initPmf(float timeout) {
 		this.pmf = new double[topology.size()][topology.size()];
 		float timeStart, duration;
 		float totalDuration = 0;
 		float maxDuration = 0;
 		
-		// TODO: Weight probability of task by reward and connectivity of path (at least endpoints)
+		// Weight probability of task by reward and connectivity of path (at least endpoints)
 		// Normalize everything so we have an actual pmf (easier when generating randoms)
 		for (City city1 : topology.cities()) {
 			for (City city2 : topology.cities()) {
@@ -112,18 +126,18 @@ public class AuctionTemplate implements AuctionBehavior {
 
 	@Override
 	public void auctionResult(Task previous, int winner, Long[] bids) {
-		long bidToBeat; 
-		this.numTasks ++; 
-		long ratio = 0; 
+		long bidToBeat;
+		this.numTasks ++;
+		long ratio = 0;
 		
-		//System.out.println(bids.toString());
 		if (winner == agent.id()) {
 			// Assign plan in askPrice
 			plan.consolidatePlan();
 		} else {
 			planToBeat.consolidatePlan();
 		}
-		// TODO: Analyze bids and winner bid
+		
+		// Analyze bids and winner bid
 		long lowestBid = bids[winner];
 		if (agent.id() == 1) {
 			bidToBeat = bids[0];
@@ -137,24 +151,29 @@ public class AuctionTemplate implements AuctionBehavior {
 		}
 		marginsCostToBeat.add(ratio);
 		
-		// Update std of the estimate
+		// Update standard deviation of the estimate
 		if(numTasks > 2) {
 			stdToBeat = (numTasks - 2)/(numTasks - 1) * stdToBeat + (1/numTasks)*(marginToBeat - ratio);
 		}
 		// Update estimate
 		marginToBeat = (1/numTasks)*(ratio - (numTasks - 1)*marginToBeat);
 		
-		System.out.println("number of processed tasks:"+numTasks);
-		
-		
+		System.out.println("number of processed tasks:" + numTasks);
 	}
 	
 	@Override
 	public Long askPrice(Task task) {
-		// Insert new task into current plan
-		long min_cost = plan.addTask(task); // marginal cost for us
-		minCostToBeat = planToBeat.addTask(task); //marginal cost of the opponent 
+		float timeStart = System.currentTimeMillis();
 		
+		
+		// Compute marginal cost for us
+		long min_cost = plan.addTask(task, timeoutBid * TIME_FRACTION);
+		
+		// Compute marginal cost of the opponent for remaining time
+		minCostToBeat = planToBeat.addTask(task, timeoutBid - (System.currentTimeMillis() - timeStart)); 
+		
+		
+		// Time spent in the following lines is negligible
 		long expectedCost = (marginToBeat - stdToBeat)*minCostToBeat; //expected bid of the opponent
 		
 		System.out.println(min_cost);
@@ -164,21 +183,20 @@ public class AuctionTemplate implements AuctionBehavior {
 		if (agent.name().contentEquals("auction-random") ){
 			if(min_cost == 0) {
 				return (long) 300;
-			} 
+			}
 			return (long) (min_cost*1.5);
 			
 		} else {
 			if (expectedCost > min_cost) {
 				System.out.println(agent.name() + " Bid for task "+ numTasks + " is " + expectedCost*0.9 + " with mincost " + min_cost);
 				// raise bid up to a certain safety margin
+				// TODO: Instead of 0.9, - 3 std ?
 				return (long) (expectedCost*0.9);
 				
 			} else {
-				// Mirar si ens val la pena baixar la bid pero en general no! 
-				
+				// TODO: Mirar si ens val la pena baixar la bid pero en general no!
 				System.out.println(agent.name() + " Bid for task "+ numTasks + " is " + min_cost + " with mincost " + min_cost);
 				return (long) (min_cost);
-				
 			}
 		}
 	}
@@ -191,26 +209,4 @@ public class AuctionTemplate implements AuctionBehavior {
         return plan.getFinalPlan(tasks);
 	}
 
-	private Plan naivePlan(Vehicle vehicle, TaskSet tasks) {
-		City current = vehicle.getCurrentCity();
-		Plan plan = new Plan(current);
-
-		for (Task task : tasks) {
-			// move: current city => pickup location
-			for (City city : current.pathTo(task.pickupCity))
-				plan.appendMove(city);
-
-			plan.appendPickup(task);
-
-			// move: pickup location => delivery location
-			for (City city : task.path())
-				plan.appendMove(city);
-
-			plan.appendDelivery(task);
-
-			// set current city
-			current = task.deliveryCity;
-		}
-		return plan;
-	}
 }

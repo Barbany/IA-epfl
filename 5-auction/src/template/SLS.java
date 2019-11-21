@@ -12,7 +12,7 @@ import logist.task.Task;
 import logist.task.TaskSet;
 
 /**
- * Stochastic Local Search Algorithm
+ * Stochastic Local Search Algorithm for Auction Agents
  * 
  * @author Oriol Barbany & Natalie Bolon
  */
@@ -20,18 +20,20 @@ public class SLS {
 	private List<Vehicle> vehicles;
 	private Random rn;
 	
-	private long timeoutBid, timeoutPlan;
+	private long timeoutPlan;
 	private Solution best, potential;
+	
+	// Margin of iterations until reaching timeout
+	private static final int MARGIN = 2000;
 
 	/**
 	 * Create empty SLS object. Call build to get the joint optimal plan
 	 * 
 	 * @param vehicles
 	 */
-	public SLS(List<Vehicle> vehicles, long timeoutBid, long timeoutPlan) {
+	public SLS(List<Vehicle> vehicles, long timeoutPlan) {
 		this.vehicles = vehicles;
 		this.rn = new Random();
-		this.timeoutBid = timeoutBid;
 		this.timeoutPlan = timeoutPlan;
 		
 		best = new Solution(vehicles);
@@ -39,13 +41,13 @@ public class SLS {
 	}
 	
 	/**
-	 * Add new task and return its minimal cost
+	 * Add new task and return its (locally) optimal marginal cost
 	 * @param task
 	 * @return
 	 */
-	public long addTask(Task task) {
+	public long addTask(Task task, float timeout) {
 		// Create potential plan
-		this.build(task);
+		this.build(task, timeout);
 		if(potential != null) {
 			return (long) (potential.totalCost(vehicles) - best.totalCost(vehicles));
 		} else {
@@ -87,7 +89,7 @@ public class SLS {
 	 * 
 	 * @return Optimal plan in form of list of plan objects (one for each vehicle)
 	 */
-	private void build(Task task) {
+	private void build(Task task, float timeout) {
 		float timeStart = System.currentTimeMillis();
 		
 		// Select Initial Solution
@@ -145,7 +147,7 @@ public class SLS {
 			}
 			
 			if(assigned) {
-				findBestsolution(potential, timeoutBid - (System.currentTimeMillis() - timeStart));
+				findBestsolution(potential, timeout - (System.currentTimeMillis() - timeStart));
 			} else {
 				potential = null;
 			}
@@ -163,10 +165,10 @@ public class SLS {
 		long totalDuration = 0;
 		
 		// Until termination condition met
-		for (int i = 0; totalDuration + maxDuration < timeout*0.9; i++) {
+		int last_iter = 0;
+		for (int i = 0; totalDuration + MARGIN * maxDuration < timeout; i++) {
 			timeStart = System.currentTimeMillis();
 			probability = 0.3 - Math.log(10 / (i + 1)) * 0.075; // logarithmic variation
-			//probability = Math.min(0.3 + 0.1*i/75, 0.95); // linear variation
 
 			initSol = localChoice(chooseNeighbors(initSol), probability);
 			
@@ -180,7 +182,9 @@ public class SLS {
 				maxDuration = duration;
 			}
 			totalDuration += duration;
+			last_iter = i;
 		}
+		System.out.println("Last iteration" + last_iter);
 		
 		initSol = bestSolution;
 	}
