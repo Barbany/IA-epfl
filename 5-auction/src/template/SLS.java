@@ -24,7 +24,7 @@ public class SLS {
 	private Solution best, potential;
 	
 	// Margin of iterations until reaching timeout
-	private static final int MARGIN = 50;
+	private static final int MARGIN = 500;
 
 	/**
 	 * Create empty SLS object. Call build to get the joint optimal plan
@@ -45,7 +45,7 @@ public class SLS {
 	 * @param task
 	 * @return
 	 */
-	public long addTask(Task task, float timeout) {
+	public long addTask(Task task, double timeout) {
 		// Create potential plan
 		this.build(task, timeout);
 		
@@ -68,21 +68,27 @@ public class SLS {
 	 * @return
 	 */
 	public List<Plan> getFinalPlan(TaskSet tasks){
-		float timeStart = System.currentTimeMillis();
+		double timeStart = System.currentTimeMillis();
 		
-		HashMap<Integer, Task> int_task = new HashMap<Integer, Task>();
-		for(Task t: tasks) {
-			int_task.put(t.id, t);
+		if(tasks.isEmpty()) {
+			// Create empty plan
+			best.initSolutionSingle(null, null);
+			return best.plans;
+		} else {
+			HashMap<Integer, Task> int_task = new HashMap<Integer, Task>();
+			for(Task t: tasks) {
+				int_task.put(t.id, t);
+			}
+			
+			for(Vehicle v: vehicles) {
+				best.finalPlan(v, int_task);	
+			}
+			
+			// Further improve plan for the remaining time
+			findBestsolution(best, timeoutPlan - (System.currentTimeMillis() - timeStart));
+			
+			return best.plans;	
 		}
-		
-		for(Vehicle v: vehicles) {
-			best.finalPlan(v, int_task);	
-		}
-		
-		// Further improve plan for the remaining time
-		findBestsolution(best, timeoutPlan - (System.currentTimeMillis() - timeStart));
-		
-		return best.plans;
 	}
 
 	/**
@@ -90,8 +96,8 @@ public class SLS {
 	 * 
 	 * @return Optimal plan in form of list of plan objects (one for each vehicle)
 	 */
-	private void build(Task task, float timeout) {
-		float timeStart = System.currentTimeMillis();
+	private void build(Task task, double timeout) {
+		double timeStart = System.currentTimeMillis();
 		
 		// Select Initial Solution
 		// Best have to remain untouched!
@@ -155,7 +161,7 @@ public class SLS {
 		}
 	}
 	
-	private void findBestsolution(Solution initSol, float timeout) {
+	private void findBestsolution(Solution initSol, double timeout) {
 		long timeStart, duration;
 		double probability = 0.8;
 
@@ -207,7 +213,6 @@ public class SLS {
 					usedVehicles.add(v);
 				}
 			}
-			usedVehicles.remove(null);
 			Vehicle v_i = usedVehicles.get(rn.nextInt(usedVehicles.size()));
 
 			// Applying the changing vehicle operator

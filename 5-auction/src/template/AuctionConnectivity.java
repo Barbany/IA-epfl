@@ -61,7 +61,7 @@ public class AuctionConnectivity implements AuctionBehavior {
 
 	/*************************** Constants ***************************/
 	// Fraction of time spent in computing our optimal plan
-	private final static float TIME_FRACTION = 0.7f;
+	private final static double TIME_FRACTION = 0.7;
 	// Margin of iterations until reaching timeout
 	private static final int MARGIN = 50;
 	// Limits of interval where preference matrix is used
@@ -122,11 +122,11 @@ public class AuctionConnectivity implements AuctionBehavior {
 	 * @param timeout
 	 */
 	@SuppressWarnings("resource")
-	private void initPmf(float timeout) {
+	private void initPmf(double timeout) {
 		this.pmf = new double[topology.size()][topology.size()];
-		float timeStart, duration;
-		float totalDuration = 0;
-		float maxDuration = 0;
+		double timeStart, duration;
+		double totalDuration = 0;
+		double maxDuration = 0;
 
 		// Check which cities are more present in expectation inside a shortest path
 		// If topology has been already seen, load precomputed pmf
@@ -250,7 +250,7 @@ public class AuctionConnectivity implements AuctionBehavior {
 
 	@Override
 	public Long askPrice(Task task) {
-		float timeStart = System.currentTimeMillis();
+		double timeStart = System.currentTimeMillis();
 
 		// Compute marginal cost for us
 		long minCost = plan.addTask(task, timeoutBid * TIME_FRACTION);
