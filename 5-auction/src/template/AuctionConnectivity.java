@@ -121,7 +121,6 @@ public class AuctionConnectivity implements AuctionBehavior {
 	 * 
 	 * @param timeout
 	 */
-	@SuppressWarnings("resource")
 	private void initPmf(double timeout) {
 		this.pmf = new double[topology.size()][topology.size()];
 		double timeStart, duration;
@@ -131,107 +130,49 @@ public class AuctionConnectivity implements AuctionBehavior {
 		// Check which cities are more present in expectation inside a shortest path
 		// If topology has been already seen, load precomputed pmf
 		String fname = Integer.toString(topology.hashCode()) + ".pmf";
-		File f = new File(fname);
-		if (f.exists()) {// read in the data
-			Scanner input;
-			try {
-				input = new Scanner(f);
-				for (int i = 0; i < topology.size(); ++i) {
-					for (int j = 0; j < topology.size(); ++j) {
-						if (input.hasNextInt()) {
-							pmf[i][j] = input.nextInt();
-						}
-					}
-				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		} else {
-			double[] connectivity = new double[topology.size()];
+		double[] connectivity = new double[topology.size()];
 
-			for (City city1 : topology.cities()) {
-				for (City city2 : topology.cities()) {
-					timeStart = System.currentTimeMillis();
+		for (City city1 : topology.cities()) {
+			for (City city2 : topology.cities()) {
+				
+				double prob = distribution.probability(city1, city2);
 
-					double prob = distribution.probability(city1, city2);
-
-					for (City interCity : city1.pathTo(city2)) {
-						connectivity[interCity.id] += prob;
-					}
-
-					duration = System.currentTimeMillis() - timeStart;
-					if (maxDuration < duration) {
-						maxDuration = duration;
-					}
-					totalDuration += duration;
-
-					if (totalDuration + MARGIN * maxDuration < timeout) {
-						return;
-					}
+				for (City interCity : city1.pathTo(city2)) {
+					connectivity[interCity.id] += prob;
 				}
 			}
+		}
 
-			// Check maximum and minimum values to normalize
-			double max = 0, min = Double.MAX_VALUE, cumSum;
-			for (City city1 : topology.cities()) {
-				for (City city2 : topology.cities()) {
-					timeStart = System.currentTimeMillis();
+		// Check maximum and minimum values to normalize
+		double max = 0, min = Double.MAX_VALUE, cumSum;
+		for (City city1 : topology.cities()) {
+			for (City city2 : topology.cities()) {
+				double prob = distribution.probability(city1, city2);
 
-					double prob = distribution.probability(city1, city2);
-
-					cumSum = 0;
-					for (City interCity : city1.pathTo(city2)) {
-						cumSum += connectivity[interCity.id];
-					}
-					pmf[city1.id][city2.id] = cumSum;
-
-					if (cumSum > max) {
-						max = cumSum;
-					} else if (cumSum < min) {
-						min = cumSum;
-					}
-
-					duration = System.currentTimeMillis() - timeStart;
-					if (maxDuration < duration) {
-						maxDuration = duration;
-					}
-					totalDuration += duration;
-
-					if (totalDuration + MARGIN * maxDuration < timeout) {
-						return;
-					}
+				cumSum = 0;
+				for (City interCity : city1.pathTo(city2)) {
+					cumSum += connectivity[interCity.id];
+				}
+				pmf[city1.id][city2.id] = cumSum;
+				
+				if(max < cumSum) {
+					max = cumSum;
+				} else if(min > cumSum) {
+					min = cumSum;
 				}
 			}
+		}
 
-			// Normalize the pmf from 0 to 1
-			BufferedWriter bw;
-			try {
-				bw = new BufferedWriter(new FileWriter(fname));
-				for (City city1 : topology.cities()) {
-					for (City city2 : topology.cities()) {
-						timeStart = System.currentTimeMillis();
+		// Normalize the pmf from 0 to 1
+		for (City city1 : topology.cities()) {
+			for (City city2 : topology.cities()) {
+				timeStart = System.currentTimeMillis();
 
-						pmf[city1.id][city2.id] = (pmf[city1.id][city2.id] - min) / (max - min);
-
-						bw.write(pmf[city1.id][city2.id] + ",");
-
-						duration = System.currentTimeMillis() - timeStart;
-						if (maxDuration < duration) {
-							maxDuration = duration;
-						}
-						totalDuration += duration;
-
-						if (totalDuration + MARGIN * maxDuration < timeout) {
-							return;
-						}
-					}
-					bw.newLine();
-				}
-				bw.flush();
-				bw.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+				pmf[city1.id][city2.id] = (pmf[city1.id][city2.id] - min) / (max - min);	
+				
+				System.out.print(pmf[city1.id][city2.id] + " ");
 			}
+			System.out.print("\n");
 		}
 	}
 
@@ -254,18 +195,18 @@ public class AuctionConnectivity implements AuctionBehavior {
 
 		// Compute marginal cost for us
 		long minCost = plan.addTask(task, timeoutBid * TIME_FRACTION);
-		
-		System.out.println("Minimum cost is: " + minCost);
+
+		System.out.println("Conn: Minimum cost is: " + minCost);
 
 		// Compute marginal cost of the opponent for remaining time
 		minCostToBeat = planToBeat.addTask(task, timeoutBid - (System.currentTimeMillis() - timeStart));
-		
+
 		double bid = minCost * (pmf[task.pickupCity.id][task.deliveryCity.id] * (PMF_MAX - PMF_MIN) + PMF_MIN);
-		
-		// TODO: How to use opponent's estimated marginal cost/minCostToBeat?		
+
+		// TODO: How to use opponent's estimated marginal cost/minCostToBeat?
 		long finalBid = (long) Math.floor(bid);
 
-		System.out.println("Final bid is: " + finalBid);
+		System.out.println("Conn: Final bid is: " + finalBid);
 		return finalBid;
 	}
 
