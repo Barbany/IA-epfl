@@ -168,11 +168,8 @@ public class AuctionConnectivity implements AuctionBehavior {
 			for (City city2 : topology.cities()) {
 				timeStart = System.currentTimeMillis();
 
-				pmf[city1.id][city2.id] = (pmf[city1.id][city2.id] - min) / (max - min);	
-				
-				System.out.print(pmf[city1.id][city2.id] + " ");
+				pmf[city1.id][city2.id] = (pmf[city1.id][city2.id] - min) / (max - min);
 			}
-			System.out.print("\n");
 		}
 	}
 
@@ -201,9 +198,8 @@ public class AuctionConnectivity implements AuctionBehavior {
 		// Compute marginal cost of the opponent for remaining time
 		minCostToBeat = planToBeat.addTask(task, timeoutBid - (System.currentTimeMillis() - timeStart));
 
-		double bid = minCost * (pmf[task.pickupCity.id][task.deliveryCity.id] * (PMF_MAX - PMF_MIN) + PMF_MIN);
+		double bid = minCost * (pmf[task.pickupCity.id][task.deliveryCity.id] * (PMF_MIN - PMF_MAX) + PMF_MAX);
 
-		// TODO: How to use opponent's estimated marginal cost/minCostToBeat?
 		long finalBid = (long) Math.floor(bid);
 
 		System.out.println("Conn: Final bid is: " + finalBid);
