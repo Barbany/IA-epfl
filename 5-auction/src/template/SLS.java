@@ -24,7 +24,7 @@ public class SLS {
 	private Solution best, potential;
 	
 	// Margin of iterations until reaching timeout
-	private static final int MARGIN = 2000;
+	private static final int MARGIN = 50;
 
 	/**
 	 * Create empty SLS object. Call build to get the joint optimal plan
@@ -48,6 +48,7 @@ public class SLS {
 	public long addTask(Task task, float timeout) {
 		// Create potential plan
 		this.build(task, timeout);
+		
 		if(potential != null) {
 			return (long) (potential.totalCost(vehicles) - best.totalCost(vehicles));
 		} else {
@@ -95,8 +96,8 @@ public class SLS {
 		// Select Initial Solution
 		// Best have to remain untouched!
 		potential = best.clone();
-		//double bestCost = potential.totalCost(vehicles);
 		
+		// If there are no tasks in the plan
 		if(potential.totalCost(vehicles) == 0) {
 			// First action to be added	
 			double min_cost = Double.MAX_VALUE, cost;
@@ -165,7 +166,6 @@ public class SLS {
 		long totalDuration = 0;
 		
 		// Until termination condition met
-		int last_iter = 0;
 		for (int i = 0; totalDuration + MARGIN * maxDuration < timeout; i++) {
 			timeStart = System.currentTimeMillis();
 			probability = 0.3 - Math.log(10 / (i + 1)) * 0.075; // logarithmic variation
@@ -182,7 +182,6 @@ public class SLS {
 				maxDuration = duration;
 			}
 			totalDuration += duration;
-			last_iter = i;
 		}
 		
 		initSol = bestSolution;
