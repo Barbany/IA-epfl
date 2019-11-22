@@ -260,12 +260,12 @@ public class AuctionConnectivity implements AuctionBehavior {
 		// Compute marginal cost of the opponent for remaining time
 		minCostToBeat = planToBeat.addTask(task, timeoutBid - (System.currentTimeMillis() - timeStart));
 		
-		double bid = minCost * pmf[task.pickupCity.id][task.deliveryCity.id] * (PMF_MAX - PMF_MIN) + PMF_MIN;
+		double bid = minCost * (pmf[task.pickupCity.id][task.deliveryCity.id] * (PMF_MAX - PMF_MIN) + PMF_MIN);
 		
 		// TODO: How to use opponent's estimated marginal cost/minCostToBeat?		
 		long finalBid = (long) Math.floor(bid);
 
-		System.out.println("Bid is: " + finalBid);
+		System.out.println("Final bid is: " + finalBid);
 		return finalBid;
 	}
 
