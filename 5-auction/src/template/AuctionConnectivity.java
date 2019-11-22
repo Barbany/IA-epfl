@@ -61,7 +61,7 @@ public class AuctionConnectivity implements AuctionBehavior {
 
 	/*************************** Constants ***************************/
 	// Fraction of time spent in computing our optimal plan
-	private final static float TIME_FRACTION = 0.7f;
+	private final static double TIME_FRACTION = 0.7;
 	// Margin of iterations until reaching timeout
 	private static final int MARGIN = 50;
 	// Limits of interval where preference matrix is used
@@ -124,9 +124,9 @@ public class AuctionConnectivity implements AuctionBehavior {
 	@SuppressWarnings("resource")
 	private void initPmf(double timeout) {
 		this.pmf = new double[topology.size()][topology.size()];
-		float timeStart, duration;
-		float totalDuration = 0;
-		float maxDuration = 0;
+		double timeStart, duration;
+		double totalDuration = 0;
+		double maxDuration = 0;
 
 		// Check which cities are more present in expectation inside a shortest path
 		// If topology has been already seen, load precomputed pmf
@@ -260,12 +260,12 @@ public class AuctionConnectivity implements AuctionBehavior {
 		// Compute marginal cost of the opponent for remaining time
 		minCostToBeat = planToBeat.addTask(task, timeoutBid - (System.currentTimeMillis() - timeStart));
 		
-		double bid = minCost * pmf[task.pickupCity.id][task.deliveryCity.id] * (PMF_MAX - PMF_MIN) + PMF_MIN;
+		double bid = minCost * (pmf[task.pickupCity.id][task.deliveryCity.id] * (PMF_MAX - PMF_MIN) + PMF_MIN);
 		
 		// TODO: How to use opponent's estimated marginal cost/minCostToBeat?		
 		long finalBid = (long) Math.floor(bid);
 
-		System.out.println("Bid is: " + finalBid);
+		System.out.println("Final bid is: " + finalBid);
 		return finalBid;
 	}
 
