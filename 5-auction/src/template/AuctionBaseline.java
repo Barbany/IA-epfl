@@ -89,11 +89,11 @@ public class AuctionBaseline implements AuctionBehavior {
 		double timeStart = System.currentTimeMillis();
 		
 		// Compute marginal cost for us
-		long min_cost = plan.addTask(task, timeoutBid);
+		long min_cost = plan.addTask(task, timeoutPlan*0.7);
 		
 		System.out.println("Minimum cost is: " + min_cost);
 		
-		return (long) (min_cost * 1.2);
+		return (long) (min_cost*1.2);
 		//return (long) (min_cost * (1.0 + STD * (random.nextDouble() - GAIN_MARGIN)) / ((double) numTasks + 1));
 	}
 
