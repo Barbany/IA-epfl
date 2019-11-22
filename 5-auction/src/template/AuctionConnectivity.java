@@ -122,7 +122,7 @@ public class AuctionConnectivity implements AuctionBehavior {
 	 * @param timeout
 	 */
 	@SuppressWarnings("resource")
-	private void initPmf(float timeout) {
+	private void initPmf(double timeout) {
 		this.pmf = new double[topology.size()][topology.size()];
 		float timeStart, duration;
 		float totalDuration = 0;
@@ -250,7 +250,7 @@ public class AuctionConnectivity implements AuctionBehavior {
 
 	@Override
 	public Long askPrice(Task task) {
-		float timeStart = System.currentTimeMillis();
+		double timeStart = System.currentTimeMillis();
 
 		// Compute marginal cost for us
 		long minCost = plan.addTask(task, timeoutBid * TIME_FRACTION);

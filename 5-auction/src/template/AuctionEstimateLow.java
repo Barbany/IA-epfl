@@ -39,17 +39,24 @@ public class AuctionEstimateLow implements AuctionBehavior {
 	// Timeouts
 	private long timeoutSetup, timeoutBid, timeoutPlan;
 	
+	// Random number generator
+	private Random random;
+	
 	// Preference matrix
 	double[][] pmf;
 	
 	// Opponent's model
 	private List<Vehicle> vehiclesToBeat;
-	private List<Long> marginsCostToBeat = new ArrayList<Long>(); // actual bid / estimated marginal cost
 	private long minCostToBeat; // estimated marginal cost for the current task
+	private long maxCostToBeat; 
+	private long costToBeat; 
 	// Correction factor between bid and estimated marginal cost
-	private double marginToBeat;
-	// 
+	private double ratioToBeat = 1;
 	private double stdToBeat;
+	
+	// Our model
+	private long myCost; 
+	private double myRatio = 1; 
 	
 	/*************************** Constants ***************************/
 	// Fraction of time spent in computing our optimal plan
@@ -79,14 +86,26 @@ public class AuctionEstimateLow implements AuctionBehavior {
         timeoutSetup = ls.get(LogistSettings.TimeoutKey.SETUP);
         timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
         timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
+        
+        // Seed randomness
+     	long seed = -9019554669489983951L * agent.id();
+        this.random = new Random(seed);
 		
         // Initialize solution representation
 		this.plan = new SLS(vehicles, timeoutPlan);
 		
 		// Initialize opponent's model
-		this.vehiclesToBeat = agent.vehicles(); 
-		this.marginToBeat = 1;
-		this.stdToBeat = 0;
+		ArrayList<City> initCities = new ArrayList<City>(topology.cities());
+		for (Vehicle v : this.vehicles) {
+			initCities.remove(v.getCurrentCity());
+		}
+
+		vehiclesToBeat = new ArrayList<Vehicle>();
+		for (Vehicle v : this.vehicles) {
+			City initCity = initCities.get(this.random.nextInt(initCities.size()));
+			vehiclesToBeat.add(new OpponentVehicle(v, initCity));
+			initCities.remove(initCity);
+		}
 		this.planToBeat = new SLS(vehiclesToBeat, timeoutPlan);
 		
 		// Compute preference matrix spending at most the rest of the setup time
@@ -128,7 +147,7 @@ public class AuctionEstimateLow implements AuctionBehavior {
 	public void auctionResult(Task previous, int winner, Long[] bids) {
 		long bidToBeat;
 		this.numTasks ++;
-		long ratio = 0;
+		long ratio = 1;
 		
 		if (winner == agent.id()) {
 			// Assign plan in askPrice
@@ -139,60 +158,67 @@ public class AuctionEstimateLow implements AuctionBehavior {
 		
 		// Analyze bids and winner bid
 		long lowestBid = bids[winner];
+		// select bid of the opponent
 		if (agent.id() == 1) {
 			bidToBeat = bids[0];
 		} else {
 			bidToBeat = bids[1];
 		}
 		
+		
+		
 		// Analyze opponent bid
 		if(minCostToBeat != 0) {
 			ratio = bidToBeat/minCostToBeat;
 		}
-		marginsCostToBeat.add(ratio);
 		
 		// Update standard deviation of the estimate
 		if(numTasks > 2) {
-			stdToBeat = (numTasks - 2)/(numTasks - 1) * stdToBeat + (1/numTasks)*(marginToBeat - ratio);
+			stdToBeat = (numTasks - 2)/(numTasks - 1) * stdToBeat + (1/numTasks)*(ratioToBeat - ratio);
 		}
 		// Update estimate
-		marginToBeat = (1/numTasks)*(ratio - (numTasks - 1)*marginToBeat);
+		ratioToBeat = (1/numTasks)*(ratio - (numTasks - 1)*ratioToBeat);
 		
 		System.out.println("number of processed tasks:" + numTasks);
 	}
 	
 	@Override
 	public Long askPrice(Task task) {
-		float timeStart = System.currentTimeMillis();
+		long timeStart = System.currentTimeMillis();
+		long currentBid; 
 		
 		
 		// Compute marginal cost for us
-		long min_cost = plan.addTask(task, timeoutBid * TIME_FRACTION);
-		
+		System.out.println("here oke");
+		myCost = plan.addTask(task, timeoutBid * TIME_FRACTION);
 		// Compute marginal cost of the opponent for remaining time
-		minCostToBeat = planToBeat.addTask(task, timeoutBid - (System.currentTimeMillis() - timeStart)); 
+		System.out.println("here oke the other");
+		costToBeat = planToBeat.addTask(task, timeoutBid*0.9 - (System.currentTimeMillis() - timeStart)); 
 		
+		// Select highest bid
+		currentBid = (long) Math.max(costToBeat*ratioToBeat, myCost*myRatio);
 		
-		// Time spent in the following lines is negligible
-		//long expectedCost = (long) ((marginToBeat)*minCostToBeat); //expected bid of the opponent
+		return currentBid;
+		
 		
 		
 		// TODO: Think smart way to estimate price (use pmf)
 		//System.out.println(min_cost);
-		
-		if (minCostToBeat > min_cost) {
+		/** 
+		if (costToBeat > myCost) {
 			//System.out.println(agent.name() + " Bid for task "+ numTasks + " is " + expectedCost*0.9 + " with mincost " + min_cost);
 			// raise bid up to a certain safety margin
 			// TODO: Instead of 0.9, - 3 std ?
-			System.out.println("Estimated cost " + minCostToBeat + "; Bidding cost " + (marginToBeat- 3*stdToBeat)*minCostToBeat + "; My cost" + min_cost);
-			return (long) (marginToBeat- 3*stdToBeat)*minCostToBeat;
+			System.out.println("Estimated cost " + costToBeat + "; Bidding cost " + (ratioToBeat- 3*stdToBeat)*minCostToBeat + "; My cost" + min_cost);
+			return (long) (ratioToBeat- 3*stdToBeat)*costToBeat;
 			
 				
 		} else {
 			// TODO: Mirar si ens val la pena baixar la bid pero en general no!
-			System.out.println("Estimated cost " + minCostToBeat + "; Bidding cost " + min_cost);
-			return (long) (min_cost);
+			System.out.println("Estimated cost " + costToBeat + "; Bidding cost " + myCost);
+			return (long) (myCost);
 		}
+		*/
 		
 	}
 
