@@ -4,14 +4,13 @@
 	<!-- A list of agents and their behavior classes -->
 	
 	<!-- #### AUCTION AGENTS ### -->
-    <agent name="auction-main">
+    <agent name="auction-base">
         <set class-path="bin/"/>
-        <set class-name="template.AuctionTemplate"/>
+        <set class-name="template.AuctionBaseline"/>
     </agent>
-    
-	<agent name="auction-random">
-		<set class-path="bin/"/>
-		<set class-name="template.AuctionTemplate"/>
-	</agent>
+    <agent name="auction-conn">
+        <set class-path="bin/"/>
+        <set class-name="template.AuctionConnectivity"/>
+    </agent>
 	
 </agents>
