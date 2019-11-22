@@ -25,7 +25,7 @@ import logist.topology.Topology.City;
  * 
  */
 @SuppressWarnings("unused")
-public class AuctionTemplate implements AuctionBehavior {
+public class AuctionBasic implements AuctionBehavior {
 	// Basic information about the problem
 	private Topology topology;
 	private TaskDistribution distribution;
@@ -174,17 +174,24 @@ public class AuctionTemplate implements AuctionBehavior {
 		
 		
 		// Time spent in the following lines is negligible
-		long expectedCost = (long) ((marginToBeat - Math.sqrt(stdToBeat))*minCostToBeat); //expected bid of the opponent
+		long expectedCost = (long) ((marginToBeat)*minCostToBeat); //expected bid of the opponent
 		
-		System.out.println("Min cost for random basic" + min_cost);
+		System.out.println(min_cost);
 		
 		// TODO: Think smart way to estimate price (use pmf)
 		//System.out.println(min_cost);
-		if(min_cost == 0) {
-			return (long) 300;
-			}
-		return (long) (min_cost*1.5);
-			
+		
+		if (expectedCost > min_cost) {
+			//System.out.println(agent.name() + " Bid for task "+ numTasks + " is " + expectedCost*0.9 + " with mincost " + min_cost);
+			// raise bid up to a certain safety margin
+			// TODO: Instead of 0.9, - 3 std ?
+			return (long) (expectedCost - 3*stdToBeat);
+				
+		} else {
+			// TODO: Mirar si ens val la pena baixar la bid pero en general no!
+			System.out.println(agent.name() + " Bid for task "+ numTasks + " is " + min_cost + " with mincost " + min_cost);
+			return (long) (min_cost);
+		}
 		
 	}
 

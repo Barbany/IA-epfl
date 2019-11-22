@@ -184,7 +184,6 @@ public class SLS {
 			totalDuration += duration;
 			last_iter = i;
 		}
-		System.out.println("Last iteration" + last_iter);
 		
 		initSol = bestSolution;
 	}

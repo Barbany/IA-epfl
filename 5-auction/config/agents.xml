@@ -6,12 +6,17 @@
 	<!-- #### AUCTION AGENTS ### -->
     <agent name="auction-main">
         <set class-path="bin/"/>
-        <set class-name="template.AuctionTemplate"/>
+        <set class-name="template.AuctionEstimateLow"/>
     </agent>
     
-	<agent name="auction-random">
+	<agent name="auction-basic">
 		<set class-path="bin/"/>
-		<set class-name="template.AuctionTemplate"/>
+		<set class-name="template.AuctionBasic"/>
 	</agent>
+    
+    <agent name="auction-random-basic">
+        <set class-path="bin/"/>
+        <set class-name="template.AuctionTemplate"/>
+    </agent>
 	
 </agents>
