@@ -53,7 +53,8 @@ public class AuctionSavings implements AuctionBehavior {
 	double[][] pmf;
 	
 	// Bank variables
-	long savings, expenses, minCost;
+	long savings, expenses, minCost; 
+	int strategy; 
 
 	@Override
 	public void setup(Topology topology, TaskDistribution distribution, Agent agent) {
@@ -76,10 +77,13 @@ public class AuctionSavings implements AuctionBehavior {
 		timeoutSetup = ls.get(LogistSettings.TimeoutKey.SETUP);
 		timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
 		timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
+		timeoutBid = 5*1000;
+		timeoutPlan = 5*1000;
 		
 		// Initialize bank variables
 		savings = 3000;
 		expenses = 0;
+		strategy = 1; 
 
 		// Initialize solution representation
 		this.plan = new SLS(vehicles, timeoutPlan);
@@ -148,6 +152,7 @@ public class AuctionSavings implements AuctionBehavior {
 	public void auctionResult(Task previous, int winner, Long[] bids) {
 		numTasks++;
 		
+		
 		for(int i=0; i < bids.length; i++) {
 			System.out.println("Bid "+ i + " " + bids[i]);
 		}
@@ -157,19 +162,22 @@ public class AuctionSavings implements AuctionBehavior {
 			plan.consolidatePlan();
 			// Update expenses
 			expenses = expenses + minCost - bids[winner];
-			System.out.println(minCost - bids[winner]);
-			System.out.println("Am here");
+			System.out.println("got from this " +  (minCost - bids[winner]));
 		}
 		
 		// For first three tasks
 		if(numTasks <= 2) {
 			savings = (2 - numTasks) * 1000;
-		} else{
-			System.out.println("Change policy");
-			savings = -10;
+		} else if (numTasks <= 5){
+			strategy = 2;
+			//savings = (long) -Math.floor(0.5*expenses);
+			savings = -expenses; 
+		} else {
+			strategy = 3;
+			savings = -expenses; 
 		}
 
-		System.out.println(expenses);
+		System.out.println("Expenses bank " + expenses + " with stategy " + strategy);
 	}
 
 	@Override
@@ -181,7 +189,19 @@ public class AuctionSavings implements AuctionBehavior {
 
 		System.out.println("Bank: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
 		
-		long bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2) * savings);
+		long bid; 
+		if (expenses > 0) {
+			bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.1*strategy*numTasks) * savings);
+			System.out.println("extra payment " + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.1*strategy*numTasks) * savings);
+		} else{
+			if (minCost < 500) {
+				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.1*strategy) * savings);
+			} else {
+				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy) * savings);
+			}
+			
+		}
+		
 		
 		System.out.println("Bank: Final bid is: " + bid);
 		
