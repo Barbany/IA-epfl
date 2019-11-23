@@ -32,7 +32,7 @@ import logist.topology.Topology.City;
  * 
  */
 @SuppressWarnings("unused")
-public class AuctionSavings implements AuctionBehavior {
+public class AuctionSavingsV2 implements AuctionBehavior {
 	// Basic information about the problem
 	private Topology topology;
 	private TaskDistribution distribution;
@@ -194,9 +194,9 @@ public class AuctionSavings implements AuctionBehavior {
 			bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.1*strategy*numTasks) * savings);
 			System.out.println("extra payment " + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.1*strategy*numTasks) * savings);
 		} else{
-			if (minCost < 1000) {
-				System.out.println("bidding min");
-				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.4*strategy) * savings);
+			if (pmf[task.pickupCity.id][task.deliveryCity.id]  < 0.6) {
+				
+				bid = (long) Math.floor(minCost*(1.1 + 0.01*numTasks));
 			} else {
 				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy) * savings);
 			}
