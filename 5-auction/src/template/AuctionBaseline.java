@@ -64,6 +64,7 @@ public class AuctionBaseline implements AuctionBehavior {
         timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
         timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
         
+        
         // Seed randomness
         long seed = -9019554669489983951L * agent.id();
 		this.random = new Random(seed);
@@ -89,11 +90,11 @@ public class AuctionBaseline implements AuctionBehavior {
 		double timeStart = System.currentTimeMillis();
 		
 		// Compute marginal cost for us
-		long min_cost = plan.addTask(task, timeoutPlan*0.7);
+		long min_cost = plan.addTask(task, timeoutPlan);
 		
-		System.out.println("Minimum cost is: " + min_cost);
+		System.out.println("Baseline Minimum cost is: " + min_cost);
 		
-		return (long) (min_cost*1.2);
+		return (long) (min_cost*2.5);
 		//return (long) (min_cost * (1.0 + STD * (random.nextDouble() - GAIN_MARGIN)) / ((double) numTasks + 1));
 	}
 
