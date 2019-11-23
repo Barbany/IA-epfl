@@ -40,9 +40,6 @@ public class AuctionConnectivity implements AuctionBehavior {
 	private List<Vehicle> vehicles;
 	private int numTasks;
 
-	// Random number generator
-	private Random random;
-
 	// Solution representation
 	private SLS plan;
 
@@ -51,21 +48,19 @@ public class AuctionConnectivity implements AuctionBehavior {
 
 	// Preference matrix
 	double[][] pmf;
-
-	// Opponent's model
-	private SLS planToBeat;
-	private List<Vehicle> vehiclesToBeat;
-	private List<Long> marginsCostToBeat = new ArrayList<Long>(); // actual bid / estimated marginal cost
-	private long minCostToBeat; // Minimum opponent's bid seen so far
-	private long estimatedCost; // estimated marginal cost for the current task
+	
+	// Limits of interval where preference matrix is used
+	private double pmfMin;
+	private double pmfMax;
 
 	/*************************** Constants ***************************/
-	// Fraction of time spent in computing our optimal plan
-	private final static double TIME_FRACTION = 0.7;
 	// Margin of iterations until reaching timeout
 	private static final int MARGIN = 50;
-	// Limits of interval where preference matrix is used
-	private static final double PMF_MIN = 0.9, PMF_MAX = 1.1;
+	// Number of iterations when we only have gains
+	private static final double IT_GAIN = 10.0;
+	// Initial values of margins
+	private static final double PMF_MIN = 0.4;
+	private static final double PMF_MAX = 0.5;
 
 	@Override
 	public void setup(Topology topology, TaskDistribution distribution, Agent agent) {
@@ -89,10 +84,6 @@ public class AuctionConnectivity implements AuctionBehavior {
 		timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
 		timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
 
-		// Seed randomness
-		long seed = -9019554669489983951L * agent.id();
-		this.random = new Random(seed);
-
 		// Initialize solution representation
 		this.plan = new SLS(vehicles, timeoutPlan);
 
@@ -103,14 +94,10 @@ public class AuctionConnectivity implements AuctionBehavior {
 		for (Vehicle v : this.vehicles) {
 			initCities.remove(v.getCurrentCity());
 		}
-
-		vehiclesToBeat = new ArrayList<Vehicle>();
-		for (Vehicle v : this.vehicles) {
-			City initCity = initCities.get(this.random.nextInt(initCities.size()));
-			vehiclesToBeat.add(new OpponentVehicle(v, initCity));
-			initCities.remove(initCity);
-		}
-		this.planToBeat = new SLS(vehiclesToBeat, timeoutPlan);
+		
+		// Initialize margins
+		pmfMin = PMF_MIN;
+		pmfMax = PMF_MAX;
 
 		// Compute preference matrix spending at most the rest of the setup time
 		initPmf(timeoutSetup - (System.currentTimeMillis() - timeStart));
@@ -175,30 +162,29 @@ public class AuctionConnectivity implements AuctionBehavior {
 
 	@Override
 	public void auctionResult(Task previous, int winner, Long[] bids) {
-		this.numTasks++;
 		if (winner == agent.id()) {
 			// Assign plan in askPrice
 			plan.consolidatePlan();
-		} else {
-			planToBeat.consolidatePlan();
+			this.numTasks++;
 		}
 
-		System.out.println("Number of processed tasks:" + numTasks);
+		System.out.println("Number of won tasks:" + numTasks);
 	}
 
 	@Override
 	public Long askPrice(Task task) {
-		double timeStart = System.currentTimeMillis();
-
 		// Compute marginal cost for us
-		long minCost = plan.addTask(task, timeoutBid * TIME_FRACTION);
+		long minCost = plan.addTask(task, timeoutBid);
 
 		System.out.println("Conn: Minimum cost is: " + minCost);
+		
+		// Update pmf margins
+		if(numTasks < IT_GAIN) {
+			pmfMin += (1.0 - PMF_MIN) / IT_GAIN;
+			pmfMax += (1.2 - PMF_MAX) / IT_GAIN;
+		}
 
-		// Compute marginal cost of the opponent for remaining time
-		minCostToBeat = planToBeat.addTask(task, timeoutBid - (System.currentTimeMillis() - timeStart));
-
-		double bid = minCost * (pmf[task.pickupCity.id][task.deliveryCity.id] * (PMF_MIN - PMF_MAX) + PMF_MAX);
+		double bid = minCost * (pmf[task.pickupCity.id][task.deliveryCity.id] * (pmfMin - pmfMax) + pmfMax);
 
 		long finalBid = (long) Math.floor(bid);
 

@@ -1,12 +1,11 @@
 ### auction.xml ###
-      Agents        |  Win - Draw - Lose  |  MarcoPietroAbrate  |      YourName       |      YourName2      |   IncreasingBids   
- MarcoPietroAbrate  |      6 - 0 - 0      |          -          |  WIN (10557 : 477)  |  WIN (10012 : 83)   |  WIN (14323 : 143) 
-     YourName       |      2 - 0 - 4      |  LOSE (0 : 19549)   |          -          |  WIN (3201 : 1101)  |  WIN (244 : -232)  
-     YourName2      |      2 - 0 - 4      |  LOSE (0 : 14382)   |  WIN (2147 : 477)   |          -          |  WIN (232 : -232)  
-  IncreasingBids    |      2 - 0 - 4      | LOSE (-1196 : 1676) |  WIN (1092 : 362)   |   WIN (1092 : 0)    |          -         
+      Agents        |  Win - Draw - Lose  |        Xines        |   MarginalPlus100   |       connect      
+       Xines        |      4 - 0 - 0      |          -          |  WIN (10933 : 600)  |  WIN (7259 : -51)  
+  MarginalPlus100   |      2 - 0 - 2      |  LOSE (598 : 8744)  |          -          | WIN (1199 : -5909) 
+      connect       |      0 - 0 - 4      | LOSE (-135 : 14326) | LOSE (-4617 : 1400) |          -         
 
 First company results
-  # wins   : 9
+  # wins   : 3
   # draws  : 0
   # losses : 3
 
