@@ -4,14 +4,29 @@
 	<!-- A list of agents and their behavior classes -->
 	
 	<!-- #### AUCTION AGENTS ### -->
-    <agent name="auction-base">
+    <agent name="auction-baseline">
         <set class-path="bin/"/>
         <set class-name="template.AuctionBaseline"/>
-</agent>
+    </agent>
+    
+    <agent name="auction-estimatelow">
+        <set class-path="bin/"/>
+        <set class-name="template.AuctionEstimateLow"/>
+    </agent>
 
-    <agent name="auction-conn">
+    <agent name="auction-connectivity">
         <set class-path="bin/"/>
         <set class-name="template.AuctionConnectivity"/>
+    </agent>
+    
+    <agent name="auction-savings">
+        <set class-path="bin/"/>
+        <set class-name="template.AuctionSavings"/>
+    </agent>
+    
+    <agent name="auction-savings-impro">
+        <set class-path="bin/"/>
+        <set class-name="template.AuctionSavingsV2"/>
     </agent>
     
 </agents>
