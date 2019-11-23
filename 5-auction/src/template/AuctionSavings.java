@@ -77,8 +77,8 @@ public class AuctionSavings implements AuctionBehavior {
 		timeoutSetup = ls.get(LogistSettings.TimeoutKey.SETUP);
 		timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
 		timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
-		//timeoutBid = 5*1000;
-		//timeoutPlan = 5*1000;
+		timeoutBid = 5*1000;
+		timeoutPlan = 5*1000;
 		
 		// Initialize bank variables
 		savings = 3000;

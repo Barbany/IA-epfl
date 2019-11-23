@@ -21,7 +21,7 @@ public class SLS {
 	private Random rn;
 	
 	private long timeoutPlan;
-	private Solution best, potential;
+	public Solution best, potential;
 	
 	// Margin of iterations until reaching timeout
 	private static final int MARGIN = 500;
@@ -60,7 +60,7 @@ public class SLS {
 	 * Current plan is the potential one computed in previous auction
 	 */
 	public void consolidatePlan() {
-		best = potential;
+		best = potential.clone();
 	}
 	
 	/**
@@ -112,8 +112,8 @@ public class SLS {
 			for(Vehicle v: vehicles) {
 				cost = 0;
 				if(task.weight <= v.capacity()) {
-					cost += v.getCurrentCity().distanceTo(task.pickupCity);
-					cost += task.pickupCity.distanceTo(task.deliveryCity);
+					cost += v.getCurrentCity().distanceTo(task.pickupCity) * v.costPerKm();
+					cost += task.pickupCity.distanceTo(task.deliveryCity) * v.costPerKm();
 					if(cost < min_cost) {
 						min_cost = cost;
 						best_vehicle = v;
@@ -154,18 +154,19 @@ public class SLS {
 			}
 			
 			if(assigned) {
-				findBestsolution(potential, timeout - (System.currentTimeMillis() - timeStart));
+				potential = findBestsolution(potential, timeout - (System.currentTimeMillis() - timeStart));
 			} else {
 				potential = null;
 			}
 		}
 	}
 	
-	private void findBestsolution(Solution initSol, double timeout) {
+	private Solution findBestsolution(Solution initSol, double timeout) {
+		
 		long timeStart, duration;
-		double probability = 0.8;
+		double probability = 0.2;
 
-		double bestCost = Double.MAX_VALUE;
+		double bestCost = initSol.totalCost(vehicles);
 		Solution bestSolution = initSol;
 
 		long maxDuration = 0;
@@ -189,8 +190,7 @@ public class SLS {
 			}
 			totalDuration += duration;
 		}
-		
-		initSol = bestSolution;
+		return bestSolution;
 	}
 
 	/**
@@ -231,6 +231,7 @@ public class SLS {
 							N.add(A);
 							// Applying changing task order operator
 							List<Solution> newN = changingOrder(A, v_j);
+							
 							for (Solution sol : newN) {
 								N.add(sol);
 							}
