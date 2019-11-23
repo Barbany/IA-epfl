@@ -7,7 +7,12 @@
     <agent name="auction-base">
         <set class-path="bin/"/>
         <set class-name="template.AuctionBaseline"/>
-</agent>
+    </agent>
+
+    <agent name="auction-bank">
+        <set class-path="bin/"/>
+        <set class-name="template.AuctionSavings"/>
+    </agent>
 
     <agent name="auction-conn">
         <set class-path="bin/"/>
