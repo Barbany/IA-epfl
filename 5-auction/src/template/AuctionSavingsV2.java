@@ -186,15 +186,13 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 
 		// Compute marginal cost for us
 		minCost = plan.addTask(task, timeoutBid);
-		
-		System.out.println("Plans : " + plan.potential.plans);
 
 		System.out.println("Bank: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
 		
 		
 		long bid; 
 		if (numTasks < 3) {
-			bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.4*strategy*(numTasks +1)) * savings);
+			bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * savings);
 			
 			
 		} else {
@@ -203,9 +201,12 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
 				System.out.println("extra payment " + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
 			} else{
-				if (pmf[task.pickupCity.id][task.deliveryCity.id]  < 0.6) {
+				if (minCost == 0) {
+					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000);
+				}
+				else if (pmf[task.pickupCity.id][task.deliveryCity.id]  < 0.6) {
 					
-					bid = (long) Math.floor(minCost*(1.1 + 0.01*numTasks));
+					bid = (long) Math.floor(minCost*(1.1 + 0.05*numTasks));
 				} else {
 					bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.3*strategy) * savings);
 				}

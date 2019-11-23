@@ -94,7 +94,7 @@ public class AuctionBaseline implements AuctionBehavior {
 		
 		System.out.println("Baseline Minimum cost is: " + min_cost);
 		
-		return (long) (min_cost*2.5);
+		return (long) (min_cost*1.1);
 		//return (long) (min_cost * (1.0 + STD * (random.nextDouble() - GAIN_MARGIN)) / ((double) numTasks + 1));
 	}
 
