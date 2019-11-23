@@ -81,7 +81,7 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 		//timeoutPlan = 5*1000;
 		
 		// Initialize bank variables
-		savings = 3000;
+		savings = 4000;
 		expenses = 0;
 		strategy = 1; 
 
@@ -170,7 +170,6 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 			savings = (2 - numTasks) * 1200;
 		} else if (numTasks <= 5){
 			strategy = 2;
-			//savings = (long) -Math.floor(0.5*expenses);
 			savings = -expenses; 
 		} else {
 			strategy = 3;
@@ -189,23 +188,38 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 
 		System.out.println("Bank: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
 		
-		
+		// Compute bid
 		long bid; 
+		
+		// Initial bids allow losing money
 		if (numTasks < 3) {
-			bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * savings);
+			if (minCost > 0) {
+				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * savings);
+			} else {
+				// If the cost is zero, start recovering loses
+				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id]) * expenses);
+			}
+			
 			
 			
 		} else {
-			
+			// Negative gains
 			if (expenses >= 0) {
-				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
-				System.out.println("extra payment " + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
-			} else{
+				 
 				if (minCost == 0) {
-					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000);
+					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
+				} 
+				// Bid over the cost for non interesting tasks 
+				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
+			} 
+			
+			else{
+				// Case cost zero
+				if (minCost == 0) {
+					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
 				}
+				// the task is very interesting
 				else if (pmf[task.pickupCity.id][task.deliveryCity.id]  < 0.6) {
-					
 					bid = (long) Math.floor(minCost*(1.1 + 0.05*numTasks));
 				} else {
 					bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.3*strategy) * savings);
