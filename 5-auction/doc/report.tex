@@ -35,6 +35,7 @@ Initialize vector $e[\text{City}]$ and $pmf[\text{Start city}][\text{End city}]$
     $pmf[c_1][c_2] \leftarrow pmf[c_1][c_2] + e[c]$
     }
 }
+Normalize the matrix $pmf$ so each entry represents a probability, i.e. $pmf \leftarrow \frac{pmf-\min}{\max - \min}$
  \caption{}
 \end{algorithm}
 
