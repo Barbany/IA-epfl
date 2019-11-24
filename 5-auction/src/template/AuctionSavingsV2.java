@@ -52,6 +52,9 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 	// Preference matrix
 	double[][] pmf;
 	
+	// TODO: REMOVE!! ONLY FOR PLOTS 
+	List<Long> bidsTotal, minCostTotal;
+	
 	// Bank variables
 	long savings, expenses, minCost; 
 	int strategy; 
@@ -66,6 +69,9 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 		this.distribution = distribution;
 		this.agent = agent;
 		this.vehicles = agent.vehicles();
+		
+		bidsTotal = new ArrayList<Long>();
+		minCostTotal = new ArrayList<Long>();
 
 		// Get the timeouts
 		LogistSettings ls = null;
@@ -185,8 +191,6 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 
 		// Compute marginal cost for us
 		minCost = plan.addTask(task, timeoutBid);
-
-		System.out.println("Bank: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
 		
 		// Compute bid
 		long bid; 
@@ -228,12 +232,14 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 			}
 			
 		}
-		
-		
-		
-		
-		System.out.println("Bank: Final bid is: " + bid);
-		
+
+		System.out.println("JBalvin: -----------------");
+		System.out.println("JBalvin: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("JBalvin: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("JBalvin: Final bid is   : " + bid);
+		System.out.println("JBalvin: Number of tasks: " + numTasks);
+		bidsTotal.add(bid);
+		minCostTotal.add(minCost);
 		return bid;
 	}
 
@@ -242,6 +248,8 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 	 */
 	@Override
 	public List<Plan> plan(List<Vehicle> vehicles, TaskSet tasks) {
+		System.out.println("JBalvin BID HISTORIC: " + bidsTotal + " ;");
+		System.out.println("JBalvin COST HISTORIC: " + minCostTotal + " ;");
 		return plan.getFinalPlan(tasks);
 	}
 

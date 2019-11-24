@@ -25,7 +25,7 @@ import logist.topology.Topology.City;
  * 
  */
 @SuppressWarnings("unused")
-public class AuctionBaseline implements AuctionBehavior {
+public class AuctionRandom implements AuctionBehavior {
 	// Basic information about the problem
 	private Agent agent;
 	private List<Vehicle> vehicles;
@@ -39,7 +39,7 @@ public class AuctionBaseline implements AuctionBehavior {
 	
 	// TODO: REMOVE!! ONLY FOR PLOTS 
 	List<Long> bidsTotal, minCostTotal;
-		
+	
 	
 	// Timeouts
 	private long timeoutSetup, timeoutBid, timeoutPlan;
@@ -98,17 +98,16 @@ public class AuctionBaseline implements AuctionBehavior {
 		
 		// Compute marginal cost for us
 		long min_cost = plan.addTask(task, timeoutPlan);
-		long bid = (long) (min_cost + 250 * 0.05 * (numTasks - 3));
+		double ratio = 1.0 + (random.nextDouble() * 0.05 * task.id);
 		
-		
-		System.out.println("Baseline: -----------------");
-		System.out.println("Baseline: Minimum cost is: " + min_cost );
-		System.out.println("Baseline: Final bid is   : " + bid);
-		System.out.println("Baseline: Number of tasks: " + numTasks);
-		bidsTotal.add(bid);
+		System.out.println("Random: -----------------");
+		System.out.println("Random: Minimum cost is: " + min_cost );
+		System.out.println("Random: Final bid is   : " + ratio * min_cost);
+		System.out.println("Random: Number of tasks: " + numTasks);
+		bidsTotal.add((long) (ratio * min_cost));
 		minCostTotal.add(min_cost);
 		
-		return bid;
+		return (long) (ratio * min_cost);
 	}
 
 	/**
@@ -116,8 +115,8 @@ public class AuctionBaseline implements AuctionBehavior {
 	 */
 	@Override
 	public List<Plan> plan(List<Vehicle> vehicles, TaskSet tasks) {
-		System.out.println("Baseline BID HISTORIC: " + bidsTotal + " ;");
-		System.out.println("Baseline COST HISTORIC: " + minCostTotal + " ;");
+		System.out.println("Random BID HISTORIC: " + bidsTotal + " ;");
+		System.out.println("Random COST HISTORIC: " + minCostTotal + " ;");
         return plan.getFinalPlan(tasks);
 	}
 
