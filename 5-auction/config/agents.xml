@@ -9,6 +9,11 @@
         <set class-name="template.AuctionBaseline"/>
     </agent>
     
+    <agent name="auction-basic">
+        <set class-path="bin/"/>
+        <set class-name="template.AuctionBasic"/>
+    </agent>
+    
     <agent name="auction-estimatelow">
         <set class-path="bin/"/>
         <set class-name="template.AuctionEstimateLow"/>
