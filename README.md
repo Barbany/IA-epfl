@@ -1,7 +1,11 @@
-# IA-epfl
+# Intelligent Agents @ EPFL
 Repository for the programming exercises of the Intelligent Agents course (CS-430) at EPFL.
 
 Each folder corresponds to one exercise and inside contains the source code, the configuration files and the report.
+
+## Running tournaments
+
+For the last exercise in folder `5-auction/`, one can create tournaments between two or more JAR files. To do so, move to the folder `5-auction-tournament/` and run the bash script `run_tournament.sh`. You will be asked to write down the names of the JARs (without extension) that will be enrolled to the tournament. Write them separated by spaces and the script will create the tournament and print its results.
 
 ## Configuring Eclipse
 
