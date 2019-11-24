@@ -153,7 +153,7 @@ public class AuctionBasic implements AuctionBehavior {
 		
 		// Update standard deviation of the estimate
 		if(numTasks > 2) {
-			stdToBeat = (numTasks - 2)/(numTasks - 1) * stdToBeat + (1/numTasks)*(marginToBeat - ratio);
+			stdToBeat = (numTasks - 2.0f)/(numTasks - 1.0f) * stdToBeat + (1/numTasks)*(marginToBeat - ratio);
 		}
 		// Update estimate
 		marginToBeat = (1/numTasks)*(ratio - (numTasks - 1)*marginToBeat);
@@ -167,10 +167,10 @@ public class AuctionBasic implements AuctionBehavior {
 		
 		
 		// Compute marginal cost for us
-		long min_cost = plan.addTask(task, timeoutBid * TIME_FRACTION);
+		long min_cost = plan.addTask(task, timeoutPlan * TIME_FRACTION);
 		
 		// Compute marginal cost of the opponent for remaining time
-		minCostToBeat = planToBeat.addTask(task, timeoutBid - (System.currentTimeMillis() - timeStart)); 
+		minCostToBeat = planToBeat.addTask(task, timeoutPlan*TIME_FRACTION- (System.currentTimeMillis() - timeStart)); 
 		
 		
 		// Time spent in the following lines is negligible
@@ -178,14 +178,11 @@ public class AuctionBasic implements AuctionBehavior {
 		
 		System.out.println(min_cost);
 		
-		// TODO: Think smart way to estimate price (use pmf)
-		//System.out.println(min_cost);
-		
 		if (expectedCost > min_cost) {
 			//System.out.println(agent.name() + " Bid for task "+ numTasks + " is " + expectedCost*0.9 + " with mincost " + min_cost);
 			// raise bid up to a certain safety margin
 			// TODO: Instead of 0.9, - 3 std ?
-			return (long) (expectedCost - 3*stdToBeat);
+			return (long) (expectedCost - 3.0*stdToBeat);
 				
 		} else {
 			// TODO: Mirar si ens val la pena baixar la bid pero en general no!
