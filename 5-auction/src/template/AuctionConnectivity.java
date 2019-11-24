@@ -57,10 +57,10 @@ public class AuctionConnectivity implements AuctionBehavior {
 	// Margin of iterations until reaching timeout
 	private static final int MARGIN = 50;
 	// Number of iterations when we only have gains
-	private static final double IT_GAIN = 10.0;
+	private static final double IT_GAIN = 5.0;
 	// Initial values of margins
 	private static final double PMF_MIN = 0.4;
-	private static final double PMF_MAX = 0.5;
+	private static final double PMF_MAX = 0.6;
 
 	@Override
 	public void setup(Topology topology, TaskDistribution distribution, Agent agent) {
@@ -165,8 +165,8 @@ public class AuctionConnectivity implements AuctionBehavior {
 		if (winner == agent.id()) {
 			// Assign plan in askPrice
 			plan.consolidatePlan();
-			this.numTasks++;
 		}
+		this.numTasks++;
 
 		System.out.println("Number of won tasks:" + numTasks);
 	}
@@ -179,10 +179,8 @@ public class AuctionConnectivity implements AuctionBehavior {
 		System.out.println("Conn: Minimum cost is: " + minCost);
 		
 		// Update pmf margins
-		if(numTasks < IT_GAIN) {
-			pmfMin += (1.0 - PMF_MIN) / IT_GAIN;
-			pmfMax += (1.2 - PMF_MAX) / IT_GAIN;
-		}
+		pmfMin += (1.0 - PMF_MIN) / IT_GAIN;
+		pmfMax += (1.2 - PMF_MAX) / IT_GAIN;
 
 		double bid = minCost * (pmf[task.pickupCity.id][task.deliveryCity.id] * (pmfMin - pmfMax) + pmfMax);
 
