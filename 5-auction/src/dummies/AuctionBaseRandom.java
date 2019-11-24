@@ -1,4 +1,4 @@
-package template;
+package dummies;
 
 import java.io.File;
 //the list of imports
@@ -18,6 +18,7 @@ import logist.task.TaskDistribution;
 import logist.task.TaskSet;
 import logist.topology.Topology;
 import logist.topology.Topology.City;
+import main.SLS;
 
 /**
  * A very simple auction agent that assigns all tasks to its first vehicle and
