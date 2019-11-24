@@ -1,4 +1,4 @@
-package template;
+package dummies;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,6 +25,7 @@ import logist.task.TaskDistribution;
 import logist.task.TaskSet;
 import logist.topology.Topology;
 import logist.topology.Topology.City;
+import main.SLS;
 
 /**
  * A very simple auction agent that assigns all tasks to its first vehicle and
@@ -32,7 +33,7 @@ import logist.topology.Topology.City;
  * 
  */
 @SuppressWarnings("unused")
-public class AuctionSavingsV2 implements AuctionBehavior {
+public class AuctionSavings implements AuctionBehavior {
 	// Basic information about the problem
 	private Topology topology;
 	private TaskDistribution distribution;
@@ -52,9 +53,6 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 	// Preference matrix
 	double[][] pmf;
 	
-	// TODO: REMOVE!! ONLY FOR PLOTS 
-	List<Long> bidsTotal, minCostTotal;
-	
 	// Bank variables
 	long savings, expenses, minCost; 
 	int strategy; 
@@ -69,9 +67,6 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 		this.distribution = distribution;
 		this.agent = agent;
 		this.vehicles = agent.vehicles();
-		
-		bidsTotal = new ArrayList<Long>();
-		minCostTotal = new ArrayList<Long>();
 
 		// Get the timeouts
 		LogistSettings ls = null;
@@ -83,11 +78,11 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 		timeoutSetup = ls.get(LogistSettings.TimeoutKey.SETUP);
 		timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
 		timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
-		//timeoutBid = 5*1000;
-		//timeoutPlan = 5*1000;
+		timeoutBid = 5*1000;
+		timeoutPlan = 5*1000;
 		
 		// Initialize bank variables
-		savings = 4000;
+		savings = 3000;
 		expenses = 0;
 		strategy = 1; 
 
@@ -176,6 +171,7 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 			savings = (2 - numTasks) * 1200;
 		} else if (numTasks <= 5){
 			strategy = 2;
+			//savings = (long) -Math.floor(0.5*expenses);
 			savings = -expenses; 
 		} else {
 			strategy = 3;
@@ -191,55 +187,26 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 
 		// Compute marginal cost for us
 		minCost = plan.addTask(task, timeoutBid);
+
+		System.out.println("Bank: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
 		
-		// Compute bid
 		long bid; 
-		
-		// Initial bids allow losing money
-		if (numTasks < 3) {
-			if (minCost > 0) {
-				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * savings);
+		if (expenses > 0) {
+			bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.1*strategy*numTasks) * savings);
+			System.out.println("extra payment " + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.1*strategy*numTasks) * savings);
+		} else{
+			if (minCost < 1000) {
+				System.out.println("bidding min");
+				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.4*strategy) * savings);
 			} else {
-				// If the cost is zero, start recovering loses
-				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id]) * expenses);
-			}
-			
-			
-			
-		} else {
-			// Negative gains
-			if (expenses >= 0) {
-				 
-				if (minCost == 0) {
-					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
-				} 
-				// Bid over the cost for non interesting tasks 
-				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
-			} 
-			
-			else{
-				// Case cost zero
-				if (minCost == 0) {
-					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
-				}
-				// the task is very interesting
-				else if (pmf[task.pickupCity.id][task.deliveryCity.id]  < 0.6) {
-					bid = (long) Math.floor(minCost*(1.1 + 0.05*numTasks));
-				} else {
-					bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.3*strategy) * savings);
-				}
-				
+				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy) * savings);
 			}
 			
 		}
-
-		System.out.println("JBalvin: -----------------");
-		System.out.println("JBalvin: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("JBalvin: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("JBalvin: Final bid is   : " + bid);
-		System.out.println("JBalvin: Number of tasks: " + numTasks);
-		bidsTotal.add(bid);
-		minCostTotal.add(minCost);
+		
+		
+		System.out.println("Bank: Final bid is: " + bid);
+		
 		return bid;
 	}
 
@@ -248,8 +215,6 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 	 */
 	@Override
 	public List<Plan> plan(List<Vehicle> vehicles, TaskSet tasks) {
-		System.out.println("JBalvin BID HISTORIC: " + bidsTotal + " ;");
-		System.out.println("JBalvin COST HISTORIC: " + minCostTotal + " ;");
 		return plan.getFinalPlan(tasks);
 	}
 

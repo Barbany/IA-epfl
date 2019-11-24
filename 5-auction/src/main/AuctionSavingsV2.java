@@ -1,4 +1,4 @@
-package template;
+package main;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,13 +32,16 @@ import logist.topology.Topology.City;
  * 
  */
 @SuppressWarnings("unused")
-public class AuctionConnectivity implements AuctionBehavior {
+public class AuctionSavingsV2 implements AuctionBehavior {
 	// Basic information about the problem
 	private Topology topology;
 	private TaskDistribution distribution;
 	private Agent agent;
 	private List<Vehicle> vehicles;
 	private int numTasks;
+
+	// Random number generator
+	private Random random;
 
 	// Solution representation
 	private SLS plan;
@@ -49,18 +52,12 @@ public class AuctionConnectivity implements AuctionBehavior {
 	// Preference matrix
 	double[][] pmf;
 	
-	// Limits of interval where preference matrix is used
-	private double pmfMin;
-	private double pmfMax;
-
-	/*************************** Constants ***************************/
-	// Margin of iterations until reaching timeout
-	private static final int MARGIN = 50;
-	// Number of iterations when we only have gains
-	private static final double IT_GAIN = 10.0;
-	// Initial values of margins
-	private static final double PMF_MIN = 0.4;
-	private static final double PMF_MAX = 0.5;
+	// TODO: REMOVE!! ONLY FOR PLOTS 
+	List<Long> bidsTotal, minCostTotal;
+	
+	// Bank variables
+	long savings, expenses, minCost; 
+	int strategy; 
 
 	@Override
 	public void setup(Topology topology, TaskDistribution distribution, Agent agent) {
@@ -72,6 +69,9 @@ public class AuctionConnectivity implements AuctionBehavior {
 		this.distribution = distribution;
 		this.agent = agent;
 		this.vehicles = agent.vehicles();
+		
+		bidsTotal = new ArrayList<Long>();
+		minCostTotal = new ArrayList<Long>();
 
 		// Get the timeouts
 		LogistSettings ls = null;
@@ -83,21 +83,16 @@ public class AuctionConnectivity implements AuctionBehavior {
 		timeoutSetup = ls.get(LogistSettings.TimeoutKey.SETUP);
 		timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
 		timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
+		//timeoutBid = 5*1000;
+		//timeoutPlan = 5*1000;
+		
+		// Initialize bank variables
+		savings = 4000;
+		expenses = 0;
+		strategy = 1; 
 
 		// Initialize solution representation
 		this.plan = new SLS(vehicles, timeoutPlan);
-
-		// Initialize opponent's model
-		// Opponent has as many vehicles as we do but initial city is unknown
-		// Initial cities are taken u.a.r. without replacement
-		ArrayList<City> initCities = new ArrayList<City>(topology.cities());
-		for (Vehicle v : this.vehicles) {
-			initCities.remove(v.getCurrentCity());
-		}
-		
-		// Initialize margins
-		pmfMin = PMF_MIN;
-		pmfMax = PMF_MAX;
 
 		// Compute preference matrix spending at most the rest of the setup time
 		initPmf(timeoutSetup - (System.currentTimeMillis() - timeStart));
@@ -115,7 +110,6 @@ public class AuctionConnectivity implements AuctionBehavior {
 		double maxDuration = 0;
 
 		// Check which cities are more present in expectation inside a shortest path
-		// If topology has been already seen, load precomputed pmf
 		String fname = Integer.toString(topology.hashCode()) + ".pmf";
 		double[] connectivity = new double[topology.size()];
 
@@ -162,34 +156,91 @@ public class AuctionConnectivity implements AuctionBehavior {
 
 	@Override
 	public void auctionResult(Task previous, int winner, Long[] bids) {
+		numTasks++;
+		
+		
+		for(int i=0; i < bids.length; i++) {
+			System.out.println("Bid "+ i + " " + bids[i]);
+		}
+		
 		if (winner == agent.id()) {
 			// Assign plan in askPrice
 			plan.consolidatePlan();
-			this.numTasks++;
+			// Update expenses
+			expenses = expenses + minCost - bids[winner];
+			System.out.println("got from this " +  (minCost - bids[winner]));
+		}
+		
+		// For first three tasks
+		if(numTasks <= 2) {
+			savings = (2 - numTasks) * 1200;
+		} else if (numTasks <= 5){
+			strategy = 2;
+			savings = -expenses; 
+		} else {
+			strategy = 3;
+			savings = -expenses; 
 		}
 
-		System.out.println("Number of won tasks:" + numTasks);
+		System.out.println("Expenses bank " + expenses + " with stategy " + strategy);
 	}
 
 	@Override
 	public Long askPrice(Task task) {
-		// Compute marginal cost for us
-		long minCost = plan.addTask(task, timeoutBid);
+		double timeStart = System.currentTimeMillis();
 
-		System.out.println("Conn: Minimum cost is: " + minCost);
+		// Compute marginal cost for us
+		minCost = plan.addTask(task, timeoutBid);
 		
-		// Update pmf margins
-		if(numTasks < IT_GAIN) {
-			pmfMin += (1.0 - PMF_MIN) / IT_GAIN;
-			pmfMax += (1.2 - PMF_MAX) / IT_GAIN;
+		// Compute bid
+		long bid; 
+		
+		// Initial bids allow losing money
+		if (numTasks < 3) {
+			if (minCost > 0) {
+				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * savings);
+			} else {
+				// If the cost is zero, start recovering loses
+				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id]) * expenses);
+			}
+			
+			
+			
+		} else {
+			// Negative gains
+			if (expenses >= 0) {
+				 
+				if (minCost == 0) {
+					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
+				} 
+				// Bid over the cost for non interesting tasks 
+				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
+			} 
+			
+			else{
+				// Case cost zero
+				if (minCost == 0) {
+					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
+				}
+				// the task is very interesting
+				else if (pmf[task.pickupCity.id][task.deliveryCity.id]  < 0.6) {
+					bid = (long) Math.floor(minCost*(1.1 + 0.05*numTasks));
+				} else {
+					bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.3*strategy) * savings);
+				}
+				
+			}
+			
 		}
 
-		double bid = minCost * (pmf[task.pickupCity.id][task.deliveryCity.id] * (pmfMin - pmfMax) + pmfMax);
-
-		long finalBid = (long) Math.floor(bid);
-
-		System.out.println("Conn: Final bid is: " + finalBid);
-		return finalBid;
+		System.out.println("JBalvin: -----------------");
+		System.out.println("JBalvin: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("JBalvin: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("JBalvin: Final bid is   : " + bid);
+		System.out.println("JBalvin: Number of tasks: " + numTasks);
+		bidsTotal.add(bid);
+		minCostTotal.add(minCost);
+		return bid;
 	}
 
 	/**
@@ -197,6 +248,8 @@ public class AuctionConnectivity implements AuctionBehavior {
 	 */
 	@Override
 	public List<Plan> plan(List<Vehicle> vehicles, TaskSet tasks) {
+		System.out.println("JBalvin BID HISTORIC: " + bidsTotal + " ;");
+		System.out.println("JBalvin COST HISTORIC: " + minCostTotal + " ;");
 		return plan.getFinalPlan(tasks);
 	}
 
