@@ -55,6 +55,8 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 	// TODO: REMOVE!! ONLY FOR PLOTS 
 	List<Long> bidsTotal, minCostTotal;
 	
+	double theirMin = Double.MAX_VALUE;
+	
 	// Bank variables
 	long savings, expenses, minCost; 
 	int strategy; 
@@ -169,11 +171,21 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 			// Update expenses
 			expenses = expenses + minCost - bids[winner];
 			System.out.println("got from this " +  (minCost - bids[winner]));
+			
+			if (bids[1 - winner] < theirMin) 
+				theirMin = bids[1 - winner];
+			
+		}else {
+			if (bids[winner] < theirMin) 
+				theirMin = bids[winner];
 		}
 		
 		// For first three tasks
 		if(numTasks <= 2) {
-			savings = (2 - numTasks) * 1200;
+			if(expenses == 0)	
+				savings += 100;
+			else
+				savings = (3 - numTasks) * 1200;
 		} else if (numTasks <= 5){
 			strategy = 2;
 			savings = -expenses; 
@@ -208,19 +220,23 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 			
 		} else {
 			// Negative gains
-			if (expenses >= 0) {
+			if (expenses > 0) {
 				 
 				if (minCost == 0) {
 					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
 				} 
 				// Bid over the cost for non interesting tasks 
-				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
-			} 
-			
-			else{
+				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy) * savings);
+				//bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
+			} else if (expenses == 0){
+				System.out.println("HERE");
+				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * 1200);
+				
+			} else{
 				// Case cost zero
 				if (minCost == 0) {
 					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
+					
 				}
 				// the task is very interesting
 				else if (pmf[task.pickupCity.id][task.deliveryCity.id]  < 0.6) {
@@ -232,12 +248,14 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 			}
 			
 		}
+		if (numTasks > 0)
+			bid = (long) Math.max(bid, theirMin); 
 
-		System.out.println("JBalvin: -----------------");
-		System.out.println("JBalvin: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("JBalvin: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("JBalvin: Final bid is   : " + bid);
-		System.out.println("JBalvin: Number of tasks: " + numTasks);
+		System.out.println("JBalvin Estimator: -----------------");
+		System.out.println("JBalvin Estimator: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("JBalvin Estimator: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("JBalvin Estimator: Final bid is   : " + bid);
+		System.out.println("JBalvin Estimator: Number of tasks: " + numTasks);
 		bidsTotal.add(bid);
 		minCostTotal.add(minCost);
 		return bid;
@@ -248,8 +266,8 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 	 */
 	@Override
 	public List<Plan> plan(List<Vehicle> vehicles, TaskSet tasks) {
-		System.out.println("JBalvin BID HISTORIC: " + bidsTotal + " ;");
-		System.out.println("JBalvin COST HISTORIC: " + minCostTotal + " ;");
+		System.out.println("JBalvin Estimator BID HISTORIC: " + bidsTotal + " ;");
+		System.out.println("JBalvin Estimator COST HISTORIC: " + minCostTotal + " ;");
 		return plan.getFinalPlan(tasks);
 	}
 

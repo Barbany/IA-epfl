@@ -1,0 +1,678 @@
+12:04:44.675 FINE | Run command: java -Xmx1024m -classpath ../logist/logist.jar logist.LogistPlatform -o tournament/myTournament/auction-MarcoPietroAbrate-JB-estimator.xml -a tournament/myTournament/agents.xml config/auction.xml MarcoPietroAbrate JB-estimator
+12:04:44.762 CONFIG | Reading config/auction.xml
+12:04:44.809 CONFIG | Reading config/settings_auction.xml
+12:04:45.002 CONFIG | Reading config/topology/england.xml
+12:04:45.020 CONFIG | Reading tournament/myTournament/agents.xml
+12:04:45.037 CONFIG | Reading config/settings_auction.xml
+12:04:45.043 CONFIG | Largest possible Marginal Cost: 5928.0
+12:04:45.043 CONFIG | The setup was completed in 6 milliseconds.
+12:04:45.044 CONFIG | Reading config/settings_auction.xml
+12:04:49.917 CONFIG | --------------Agent 0--------------
+12:04:49.917 CONFIG | My profit is 0.0
+12:04:49.917 CONFIG | My marginal cost is 2191.0
+12:04:49.917 CONFIG | My opponent's profit is 0.0
+12:04:49.917 CONFIG | My opponent's marginal cost is 2191.0
+12:04:49.917 CONFIG | My bid 1095.5
+12:04:49.917 CONFIG | -----------------------------------
+12:04:49.917 CONFIG | JBalvin Estimator: -----------------
+12:04:49.918 CONFIG | JBalvin Estimator: Minimum cost is: 2766 propobility: 0.4394147124783703
+12:04:49.918 CONFIG | JBalvin Estimator: Probability    : 0.4394147124783703
+12:04:49.918 CONFIG | JBalvin Estimator: Final bid is   : 1008
+12:04:49.918 CONFIG | JBalvin Estimator: Number of tasks: 0
+12:04:54.618 CONFIG | --------------Agent 0--------------
+12:04:54.618 CONFIG | My profit is 0.0
+12:04:54.618 CONFIG | My marginal cost is 2668.0
+12:04:54.618 CONFIG | My opponent's profit is -1183.0
+12:04:54.618 CONFIG | My opponent's marginal cost is 2382.0
+12:04:54.618 CONFIG | My bid 2668.0
+12:04:54.618 CONFIG | -----------------------------------
+12:04:54.618 CONFIG | Bid 0 1095
+12:04:54.618 CONFIG | Bid 1 1008
+12:04:54.618 CONFIG | got from this 1758
+12:04:54.618 CONFIG | Expenses bank 1758 with stategy 1
+12:04:58.702 CONFIG | JBalvin Estimator: -----------------
+12:04:58.702 CONFIG | JBalvin Estimator: Minimum cost is: 2382 propobility: 0.5572044589952645
+12:04:58.702 CONFIG | JBalvin Estimator: Probability    : 0.5572044589952645
+12:04:58.702 CONFIG | JBalvin Estimator: Final bid is   : 1095
+12:04:58.702 CONFIG | JBalvin Estimator: Number of tasks: 1
+12:05:03.252 CONFIG | --------------Agent 0--------------
+12:05:03.252 CONFIG | My profit is 0.0
+12:05:03.252 CONFIG | My marginal cost is 2214.5
+12:05:03.252 CONFIG | My opponent's profit is -2470.0
+12:05:03.252 CONFIG | My opponent's marginal cost is 0.0
+12:05:03.252 CONFIG | My bid 2214.5
+12:05:03.252 CONFIG | -----------------------------------
+12:05:03.252 CONFIG | Bid 0 2668
+12:05:03.252 CONFIG | Bid 1 1095
+12:05:03.252 CONFIG | got from this 1287
+12:05:03.252 CONFIG | Expenses bank 3045 with stategy 1
+12:05:07.323 CONFIG | JBalvin Estimator: -----------------
+12:05:07.323 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.3870085577256164
+12:05:07.323 CONFIG | JBalvin Estimator: Probability    : 0.3870085577256164
+12:05:07.323 CONFIG | JBalvin Estimator: Final bid is   : 1178
+12:05:07.323 CONFIG | JBalvin Estimator: Number of tasks: 2
+12:05:11.723 CONFIG | --------------Agent 0--------------
+12:05:11.723 CONFIG | My profit is 0.0
+12:05:11.723 CONFIG | My marginal cost is 2114.0
+12:05:11.723 CONFIG | My opponent's profit is -1292.0
+12:05:11.723 CONFIG | My opponent's marginal cost is 748.0
+12:05:11.723 CONFIG | My bid 2114.0
+12:05:11.723 CONFIG | -----------------------------------
+12:05:11.723 CONFIG | Bid 0 2214
+12:05:11.723 CONFIG | Bid 1 1178
+12:05:11.723 CONFIG | got from this -1178
+12:05:11.723 CONFIG | Expenses bank 1867 with stategy 2
+12:05:16.284 CONFIG | JBalvin Estimator: -----------------
+12:05:16.284 CONFIG | JBalvin Estimator: Minimum cost is: 748 propobility: 0.6328387411309062
+12:05:16.284 CONFIG | JBalvin Estimator: Probability    : 0.6328387411309062
+12:05:16.284 CONFIG | JBalvin Estimator: Final bid is   : 1095
+12:05:16.284 CONFIG | JBalvin Estimator: Number of tasks: 3
+12:05:20.534 CONFIG | --------------Agent 0--------------
+12:05:20.534 CONFIG | My profit is 0.0
+12:05:20.534 CONFIG | My marginal cost is 2668.0
+12:05:20.534 CONFIG | My opponent's profit is -945.0
+12:05:20.534 CONFIG | My opponent's marginal cost is 0.0
+12:05:20.534 CONFIG | My bid 2668.0
+12:05:20.534 CONFIG | -----------------------------------
+12:05:20.534 CONFIG | Bid 0 2114
+12:05:20.534 CONFIG | Bid 1 1095
+12:05:20.534 CONFIG | got from this -347
+12:05:20.534 CONFIG | Expenses bank 1520 with stategy 2
+12:05:24.590 CONFIG | JBalvin Estimator: -----------------
+12:05:24.590 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.6574609429510335
+12:05:24.590 CONFIG | JBalvin Estimator: Probability    : 0.6574609429510335
+12:05:24.590 CONFIG | JBalvin Estimator: Final bid is   : 1095
+12:05:24.590 CONFIG | JBalvin Estimator: Number of tasks: 4
+12:05:28.690 CONFIG | --------------Agent 0--------------
+12:05:28.690 CONFIG | My profit is 0.0
+12:05:28.690 CONFIG | My marginal cost is 1150.0
+12:05:28.690 CONFIG | My opponent's profit is 150.0
+12:05:28.690 CONFIG | My opponent's marginal cost is 201.0
+12:05:28.690 CONFIG | My bid 345.0
+12:05:28.690 CONFIG | -----------------------------------
+12:05:28.690 CONFIG | Bid 0 2668
+12:05:28.690 CONFIG | Bid 1 1095
+12:05:28.690 CONFIG | got from this -1095
+12:05:28.690 CONFIG | Expenses bank 425 with stategy 2
+12:05:33.247 CONFIG | JBalvin Estimator: -----------------
+12:05:33.247 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.22905252791867947
+12:05:33.247 CONFIG | JBalvin Estimator: Probability    : 0.22905252791867947
+12:05:33.247 CONFIG | JBalvin Estimator: Final bid is   : 1095
+12:05:33.247 CONFIG | JBalvin Estimator: Number of tasks: 5
+12:05:33.247 CONFIG | Agent 0: (Task 5, 3 kg, 345 CHF, Norwich -> London)
+12:05:37.342 CONFIG | --------------Agent 0--------------
+12:05:37.342 CONFIG | My profit is -805.0
+12:05:37.342 CONFIG | My marginal cost is 2330.0
+12:05:37.342 CONFIG | My opponent's profit is 150.0
+12:05:37.342 CONFIG | My opponent's marginal cost is 0.0
+12:05:37.342 CONFIG | My bid 1398.0
+12:05:37.342 CONFIG | -----------------------------------
+12:05:37.342 CONFIG | Bid 0 345
+12:05:37.342 CONFIG | Bid 1 1095
+12:05:37.342 CONFIG | Expenses bank 425 with stategy 3
+12:05:41.898 CONFIG | JBalvin Estimator: -----------------
+12:05:41.898 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.5158046016885268
+12:05:41.898 CONFIG | JBalvin Estimator: Probability    : 0.5158046016885268
+12:05:41.898 CONFIG | JBalvin Estimator: Final bid is   : 345
+12:05:41.898 CONFIG | JBalvin Estimator: Number of tasks: 6
+12:05:45.843 CONFIG | --------------Agent 0--------------
+12:05:45.843 CONFIG | My profit is -805.0
+12:05:45.843 CONFIG | My marginal cost is 1064.5
+12:05:45.843 CONFIG | My opponent's profit is 495.0
+12:05:45.843 CONFIG | My opponent's marginal cost is 0.0
+12:05:45.843 CONFIG | My bid 638.6999999999999
+12:05:45.843 CONFIG | -----------------------------------
+12:05:45.843 CONFIG | Bid 0 1398
+12:05:45.843 CONFIG | Bid 1 345
+12:05:45.843 CONFIG | got from this -345
+12:05:45.844 CONFIG | Expenses bank 80 with stategy 3
+12:05:49.900 CONFIG | JBalvin Estimator: -----------------
+12:05:49.900 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.3870085577256164
+12:05:49.900 CONFIG | JBalvin Estimator: Probability    : 0.3870085577256164
+12:05:49.900 CONFIG | JBalvin Estimator: Final bid is   : 345
+12:05:49.900 CONFIG | JBalvin Estimator: Number of tasks: 7
+12:05:53.695 CONFIG | --------------Agent 0--------------
+12:05:53.695 CONFIG | My profit is -805.0
+12:05:53.695 CONFIG | My marginal cost is 3038.0
+12:05:53.695 CONFIG | My opponent's profit is 840.0
+12:05:53.695 CONFIG | My opponent's marginal cost is 2448.0
+12:05:53.695 CONFIG | My bid 4160.75
+12:05:53.695 CONFIG | -----------------------------------
+12:05:53.695 CONFIG | Bid 0 638
+12:05:53.695 CONFIG | Bid 1 345
+12:05:53.695 CONFIG | got from this -345
+12:05:53.695 CONFIG | Expenses bank -265 with stategy 3
+12:05:57.748 CONFIG | JBalvin Estimator: -----------------
+12:05:57.748 CONFIG | JBalvin Estimator: Minimum cost is: 649 propobility: 0.6328387411309062
+12:05:57.748 CONFIG | JBalvin Estimator: Probability    : 0.6328387411309062
+12:05:57.748 CONFIG | JBalvin Estimator: Final bid is   : 719
+12:05:57.748 CONFIG | JBalvin Estimator: Number of tasks: 8
+12:06:01.393 CONFIG | --------------Agent 0--------------
+12:06:01.393 CONFIG | My profit is -805.0
+12:06:01.393 CONFIG | My marginal cost is 1224.0
+12:06:01.393 CONFIG | My opponent's profit is -889.0
+12:06:01.393 CONFIG | My opponent's marginal cost is 41.7
+12:06:01.393 CONFIG | My bid 1224.0
+12:06:01.393 CONFIG | -----------------------------------
+12:06:01.393 CONFIG | Bid 0 4160
+12:06:01.393 CONFIG | Bid 1 719
+12:06:01.393 CONFIG | got from this -70
+12:06:01.394 CONFIG | Expenses bank -335 with stategy 3
+12:06:05.445 CONFIG | JBalvin Estimator: -----------------
+12:06:05.445 CONFIG | JBalvin Estimator: Minimum cost is: 1051 propobility: 0.05000149195752052
+12:06:05.445 CONFIG | JBalvin Estimator: Probability    : 0.05000149195752052
+12:06:05.445 CONFIG | JBalvin Estimator: Final bid is   : 1629
+12:06:05.445 CONFIG | JBalvin Estimator: Number of tasks: 9
+12:06:05.445 CONFIG | Agent 0: (Task 9, 3 kg, 1224 CHF, Portsmouth -> Plymouth)
+12:06:09.095 CONFIG | --------------Agent 0--------------
+12:06:09.095 CONFIG | My profit is -805.0
+12:06:09.095 CONFIG | My marginal cost is 1725.0
+12:06:09.095 CONFIG | My opponent's profit is -889.0
+12:06:09.095 CONFIG | My opponent's marginal cost is 0.0
+12:06:09.095 CONFIG | My bid 1725.0
+12:06:09.095 CONFIG | -----------------------------------
+12:06:09.095 CONFIG | Bid 0 1224
+12:06:09.095 CONFIG | Bid 1 1629
+12:06:09.095 CONFIG | Expenses bank -335 with stategy 3
+12:06:13.649 CONFIG | JBalvin Estimator: -----------------
+12:06:13.649 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.040517206615328746
+12:06:13.649 CONFIG | JBalvin Estimator: Probability    : 0.040517206615328746
+12:06:13.649 CONFIG | JBalvin Estimator: Final bid is   : 1209
+12:06:13.649 CONFIG | JBalvin Estimator: Number of tasks: 10
+12:06:18.364 CONFIG | --------------Agent 0--------------
+12:06:18.364 CONFIG | My profit is -805.0
+12:06:18.364 CONFIG | My marginal cost is 2265.0
+12:06:18.364 CONFIG | My opponent's profit is 320.0
+12:06:18.364 CONFIG | My opponent's marginal cost is 0.0
+12:06:18.364 CONFIG | My bid 2038.4999999999998
+12:06:18.364 CONFIG | -----------------------------------
+12:06:18.364 CONFIG | Bid 0 1725
+12:06:18.364 CONFIG | Bid 1 1209
+12:06:18.364 CONFIG | got from this -1209
+12:06:18.364 CONFIG | Expenses bank -1544 with stategy 3
+12:06:22.417 CONFIG | JBalvin Estimator: -----------------
+12:06:22.417 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.6684672403970497
+12:06:22.418 CONFIG | JBalvin Estimator: Probability    : 0.6684672403970497
+12:06:22.418 CONFIG | JBalvin Estimator: Final bid is   : 581
+12:06:22.418 CONFIG | JBalvin Estimator: Number of tasks: 11
+12:06:27.117 CONFIG | --------------Agent 0--------------
+12:06:27.117 CONFIG | My profit is -805.0
+12:06:27.117 CONFIG | My marginal cost is 2774.5
+12:06:27.117 CONFIG | My opponent's profit is 901.0
+12:06:27.117 CONFIG | My opponent's marginal cost is 0.0
+12:06:27.117 CONFIG | My bid 2497.0499999999997
+12:06:27.117 CONFIG | -----------------------------------
+12:06:27.117 CONFIG | Bid 0 2038
+12:06:27.117 CONFIG | Bid 1 581
+12:06:27.117 CONFIG | got from this -581
+12:06:27.118 CONFIG | Expenses bank -2125 with stategy 3
+12:06:31.167 CONFIG | JBalvin Estimator: -----------------
+12:06:31.167 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.3870085577256164
+12:06:31.167 CONFIG | JBalvin Estimator: Probability    : 0.3870085577256164
+12:06:31.167 CONFIG | JBalvin Estimator: Final bid is   : 862
+12:06:31.167 CONFIG | JBalvin Estimator: Number of tasks: 12
+12:06:35.852 CONFIG | --------------Agent 0--------------
+12:06:35.852 CONFIG | My profit is -805.0
+12:06:35.852 CONFIG | My marginal cost is 1028.5
+12:06:35.852 CONFIG | My opponent's profit is 1763.0
+12:06:35.852 CONFIG | My opponent's marginal cost is 985.0
+12:06:35.852 CONFIG | My bid 1673.6499999999999
+12:06:35.852 CONFIG | -----------------------------------
+12:06:35.852 CONFIG | Bid 0 2497
+12:06:35.852 CONFIG | Bid 1 862
+12:06:35.853 CONFIG | got from this -862
+12:06:35.853 CONFIG | Expenses bank -2987 with stategy 3
+12:06:39.904 CONFIG | JBalvin Estimator: -----------------
+12:06:39.904 CONFIG | JBalvin Estimator: Minimum cost is: 985 propobility: 0.34834983662672975
+12:06:39.904 CONFIG | JBalvin Estimator: Probability    : 0.34834983662672975
+12:06:39.904 CONFIG | JBalvin Estimator: Final bid is   : 1723
+12:06:39.904 CONFIG | JBalvin Estimator: Number of tasks: 13
+12:06:39.904 CONFIG | Agent 0: (Task 13, 3 kg, 1673 CHF, Newcastle -> Manchester)
+12:06:44.589 CONFIG | --------------Agent 0--------------
+12:06:44.589 CONFIG | My profit is -160.5
+12:06:44.589 CONFIG | My marginal cost is 2462.0
+12:06:44.589 CONFIG | My opponent's profit is 1763.0
+12:06:44.589 CONFIG | My opponent's marginal cost is 0.0
+12:06:44.589 CONFIG | My bid 2338.9
+12:06:44.589 CONFIG | -----------------------------------
+12:06:44.589 CONFIG | Bid 0 1673
+12:06:44.589 CONFIG | Bid 1 1723
+12:06:44.589 CONFIG | Expenses bank -2987 with stategy 3
+12:06:47.618 CONFIG | JBalvin Estimator: -----------------
+12:06:47.618 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.7047032085818178
+12:06:47.618 CONFIG | JBalvin Estimator: Probability    : 0.7047032085818178
+12:06:47.618 CONFIG | JBalvin Estimator: Final bid is   : 545
+12:06:47.619 CONFIG | JBalvin Estimator: Number of tasks: 14
+12:06:52.289 CONFIG | --------------Agent 0--------------
+12:06:52.289 CONFIG | My profit is -160.5
+12:06:52.289 CONFIG | My marginal cost is 413.0
+12:06:52.289 CONFIG | My opponent's profit is 2308.0
+12:06:52.289 CONFIG | My opponent's marginal cost is 0.0
+12:06:52.289 CONFIG | My bid 392.34999999999997
+12:06:52.289 CONFIG | -----------------------------------
+12:06:52.289 CONFIG | Bid 0 2338
+12:06:52.289 CONFIG | Bid 1 545
+12:06:52.289 CONFIG | got from this -545
+12:06:52.289 CONFIG | Expenses bank -3532 with stategy 3
+12:06:56.339 CONFIG | JBalvin Estimator: -----------------
+12:06:56.339 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.24809335267096078
+12:06:56.339 CONFIG | JBalvin Estimator: Probability    : 0.24809335267096078
+12:06:56.339 CONFIG | JBalvin Estimator: Final bid is   : 1001
+12:06:56.339 CONFIG | JBalvin Estimator: Number of tasks: 15
+12:06:56.339 CONFIG | Agent 0: (Task 15, 3 kg, 392 CHF, Sheffield -> Liverpool)
+12:07:01.009 CONFIG | --------------Agent 0--------------
+12:07:01.009 CONFIG | My profit is -181.5
+12:07:01.009 CONFIG | My marginal cost is 1180.0
+12:07:01.009 CONFIG | My opponent's profit is 2308.0
+12:07:01.009 CONFIG | My opponent's marginal cost is 0.0
+12:07:01.009 CONFIG | My bid 1121.0
+12:07:01.009 CONFIG | -----------------------------------
+12:07:01.010 CONFIG | Bid 0 392
+12:07:01.010 CONFIG | Bid 1 1001
+12:07:01.010 CONFIG | Expenses bank -3532 with stategy 3
+12:07:05.059 CONFIG | JBalvin Estimator: -----------------
+12:07:05.059 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.2867520737698474
+12:07:05.059 CONFIG | JBalvin Estimator: Probability    : 0.2867520737698474
+12:07:05.059 CONFIG | JBalvin Estimator: Final bid is   : 963
+12:07:05.059 CONFIG | JBalvin Estimator: Number of tasks: 16
+12:07:09.714 CONFIG | --------------Agent 0--------------
+12:07:09.714 CONFIG | My profit is -181.5
+12:07:09.714 CONFIG | My marginal cost is 748.0
+12:07:09.714 CONFIG | My opponent's profit is 3271.0
+12:07:09.715 CONFIG | My opponent's marginal cost is 0.0
+12:07:09.715 CONFIG | My bid 710.6
+12:07:09.715 CONFIG | -----------------------------------
+12:07:09.715 CONFIG | Bid 0 1121
+12:07:09.715 CONFIG | Bid 1 963
+12:07:09.715 CONFIG | got from this -963
+12:07:09.715 CONFIG | Expenses bank -4495 with stategy 3
+12:07:13.764 CONFIG | JBalvin Estimator: -----------------
+12:07:13.764 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.27045238522541715
+12:07:13.764 CONFIG | JBalvin Estimator: Probability    : 0.27045238522541715
+12:07:13.764 CONFIG | JBalvin Estimator: Final bid is   : 979
+12:07:13.764 CONFIG | JBalvin Estimator: Number of tasks: 17
+12:07:13.764 CONFIG | Agent 0: (Task 17, 3 kg, 710 CHF, Portsmouth -> Norwich)
+12:07:18.419 CONFIG | --------------Agent 0--------------
+12:07:18.419 CONFIG | My profit is -219.5
+12:07:18.419 CONFIG | My marginal cost is 476.0
+12:07:18.419 CONFIG | My opponent's profit is 3271.0
+12:07:18.419 CONFIG | My opponent's marginal cost is 0.0
+12:07:18.419 CONFIG | My bid 452.2
+12:07:18.419 CONFIG | -----------------------------------
+12:07:18.419 CONFIG | Bid 0 710
+12:07:18.419 CONFIG | Bid 1 979
+12:07:18.419 CONFIG | Expenses bank -4495 with stategy 3
+12:07:22.469 CONFIG | JBalvin Estimator: -----------------
+12:07:22.469 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.3874865246677964
+12:07:22.469 CONFIG | JBalvin Estimator: Probability    : 0.3874865246677964
+12:07:22.469 CONFIG | JBalvin Estimator: Final bid is   : 862
+12:07:22.469 CONFIG | JBalvin Estimator: Number of tasks: 18
+12:07:22.469 CONFIG | Agent 0: (Task 18, 3 kg, 452 CHF, Plymouth -> Norwich)
+12:07:27.124 CONFIG | --------------Agent 0--------------
+12:07:27.124 CONFIG | My profit is -243.5
+12:07:27.124 CONFIG | My marginal cost is 1869.0
+12:07:27.124 CONFIG | My opponent's profit is 3271.0
+12:07:27.124 CONFIG | My opponent's marginal cost is 0.0
+12:07:27.124 CONFIG | My bid 1775.55
+12:07:27.124 CONFIG | -----------------------------------
+12:07:27.124 CONFIG | Bid 0 452
+12:07:27.124 CONFIG | Bid 1 862
+12:07:27.124 CONFIG | Expenses bank -4495 with stategy 3
+12:07:31.174 CONFIG | JBalvin Estimator: -----------------
+12:07:31.174 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.5988659422118091
+12:07:31.175 CONFIG | JBalvin Estimator: Probability    : 0.5988659422118091
+12:07:31.175 CONFIG | JBalvin Estimator: Final bid is   : 651
+12:07:31.175 CONFIG | JBalvin Estimator: Number of tasks: 19
+12:07:31.175 CONFIG | ++++++++++++++Agent 0++++++++++++++
+12:07:31.175 CONFIG | My profit is -243.5
+12:07:31.175 CONFIG | My opponent's profit is 3922.0
+12:07:31.175 CONFIG | +++++++++++++++++++++++++++++++++++
+12:07:31.175 CONFIG | Agent 0: my profit is -243.5
+12:07:31.175 CONFIG | The plan was generated in 0 milliseconds.
+12:07:31.177 CONFIG | Bid 0 1775
+12:07:31.177 CONFIG | Bid 1 651
+12:07:31.177 CONFIG | got from this -651
+12:07:31.177 CONFIG | Expenses bank -5146 with stategy 3
+12:07:31.178 CONFIG | JBalvin Estimator BID HISTORIC: [1008, 1095, 1178, 1095, 1095, 1095, 345, 345, 719, 1629, 1209, 581, 862, 1723, 545, 1001, 963, 979, 862, 651] ;
+12:07:31.178 CONFIG | JBalvin Estimator COST HISTORIC: [2766, 2382, 0, 748, 0, 0, 0, 0, 649, 1051, 0, 0, 0, 985, 0, 0, 0, 0, 0, 0] ;
+12:07:35.229 CONFIG | Wrote tournament/myTournament/auction-MarcoPietroAbrate-JB-estimator.xml
+12:07:35.597 INFO | LogistPlatform finished successfully!
+12:07:35.601 FINE | Run command: java -Xmx1024m -classpath ../logist/logist.jar logist.LogistPlatform -o tournament/myTournament/auction-JB-estimator-MarcoPietroAbrate.xml -a tournament/myTournament/agents.xml config/auction.xml JB-estimator MarcoPietroAbrate
+12:07:35.719 CONFIG | Reading config/auction.xml
+12:07:35.774 CONFIG | Reading config/settings_auction.xml
+12:07:35.975 CONFIG | Reading config/topology/england.xml
+12:07:35.992 CONFIG | Reading tournament/myTournament/agents.xml
+12:07:36.009 CONFIG | Reading config/settings_auction.xml
+12:07:36.014 CONFIG | Reading config/settings_auction.xml
+12:07:36.019 CONFIG | Largest possible Marginal Cost: 5928.0
+12:07:36.019 CONFIG | The setup was completed in 5 milliseconds.
+12:07:36.038 CONFIG | JBalvin Estimator: -----------------
+12:07:36.038 CONFIG | JBalvin Estimator: Minimum cost is: 2191 propobility: 0.4394147124783703
+12:07:36.038 CONFIG | JBalvin Estimator: Probability    : 0.4394147124783703
+12:07:36.038 CONFIG | JBalvin Estimator: Final bid is   : 433
+12:07:36.039 CONFIG | JBalvin Estimator: Number of tasks: 0
+12:07:40.889 CONFIG | --------------Agent 1--------------
+12:07:40.889 CONFIG | My profit is 0.0
+12:07:40.889 CONFIG | My marginal cost is 2766.0
+12:07:40.889 CONFIG | My opponent's profit is 0.0
+12:07:40.889 CONFIG | My opponent's marginal cost is 2191.0
+12:07:40.889 CONFIG | My bid 1383.0
+12:07:40.889 CONFIG | -----------------------------------
+12:07:40.889 CONFIG | Bid 0 433
+12:07:40.889 CONFIG | Bid 1 1383
+12:07:40.889 CONFIG | got from this 1758
+12:07:40.889 CONFIG | Expenses bank 1758 with stategy 1
+12:07:45.474 CONFIG | JBalvin Estimator: -----------------
+12:07:45.474 CONFIG | JBalvin Estimator: Minimum cost is: 2382 propobility: 0.5572044589952645
+12:07:45.474 CONFIG | JBalvin Estimator: Probability    : 0.5572044589952645
+12:07:45.474 CONFIG | JBalvin Estimator: Final bid is   : 1383
+12:07:45.474 CONFIG | JBalvin Estimator: Number of tasks: 1
+12:07:50.174 CONFIG | --------------Agent 1--------------
+12:07:50.174 CONFIG | My profit is 0.0
+12:07:50.174 CONFIG | My marginal cost is 3279.0
+12:07:50.174 CONFIG | My opponent's profit is -1758.0
+12:07:50.174 CONFIG | My opponent's marginal cost is 2382.0
+12:07:50.174 CONFIG | My bid 3279.0
+12:07:50.174 CONFIG | -----------------------------------
+12:07:50.175 CONFIG | Bid 0 1383
+12:07:50.175 CONFIG | Bid 1 3279
+12:07:50.175 CONFIG | got from this 999
+12:07:50.175 CONFIG | Expenses bank 2757 with stategy 1
+12:07:54.736 CONFIG | JBalvin Estimator: -----------------
+12:07:54.736 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.3870085577256164
+12:07:54.736 CONFIG | JBalvin Estimator: Probability    : 0.3870085577256164
+12:07:54.736 CONFIG | JBalvin Estimator: Final bid is   : 1383
+12:07:54.736 CONFIG | JBalvin Estimator: Number of tasks: 2
+12:07:59.286 CONFIG | --------------Agent 1--------------
+12:07:59.286 CONFIG | My profit is 0.0
+12:07:59.286 CONFIG | My marginal cost is 2789.5
+12:07:59.286 CONFIG | My opponent's profit is -2757.0
+12:07:59.286 CONFIG | My opponent's marginal cost is 0.0
+12:07:59.286 CONFIG | My bid 2789.5
+12:07:59.286 CONFIG | -----------------------------------
+12:07:59.286 CONFIG | Bid 0 1383
+12:07:59.286 CONFIG | Bid 1 2789
+12:07:59.286 CONFIG | got from this -1383
+12:07:59.286 CONFIG | Expenses bank 1374 with stategy 2
+12:08:03.846 CONFIG | JBalvin Estimator: -----------------
+12:08:03.846 CONFIG | JBalvin Estimator: Minimum cost is: 748 propobility: 0.6328387411309062
+12:08:03.846 CONFIG | JBalvin Estimator: Probability    : 0.6328387411309062
+12:08:03.846 CONFIG | JBalvin Estimator: Final bid is   : 1383
+12:08:03.846 CONFIG | JBalvin Estimator: Number of tasks: 3
+12:08:08.246 CONFIG | --------------Agent 1--------------
+12:08:08.246 CONFIG | My profit is 0.0
+12:08:08.246 CONFIG | My marginal cost is 3031.0
+12:08:08.246 CONFIG | My opponent's profit is -1374.0
+12:08:08.246 CONFIG | My opponent's marginal cost is 748.0
+12:08:08.246 CONFIG | My bid 3031.0
+12:08:08.246 CONFIG | -----------------------------------
+12:08:08.246 CONFIG | Bid 0 1383
+12:08:08.246 CONFIG | Bid 1 3031
+12:08:08.246 CONFIG | got from this -635
+12:08:08.246 CONFIG | Expenses bank 739 with stategy 2
+12:08:12.798 CONFIG | JBalvin Estimator: -----------------
+12:08:12.798 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.6574609429510335
+12:08:12.798 CONFIG | JBalvin Estimator: Probability    : 0.6574609429510335
+12:08:12.798 CONFIG | JBalvin Estimator: Final bid is   : 1383
+12:08:12.798 CONFIG | JBalvin Estimator: Number of tasks: 4
+12:08:17.048 CONFIG | --------------Agent 1--------------
+12:08:17.048 CONFIG | My profit is 0.0
+12:08:17.048 CONFIG | My marginal cost is 3626.0
+12:08:17.048 CONFIG | My opponent's profit is -739.0
+12:08:17.048 CONFIG | My opponent's marginal cost is 0.0
+12:08:17.048 CONFIG | My bid 3626.0
+12:08:17.048 CONFIG | -----------------------------------
+12:08:17.048 CONFIG | Bid 0 1383
+12:08:17.048 CONFIG | Bid 1 3626
+12:08:17.048 CONFIG | got from this -1383
+12:08:17.048 CONFIG | Expenses bank -644 with stategy 2
+12:08:21.601 CONFIG | JBalvin Estimator: -----------------
+12:08:21.601 CONFIG | JBalvin Estimator: Minimum cost is: 201 propobility: 0.22905252791867947
+12:08:21.601 CONFIG | JBalvin Estimator: Probability    : 0.22905252791867947
+12:08:21.601 CONFIG | JBalvin Estimator: Final bid is   : 1383
+12:08:21.601 CONFIG | JBalvin Estimator: Number of tasks: 5
+12:08:25.701 CONFIG | --------------Agent 1--------------
+12:08:25.701 CONFIG | My profit is 0.0
+12:08:25.701 CONFIG | My marginal cost is 575.0
+12:08:25.701 CONFIG | My opponent's profit is 644.0
+12:08:25.701 CONFIG | My opponent's marginal cost is 201.0
+12:08:25.701 CONFIG | My bid 340.84999999999997
+12:08:25.701 CONFIG | -----------------------------------
+12:08:25.701 CONFIG | Bid 0 1383
+12:08:25.701 CONFIG | Bid 1 340
+12:08:25.701 CONFIG | Expenses bank -644 with stategy 3
+12:08:30.257 CONFIG | JBalvin Estimator: -----------------
+12:08:30.257 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.5158046016885268
+12:08:30.257 CONFIG | JBalvin Estimator: Probability    : 0.5158046016885268
+12:08:30.257 CONFIG | JBalvin Estimator: Final bid is   : 734
+12:08:30.257 CONFIG | JBalvin Estimator: Number of tasks: 6
+12:08:30.257 CONFIG | Agent 1: (Task 5, 3 kg, 340 CHF, Norwich -> London)
+12:08:34.352 CONFIG | --------------Agent 1--------------
+12:08:34.352 CONFIG | My profit is -235.0
+12:08:34.352 CONFIG | My marginal cost is 2330.0
+12:08:34.352 CONFIG | My opponent's profit is 644.0
+12:08:34.352 CONFIG | My opponent's marginal cost is 0.0
+12:08:34.352 CONFIG | My bid 1398.0
+12:08:34.352 CONFIG | -----------------------------------
+12:08:34.352 CONFIG | Bid 0 734
+12:08:34.352 CONFIG | Bid 1 1398
+12:08:34.352 CONFIG | got from this -734
+12:08:34.352 CONFIG | Expenses bank -1378 with stategy 3
+12:08:38.904 CONFIG | JBalvin Estimator: -----------------
+12:08:38.904 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.3870085577256164
+12:08:38.904 CONFIG | JBalvin Estimator: Probability    : 0.3870085577256164
+12:08:38.904 CONFIG | JBalvin Estimator: Final bid is   : 862
+12:08:38.904 CONFIG | JBalvin Estimator: Number of tasks: 7
+12:08:42.849 CONFIG | --------------Agent 1--------------
+12:08:42.849 CONFIG | My profit is -235.0
+12:08:42.849 CONFIG | My marginal cost is 1064.5
+12:08:42.849 CONFIG | My opponent's profit is 1378.0
+12:08:42.849 CONFIG | My opponent's marginal cost is 0.0
+12:08:42.849 CONFIG | My bid 638.6999999999999
+12:08:42.849 CONFIG | -----------------------------------
+12:08:42.849 CONFIG | Bid 0 862
+12:08:42.849 CONFIG | Bid 1 638
+12:08:42.849 CONFIG | Expenses bank -1378 with stategy 3
+12:08:47.402 CONFIG | JBalvin Estimator: -----------------
+12:08:47.402 CONFIG | JBalvin Estimator: Minimum cost is: 2448 propobility: 0.6328387411309062
+12:08:47.402 CONFIG | JBalvin Estimator: Probability    : 0.6328387411309062
+12:08:47.402 CONFIG | JBalvin Estimator: Final bid is   : 2816
+12:08:47.402 CONFIG | JBalvin Estimator: Number of tasks: 8
+12:08:47.402 CONFIG | Agent 1: (Task 7, 3 kg, 638 CHF, London -> Manchester)
+12:08:51.352 CONFIG | --------------Agent 1--------------
+12:08:51.352 CONFIG | My profit is -661.5
+12:08:51.352 CONFIG | My marginal cost is 1224.0
+12:08:51.352 CONFIG | My opponent's profit is 1378.0
+12:08:51.352 CONFIG | My opponent's marginal cost is 2448.0
+12:08:51.352 CONFIG | My bid 4160.75
+12:08:51.352 CONFIG | -----------------------------------
+12:08:51.352 CONFIG | Bid 0 2816
+12:08:51.352 CONFIG | Bid 1 4160
+12:08:51.352 CONFIG | got from this -368
+12:08:51.352 CONFIG | Expenses bank -1746 with stategy 3
+12:08:55.403 CONFIG | JBalvin Estimator: -----------------
+12:08:55.403 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.05000149195752052
+12:08:55.403 CONFIG | JBalvin Estimator: Probability    : 0.05000149195752052
+12:08:55.403 CONFIG | JBalvin Estimator: Final bid is   : 1199
+12:08:55.403 CONFIG | JBalvin Estimator: Number of tasks: 9
+12:08:59.203 CONFIG | --------------Agent 1--------------
+12:08:59.203 CONFIG | My profit is -661.5
+12:08:59.203 CONFIG | My marginal cost is 1700.0
+12:08:59.203 CONFIG | My opponent's profit is 1746.0
+12:08:59.203 CONFIG | My opponent's marginal cost is 41.7
+12:08:59.203 CONFIG | My bid 1529.9999999999998
+12:08:59.203 CONFIG | -----------------------------------
+12:08:59.203 CONFIG | Bid 0 1199
+12:08:59.203 CONFIG | Bid 1 1529
+12:08:59.203 CONFIG | got from this -1199
+12:08:59.203 CONFIG | Expenses bank -2945 with stategy 3
+12:09:03.754 CONFIG | JBalvin Estimator: -----------------
+12:09:03.754 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.040517206615328746
+12:09:03.754 CONFIG | JBalvin Estimator: Probability    : 0.040517206615328746
+12:09:03.754 CONFIG | JBalvin Estimator: Final bid is   : 1209
+12:09:03.754 CONFIG | JBalvin Estimator: Number of tasks: 10
+12:09:07.404 CONFIG | --------------Agent 1--------------
+12:09:07.404 CONFIG | My profit is -661.5
+12:09:07.404 CONFIG | My marginal cost is 1049.5
+12:09:07.404 CONFIG | My opponent's profit is 2903.3
+12:09:07.404 CONFIG | My opponent's marginal cost is 41.7
+12:09:07.404 CONFIG | My bid 944.55
+12:09:07.404 CONFIG | -----------------------------------
+12:09:07.404 CONFIG | Bid 0 1209
+12:09:07.404 CONFIG | Bid 1 944
+12:09:07.405 CONFIG | Expenses bank -2945 with stategy 3
+12:09:11.954 CONFIG | JBalvin Estimator: -----------------
+12:09:11.954 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.6684672403970497
+12:09:11.954 CONFIG | JBalvin Estimator: Probability    : 0.6684672403970497
+12:09:11.954 CONFIG | JBalvin Estimator: Final bid is   : 581
+12:09:11.954 CONFIG | JBalvin Estimator: Number of tasks: 11
+12:09:11.954 CONFIG | Agent 1: (Task 10, 3 kg, 944 CHF, Birmingham -> Cardiff)
+12:09:15.599 CONFIG | --------------Agent 1--------------
+12:09:15.599 CONFIG | My profit is -767.0
+12:09:15.599 CONFIG | My marginal cost is 1467.0
+12:09:15.599 CONFIG | My opponent's profit is 2903.3
+12:09:15.599 CONFIG | My opponent's marginal cost is 131.9
+12:09:15.599 CONFIG | My bid 1393.6499999999999
+12:09:15.599 CONFIG | -----------------------------------
+12:09:15.599 CONFIG | Bid 0 581
+12:09:15.599 CONFIG | Bid 1 1393
+12:09:15.599 CONFIG | got from this -581
+12:09:15.599 CONFIG | Expenses bank -3526 with stategy 3
+12:09:19.651 CONFIG | JBalvin Estimator: -----------------
+12:09:19.651 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.3870085577256164
+12:09:19.651 CONFIG | JBalvin Estimator: Probability    : 0.3870085577256164
+12:09:19.651 CONFIG | JBalvin Estimator: Final bid is   : 862
+12:09:19.651 CONFIG | JBalvin Estimator: Number of tasks: 12
+12:09:24.366 CONFIG | --------------Agent 1--------------
+12:09:24.366 CONFIG | My profit is -767.0
+12:09:24.366 CONFIG | My marginal cost is 100.5
+12:09:24.366 CONFIG | My opponent's profit is 3352.4
+12:09:24.366 CONFIG | My opponent's marginal cost is 0.0
+12:09:24.366 CONFIG | My bid 95.475
+12:09:24.366 CONFIG | -----------------------------------
+12:09:24.366 CONFIG | Bid 0 862
+12:09:24.366 CONFIG | Bid 1 95
+12:09:24.366 CONFIG | Expenses bank -3526 with stategy 3
+12:09:28.417 CONFIG | JBalvin Estimator: -----------------
+12:09:28.417 CONFIG | JBalvin Estimator: Minimum cost is: 985 propobility: 0.34834983662672975
+12:09:28.417 CONFIG | JBalvin Estimator: Probability    : 0.34834983662672975
+12:09:28.417 CONFIG | JBalvin Estimator: Final bid is   : 1723
+12:09:28.417 CONFIG | JBalvin Estimator: Number of tasks: 13
+12:09:28.417 CONFIG | Agent 1: (Task 12, 3 kg, 95 CHF, Cardiff -> Manchester)
+12:09:33.132 CONFIG | --------------Agent 1--------------
+12:09:33.132 CONFIG | My profit is -772.5
+12:09:33.132 CONFIG | My marginal cost is 1704.0
+12:09:33.132 CONFIG | My opponent's profit is 3352.4
+12:09:33.132 CONFIG | My opponent's marginal cost is 985.0
+12:09:33.132 CONFIG | My bid 1618.8
+12:09:33.132 CONFIG | -----------------------------------
+12:09:33.132 CONFIG | Bid 0 1723
+12:09:33.132 CONFIG | Bid 1 1618
+12:09:33.132 CONFIG | Expenses bank -3526 with stategy 3
+12:09:36.088 CONFIG | JBalvin Estimator: -----------------
+12:09:36.090 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.7047032085818178
+12:09:36.090 CONFIG | JBalvin Estimator: Probability    : 0.7047032085818178
+12:09:36.090 CONFIG | JBalvin Estimator: Final bid is   : 545
+12:09:36.090 CONFIG | JBalvin Estimator: Number of tasks: 14
+12:09:36.090 CONFIG | Agent 1: (Task 13, 3 kg, 1618 CHF, Newcastle -> Manchester)
+12:09:40.805 CONFIG | --------------Agent 1--------------
+12:09:40.805 CONFIG | My profit is -858.5
+12:09:40.805 CONFIG | My marginal cost is 748.0
+12:09:40.805 CONFIG | My opponent's profit is 3352.4
+12:09:40.805 CONFIG | My opponent's marginal cost is 0.0
+12:09:40.805 CONFIG | My bid 710.6
+12:09:40.805 CONFIG | -----------------------------------
+12:09:40.805 CONFIG | Bid 0 545
+12:09:40.805 CONFIG | Bid 1 710
+12:09:40.805 CONFIG | got from this -545
+12:09:40.805 CONFIG | Expenses bank -4071 with stategy 3
+12:09:44.855 CONFIG | JBalvin Estimator: -----------------
+12:09:44.855 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.24809335267096078
+12:09:44.855 CONFIG | JBalvin Estimator: Probability    : 0.24809335267096078
+12:09:44.855 CONFIG | JBalvin Estimator: Final bid is   : 1001
+12:09:44.855 CONFIG | JBalvin Estimator: Number of tasks: 15
+12:09:49.555 CONFIG | --------------Agent 1--------------
+12:09:49.555 CONFIG | My profit is -858.5
+12:09:49.555 CONFIG | My marginal cost is 0.0
+12:09:49.555 CONFIG | My opponent's profit is 3897.4
+12:09:49.555 CONFIG | My opponent's marginal cost is 0.0
+12:09:49.555 CONFIG | My bid 0.0
+12:09:49.555 CONFIG | -----------------------------------
+12:09:49.555 CONFIG | Bid 0 1001
+12:09:49.555 CONFIG | Bid 1 0
+12:09:49.555 CONFIG | Expenses bank -4071 with stategy 3
+12:09:53.605 CONFIG | JBalvin Estimator: -----------------
+12:09:53.605 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.2867520737698474
+12:09:53.605 CONFIG | JBalvin Estimator: Probability    : 0.2867520737698474
+12:09:53.605 CONFIG | JBalvin Estimator: Final bid is   : 963
+12:09:53.605 CONFIG | JBalvin Estimator: Number of tasks: 16
+12:09:53.605 CONFIG | Agent 1: (Task 15, 3 kg, 0 CHF, Sheffield -> Liverpool)
+12:09:58.305 CONFIG | --------------Agent 1--------------
+12:09:58.305 CONFIG | My profit is -858.5
+12:09:58.305 CONFIG | My marginal cost is 0.0
+12:09:58.305 CONFIG | My opponent's profit is 3897.4
+12:09:58.305 CONFIG | My opponent's marginal cost is 0.0
+12:09:58.305 CONFIG | My bid 0.0
+12:09:58.305 CONFIG | -----------------------------------
+12:09:58.305 CONFIG | Bid 0 963
+12:09:58.305 CONFIG | Bid 1 0
+12:09:58.305 CONFIG | Expenses bank -4071 with stategy 3
+12:10:02.357 CONFIG | JBalvin Estimator: -----------------
+12:10:02.357 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.27045238522541715
+12:10:02.357 CONFIG | JBalvin Estimator: Probability    : 0.27045238522541715
+12:10:02.357 CONFIG | JBalvin Estimator: Final bid is   : 979
+12:10:02.357 CONFIG | JBalvin Estimator: Number of tasks: 17
+12:10:02.357 CONFIG | Agent 1: (Task 16, 3 kg, 0 CHF, London -> Birmingham)
+12:10:07.057 CONFIG | --------------Agent 1--------------
+12:10:07.057 CONFIG | My profit is -858.5
+12:10:07.057 CONFIG | My marginal cost is 1799.0
+12:10:07.057 CONFIG | My opponent's profit is 3897.4
+12:10:07.057 CONFIG | My opponent's marginal cost is 0.0
+12:10:07.057 CONFIG | My bid 1709.05
+12:10:07.057 CONFIG | -----------------------------------
+12:10:07.057 CONFIG | Bid 0 979
+12:10:07.057 CONFIG | Bid 1 1709
+12:10:07.057 CONFIG | got from this -979
+12:10:07.057 CONFIG | Expenses bank -5050 with stategy 3
+12:10:11.107 CONFIG | JBalvin Estimator: -----------------
+12:10:11.107 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.3874865246677964
+12:10:11.107 CONFIG | JBalvin Estimator: Probability    : 0.3874865246677964
+12:10:11.107 CONFIG | JBalvin Estimator: Final bid is   : 862
+12:10:11.107 CONFIG | JBalvin Estimator: Number of tasks: 18
+12:10:15.792 CONFIG | --------------Agent 1--------------
+12:10:15.792 CONFIG | My profit is -858.5
+12:10:15.792 CONFIG | My marginal cost is 1799.0
+12:10:15.792 CONFIG | My opponent's profit is 4876.4
+12:10:15.792 CONFIG | My opponent's marginal cost is 0.0
+12:10:15.792 CONFIG | My bid 1709.05
+12:10:15.792 CONFIG | -----------------------------------
+12:10:15.792 CONFIG | Bid 0 862
+12:10:15.792 CONFIG | Bid 1 1709
+12:10:15.792 CONFIG | got from this -862
+12:10:15.792 CONFIG | Expenses bank -5912 with stategy 3
+12:10:19.842 CONFIG | JBalvin Estimator: -----------------
+12:10:19.842 CONFIG | JBalvin Estimator: Minimum cost is: 0 propobility: 0.5988659422118091
+12:10:19.842 CONFIG | JBalvin Estimator: Probability    : 0.5988659422118091
+12:10:19.842 CONFIG | JBalvin Estimator: Final bid is   : 651
+12:10:19.842 CONFIG | JBalvin Estimator: Number of tasks: 19
+12:10:24.512 CONFIG | --------------Agent 1--------------
+12:10:24.512 CONFIG | My profit is -858.5
+12:10:24.512 CONFIG | My marginal cost is 0.0
+12:10:24.512 CONFIG | My opponent's profit is 5738.4
+12:10:24.512 CONFIG | My opponent's marginal cost is 0.0
+12:10:24.512 CONFIG | My bid 0.0
+12:10:24.512 CONFIG | -----------------------------------
+12:10:24.513 CONFIG | Bid 0 651
+12:10:24.513 CONFIG | Bid 1 0
+12:10:24.513 CONFIG | Expenses bank -5912 with stategy 3
+12:10:24.513 CONFIG | JBalvin Estimator BID HISTORIC: [433, 1383, 1383, 1383, 1383, 1383, 734, 862, 2816, 1199, 1209, 581, 862, 1723, 545, 1001, 963, 979, 862, 651] ;
+12:10:24.513 CONFIG | JBalvin Estimator COST HISTORIC: [2191, 2382, 0, 748, 0, 201, 0, 0, 2448, 0, 0, 0, 0, 985, 0, 0, 0, 0, 0, 0] ;
+12:10:28.564 CONFIG | Agent 1: (Task 19, 3 kg, 0 CHF, Cardiff -> Leeds)
+12:10:28.564 CONFIG | ++++++++++++++Agent 1++++++++++++++
+12:10:28.564 CONFIG | My profit is -858.5
+12:10:28.564 CONFIG | My opponent's profit is 5738.4
+12:10:28.564 CONFIG | +++++++++++++++++++++++++++++++++++
+12:10:28.564 CONFIG | Agent 1: my profit is -858.5
+12:10:28.564 CONFIG | The plan was generated in 0 milliseconds.
+12:10:28.567 CONFIG | Wrote tournament/myTournament/auction-JB-estimator-MarcoPietroAbrate.xml
+12:10:28.956 INFO | LogistPlatform finished successfully!
