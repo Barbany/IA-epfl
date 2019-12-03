@@ -229,18 +229,19 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy) * savings);
 				//bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
 			} else if (expenses == 0){
-				System.out.println("HERE");
 				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * 1200);
 				
 			} else{
 				// Case cost zero
 				if (minCost == 0) {
-					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
+					bid = (long) theirMin; 
+					//bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
 					
 				}
 				// the task is very interesting
 				else if (pmf[task.pickupCity.id][task.deliveryCity.id]  < 0.6) {
-					bid = (long) Math.floor(minCost*(1.1 + 0.05*numTasks));
+					bid = (long) theirMin; 
+					//bid = (long) Math.floor(minCost*(1.1 + 0.05*numTasks));
 				} else {
 					bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.3*strategy) * savings);
 				}
@@ -251,11 +252,11 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 		if (numTasks > 0)
 			bid = (long) Math.max(bid, theirMin); 
 
-		System.out.println("JBalvin Estimator: -----------------");
-		System.out.println("JBalvin Estimator: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("JBalvin Estimator: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("JBalvin Estimator: Final bid is   : " + bid);
-		System.out.println("JBalvin Estimator: Number of tasks: " + numTasks);
+		System.out.println("JBalvin Estimator Low: -----------------");
+		System.out.println("JBalvin Estimator Low: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("JBalvin Estimator Low: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("JBalvin Estimator Low: Final bid is   : " + bid);
+		System.out.println("JBalvin Estimator Low: Number of tasks: " + numTasks);
 		bidsTotal.add(bid);
 		minCostTotal.add(minCost);
 		return bid;

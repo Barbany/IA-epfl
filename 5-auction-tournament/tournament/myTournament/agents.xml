@@ -3,13 +3,13 @@
 <agents>
 	<!-- An auto-generated list of agents and their behavior classes -->
 	<!--  - jar directory : agents/ -->
-	<!--  - generated on  : Tue Dec 03 00:04:44 CET 2019 -->
-	<agent name="MarcoPietroAbrate">
-		<set class-path="agents/MarcoPietroAbrate.jar"/>
-		<set class-name="template.AuctionTemplate"/>
+	<!--  - generated on  : Tue Dec 03 10:55:31 CET 2019 -->
+	<agent name="Xines">
+		<set class-path="agents/Xines.jar"/>
+		<set class-name="AuctionAgent.AgentTeamWL"/>
 	</agent>
-	<agent name="JB-estimator">
-		<set class-path="agents/JB-estimator.jar"/>
+	<agent name="JB-est-low">
+		<set class-path="agents/JB-est-low.jar"/>
 		<set class-name="main.AuctionSavingsV2"/>
 	</agent>
 </agents>
