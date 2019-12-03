@@ -32,7 +32,7 @@ import logist.topology.Topology.City;
  * 
  */
 @SuppressWarnings("unused")
-public class AuctionSavingsV2 implements AuctionBehavior {
+public class OppModel implements AuctionBehavior {
 	// Basic information about the problem
 	private Topology topology;
 	private TaskDistribution distribution;
@@ -60,6 +60,13 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 	// Bank variables
 	long savings, expenses, minCost; 
 	int strategy; 
+	
+	// Opponent's model
+	private List<Vehicle> oppVehicles;
+	private SLS oppPlan;
+	private List<Integer> randomCities;
+	
+	private static final double PERCENT_OPP = 0.2;
 
 	@Override
 	public void setup(Topology topology, TaskDistribution distribution, Agent agent) {
@@ -85,16 +92,40 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 		timeoutSetup = ls.get(LogistSettings.TimeoutKey.SETUP);
 		timeoutBid = ls.get(LogistSettings.TimeoutKey.BID);
 		timeoutPlan = ls.get(LogistSettings.TimeoutKey.PLAN);
-		//timeoutBid = 5*1000;
-		//timeoutPlan = 5*1000;
 		
 		// Initialize bank variables
 		savings = 4000;
 		expenses = 0;
-		strategy = 1; 
+		strategy = 1;
 
 		// Initialize solution representation
 		this.plan = new SLS(vehicles, timeoutPlan);
+		
+		/*************** Initialize opponent's model ***************/
+		// Find possible initial cities for opponent
+		ArrayList<City> emptyCities = new ArrayList<City>(topology.cities());
+		for(Vehicle v: vehicles) {
+			emptyCities.remove(v.homeCity());
+		}
+		
+		Random rand = new Random();
+		
+		// Initialize vehicle to random city
+		// Keep track of the random cities (then, we'll change them by "better case" cities)
+		this.oppVehicles = new ArrayList<Vehicle>();
+		this.randomCities = new ArrayList<Integer>();
+		
+		Integer i = 0;
+		for(Vehicle v: vehicles) {
+			City startCity = emptyCities.get(rand.nextInt(emptyCities.size()));
+			emptyCities.remove(startCity);
+			this.oppVehicles.add(new OpponentVehicle(v, startCity));
+			this.randomCities.add(i);
+			i = i + 1;
+		}
+		
+		// Initialize opponent's solution
+		this.oppPlan = new SLS(oppVehicles, timeoutPlan);
 
 		// Compute preference matrix spending at most the rest of the setup time
 		initPmf(timeoutSetup - (System.currentTimeMillis() - timeStart));
@@ -176,6 +207,8 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 				theirMin = bids[1 - winner];
 			
 		}else {
+			oppPlan.consolidatePlan();
+			
 			if (bids[winner] < theirMin) 
 				theirMin = bids[winner];
 		}
@@ -202,7 +235,10 @@ public class AuctionSavingsV2 implements AuctionBehavior {
 		double timeStart = System.currentTimeMillis();
 
 		// Compute marginal cost for us
-		minCost = plan.addTask(task, timeoutBid);
+		minCost = plan.addTask(task, (long) ((1 - PERCENT_OPP) * timeoutBid));
+		
+		// Compute marginal cost for opponent
+		long minCostopp = oppPlan.addTask(task, (long) (timeoutBid - (timeStart - System.currentTimeMillis())));
 		
 		// Compute bid
 		long bid; 
