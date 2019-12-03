@@ -256,34 +256,56 @@ public class OppModel implements AuctionBehavior {
 		// Initial bids allow losing money
 		if (numTasks < 3) {
 			if (minCost > 0) {
+				
 				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * savings);
 			} else {
 				// If the cost is zero, start recovering loses
 				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id]) * expenses);
 			}	
-			
-			bid = Math.min(bid, (long) 0.9 * minCostOpp);
+			System.out.println("Case 1. BID " + bid + " cost opp " + minCostOpp);
+			bid = (long) Math.min(bid, 0.9 * minCostOpp);
 		} else {
+			
 			if(savingsOpp + margin < -expenses) { // Winning: We can bid low so opponent doesn't get any task
 				// Bid low but don't lose
-				bid = Math.max(minCost, minBidOpp);
+				bid = (long) Math.max(minCost - 0.5*margin, minBidOpp);
+				System.out.println("Case 2. BID " + bid + " cost opp " + minCostOpp);
+				
 			} else { // Not winning
+				
 				if(expenses == 0) {
+					
 					// Bid low, specially for "good" tasks
 					// Change the 2 by 1 / (Threshold of losing money w.r.t. Opp's model)
 					bid = (long) Math.floor(pmf[task.pickupCity.id][task.deliveryCity.id] * 2 *
 							(minCostOpp - minCost) + minCost);
+					System.out.println("Case 3. BID " + bid + " cost opp " + minCostOpp);
+				} else if (minCost == 0){
+					// If our cost is zero and so it is the opponent, try to decrease the margin to win
+					if (minCostOpp == 0) {
+						bid = (long) Math.max(0.6f *(savingsOpp -expenses), 100);
+						System.out.println("Case 4.1 . BID " + bid + " cost opp " + minCostOpp);
+					} else {
+						// Bid slightly lower than min opponent
+						bid = (long) Math.floor(0.9f * minCostOpp);
+						
+						System.out.println("Case 4.2 . BID " + bid + " cost opp " + minCostOpp + " multip " + 0.9 *minCostOpp);
+						}
+					
+					
 				} else {
-					bid = Math.max(minCost, (long) 0.9 * minCostOpp);
+					
+					bid = (long) Math.max(minCost* 1.1f, 0.9f * minCostOpp);
+					System.out.println("Case 5. BID " + bid + " cost opp " + minCostOpp);
 				}
 			}
 		}
 
-		System.out.println("Ozuna Estimator Low: -----------------");
-		System.out.println("Ozuna Estimator Low: Minimum cost is: " + minCost + " probability: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("Ozuna Estimator Low: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("Ozuna Estimator Low: Final bid is   : " + bid);
-		System.out.println("Ozuna Estimator Low: Number of tasks: " + numTasks);
+		System.out.println("Ozuna : -----------------");
+		System.out.println("Ozuna : Minimum cost is  : " + minCost + " probability: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("Ozuna : Min cost opponent: " + minCostOpp);
+		System.out.println("Ozuna : Final bid is     : " + bid);
+		System.out.println("Ozuna : Number of tasks  : " + numTasks);
 		return bid;
 	}
 

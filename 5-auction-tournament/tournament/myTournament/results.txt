@@ -1,0 +1,10 @@
+### auction.xml ###
+       Agents         |   Win - Draw - Lose   | AgentBosquillonSomers |          Oz          
+AgentBosquillonSomers |       2 - 0 - 0       |           -           |  WIN (1853 : -2761)  
+         Oz           |       0 - 0 - 2       |  LOSE (-1656 : 2850)  |           -          
+
+First company results
+  # wins   : 1
+  # draws  : 0
+  # losses : 1
+
