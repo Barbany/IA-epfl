@@ -52,19 +52,15 @@ public class OppModel implements AuctionBehavior {
 	// Preference matrix
 	double[][] pmf;
 	
-	// TODO: REMOVE!! ONLY FOR PLOTS 
-	List<Long> bidsTotal, minCostTotal;
-	
-	double theirMin = Double.MAX_VALUE;
-	
 	// Bank variables
-	long savings, expenses, minCost; 
-	int strategy; 
+	long savings, expenses, minCost, margin;
+	int strategy;
 	
 	// Opponent's model
 	private List<Vehicle> oppVehicles;
 	private SLS oppPlan;
 	private List<Integer> randomCities;
+	private long savingsOpp, minBidOpp, minCostOpp;
 	
 	private static final double PERCENT_OPP = 0.2;
 
@@ -78,10 +74,6 @@ public class OppModel implements AuctionBehavior {
 		this.distribution = distribution;
 		this.agent = agent;
 		this.vehicles = agent.vehicles();
-		
-		bidsTotal = new ArrayList<Long>();
-		minCostTotal = new ArrayList<Long>();
-
 		// Get the timeouts
 		LogistSettings ls = null;
 		try {
@@ -123,6 +115,11 @@ public class OppModel implements AuctionBehavior {
 			this.randomCities.add(i);
 			i = i + 1;
 		}
+		
+		this.savingsOpp = 0;
+		
+		// Hardcoded initial value
+		this.minBidOpp = Long.MAX_VALUE;
 		
 		// Initialize opponent's solution
 		this.oppPlan = new SLS(oppVehicles, timeoutPlan);
@@ -191,6 +188,18 @@ public class OppModel implements AuctionBehavior {
 	public void auctionResult(Task previous, int winner, Long[] bids) {
 		numTasks++;
 		
+		// Set margin
+		if(numTasks == 1) {
+			margin = 0;
+			int maxCostPerKm = 0;
+			
+			for(Vehicle v: oppVehicles) {
+				margin = Math.max(margin, (long) v.homeCity().distanceTo(previous.pickupCity));
+				maxCostPerKm = Math.max(maxCostPerKm, v.costPerKm());
+			}
+			
+			margin *= maxCostPerKm;
+		}
 		
 		for(int i=0; i < bids.length; i++) {
 			System.out.println("Bid "+ i + " " + bids[i]);
@@ -203,14 +212,17 @@ public class OppModel implements AuctionBehavior {
 			expenses = expenses + minCost - bids[winner];
 			System.out.println("got from this " +  (minCost - bids[winner]));
 			
-			if (bids[1 - winner] < theirMin) 
-				theirMin = bids[1 - winner];
-			
+			if (bids[1 - winner] < minBidOpp) { 
+				minBidOpp = bids[1 - winner];
+			}
 		}else {
 			oppPlan.consolidatePlan();
 			
-			if (bids[winner] < theirMin) 
-				theirMin = bids[winner];
+			savingsOpp += bids[winner] - minCostOpp;
+			
+			if (bids[winner] < minBidOpp) {
+				minBidOpp = bids[winner];
+			}
 		}
 		
 		// For first three tasks
@@ -232,13 +244,11 @@ public class OppModel implements AuctionBehavior {
 
 	@Override
 	public Long askPrice(Task task) {
-		double timeStart = System.currentTimeMillis();
-
 		// Compute marginal cost for us
 		minCost = plan.addTask(task, (long) ((1 - PERCENT_OPP) * timeoutBid));
 		
 		// Compute marginal cost for opponent
-		long minCostopp = oppPlan.addTask(task, (long) (timeoutBid - (timeStart - System.currentTimeMillis())));
+		minCostOpp = oppPlan.addTask(task, (long) (PERCENT_OPP * timeoutBid));
 		
 		// Compute bid
 		long bid; 
@@ -250,51 +260,30 @@ public class OppModel implements AuctionBehavior {
 			} else {
 				// If the cost is zero, start recovering loses
 				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id]) * expenses);
-			}
+			}	
 			
-			
-			
+			bid = Math.min(bid, (long) 0.9 * minCostOpp);
 		} else {
-			// Negative gains
-			if (expenses > 0) {
-				 
-				if (minCost == 0) {
-					bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
-				} 
-				// Bid over the cost for non interesting tasks 
-				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy) * savings);
-				//bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.2*strategy*numTasks) * savings);
-			} else if (expenses == 0){
-				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * 1200);
-				
-			} else{
-				// Case cost zero
-				if (minCost == 0) {
-					bid = (long) theirMin; 
-					//bid = (long) ((1 - pmf[task.pickupCity.id][task.deliveryCity.id])*1000 + 250);
-					
-				}
-				// the task is very interesting
-				else if (pmf[task.pickupCity.id][task.deliveryCity.id]  < 0.6) {
-					bid = (long) theirMin; 
-					//bid = (long) Math.floor(minCost*(1.1 + 0.05*numTasks));
+			if(savingsOpp + margin < -expenses) { // Winning: We can bid low so opponent doesn't get any task
+				// Bid low but don't lose
+				bid = Math.max(minCost, minBidOpp);
+			} else { // Not winning
+				if(expenses == 0) {
+					// Bid low, specially for "good" tasks
+					// Change the 2 by 1 / (Threshold of losing money w.r.t. Opp's model)
+					bid = (long) Math.floor(pmf[task.pickupCity.id][task.deliveryCity.id] * 2 *
+							(minCostOpp - minCost) + minCost);
 				} else {
-					bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id] - 0.3*strategy) * savings);
+					bid = Math.max(minCost, (long) 0.9 * minCostOpp);
 				}
-				
 			}
-			
 		}
-		if (numTasks > 0)
-			bid = (long) Math.max(bid, theirMin); 
 
-		System.out.println("JBalvin Estimator Low: -----------------");
-		System.out.println("JBalvin Estimator Low: Minimum cost is: " + minCost + " propobility: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("JBalvin Estimator Low: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
-		System.out.println("JBalvin Estimator Low: Final bid is   : " + bid);
-		System.out.println("JBalvin Estimator Low: Number of tasks: " + numTasks);
-		bidsTotal.add(bid);
-		minCostTotal.add(minCost);
+		System.out.println("Ozuna Estimator Low: -----------------");
+		System.out.println("Ozuna Estimator Low: Minimum cost is: " + minCost + " probability: " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("Ozuna Estimator Low: Probability    : " + pmf[task.pickupCity.id][task.deliveryCity.id]);
+		System.out.println("Ozuna Estimator Low: Final bid is   : " + bid);
+		System.out.println("Ozuna Estimator Low: Number of tasks: " + numTasks);
 		return bid;
 	}
 
@@ -303,8 +292,6 @@ public class OppModel implements AuctionBehavior {
 	 */
 	@Override
 	public List<Plan> plan(List<Vehicle> vehicles, TaskSet tasks) {
-		System.out.println("JBalvin Estimator BID HISTORIC: " + bidsTotal + " ;");
-		System.out.println("JBalvin Estimator COST HISTORIC: " + minCostTotal + " ;");
 		return plan.getFinalPlan(tasks);
 	}
 
