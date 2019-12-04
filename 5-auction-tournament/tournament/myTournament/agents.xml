@@ -3,13 +3,13 @@
 <agents>
 	<!-- An auto-generated list of agents and their behavior classes -->
 	<!--  - jar directory : agents/ -->
-	<!--  - generated on  : Tue Dec 03 23:49:24 CET 2019 -->
-	<agent name="AgentBosquillonSomers">
-		<set class-path="agents/AgentBosquillonSomers.jar"/>
-		<set class-name="agents.AuctionAgent5"/>
+	<!--  - generated on  : Wed Dec 04 16:45:45 CET 2019 -->
+	<agent name="LaRosalia">
+		<set class-path="agents/LaRosalia.jar"/>
+		<set class-name="template.AuctionTemplate"/>
 	</agent>
-	<agent name="Oz">
-		<set class-path="agents/Oz.jar"/>
+	<agent name="Ozu">
+		<set class-path="agents/Ozu.jar"/>
 		<set class-name="main.OppModel"/>
 	</agent>
 </agents>

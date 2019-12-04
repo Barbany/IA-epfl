@@ -1,10 +1,10 @@
 ### auction.xml ###
-       Agents         |   Win - Draw - Lose   | AgentBosquillonSomers |          Oz          
-AgentBosquillonSomers |       2 - 0 - 0       |           -           |  WIN (1853 : -2761)  
-         Oz           |       0 - 0 - 2       |  LOSE (-1656 : 2850)  |           -          
+       Agents        |  Win - Draw - Lose   |      LaRosalia       |         Ozu         
+     LaRosalia       |      1 - 0 - 1       |          -           | LOSE (-2735 : -436) 
+        Ozu          |      1 - 0 - 1       | LOSE (-3467 : -1023) |          -          
 
 First company results
-  # wins   : 1
+  # wins   : 0
   # draws  : 0
-  # losses : 1
+  # losses : 2
 
