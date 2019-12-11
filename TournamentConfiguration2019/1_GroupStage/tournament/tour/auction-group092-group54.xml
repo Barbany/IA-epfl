@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<history configuration="./config/auction.xml">
+	<agents>
+		<agent name="group092">
+			<vehicle name="Vehicle 1"/>
+			<vehicle name="Vehicle 2"/>
+		</agent>
+		<agent name="group54">
+			<vehicle name="Vehicle 3"/>
+			<vehicle name="Vehicle 4"/>
+		</agent>
+	</agents>
+	<rounds>
+		<round id="1">
+			<tasks>
+				<task id="0" pickup="Genève" delivery="Marseille" weight="10" reward="78212">
+					<bid agent="group092" bid="2279"/>
+					<bid agent="group54" bid="612"/>
+				</task>
+				<task id="1" pickup="Strasbourg" delivery="Brest" weight="10" reward="35950">
+					<bid agent="group092" bid="3949"/>
+					<bid agent="group54" bid="1818"/>
+				</task>
+				<task id="2" pickup="Lyon" delivery="Brest" weight="10" reward="37398">
+					<bid agent="group092" bid="5223"/>
+					<bid agent="group54" bid="9871"/>
+				</task>
+				<task id="3" pickup="Le Havre" delivery="Brest" weight="10" reward="56013">
+					<bid agent="group092" bid="5393"/>
+					<bid agent="group54" bid="250"/>
+				</task>
+				<task id="4" pickup="Le Havre" delivery="Paris" weight="10" reward="96758">
+					<bid agent="group092" bid="5362"/>
+					<bid agent="group54" bid="250"/>
+				</task>
+				<task id="5" pickup="Le Havre" delivery="Strasbourg" weight="10" reward="63183">
+					<bid agent="group092" bid="6372"/>
+					<bid agent="group54" bid="4024"/>
+				</task>
+				<task id="6" pickup="Strasbourg" delivery="Bordeaux" weight="10" reward="36433">
+					<bid agent="group092" bid="7670"/>
+					<bid agent="group54" bid="9108"/>
+				</task>
+				<task id="7" pickup="Lyon" delivery="Bordeaux" weight="10" reward="69732">
+					<bid agent="group092" bid="3478"/>
+					<bid agent="group54" bid="1792"/>
+				</task>
+				<task id="8" pickup="Lyon" delivery="Bordeaux" weight="10" reward="69732">
+					<bid agent="group092" bid="3536"/>
+					<bid agent="group54" bid="250"/>
+				</task>
+				<task id="9" pickup="Marseille" delivery="Bordeaux" weight="10" reward="65734">
+					<bid agent="group092" bid="2923"/>
+					<bid agent="group54" bid="2692"/>
+				</task>
+			</tasks>
+			<events>
+				<event id="0" time="0" vehicle="Vehicle 2" move="Genève"/>
+				<event id="1" time="0" vehicle="Vehicle 4" move="Lyon"/>
+				<event id="2" time="3511111111" vehicle="Vehicle 4" pickup="8"/>
+				<event id="3" time="3811111111" vehicle="Vehicle 4" move="Genève"/>
+				<event id="4" time="5466666665" vehicle="Vehicle 4" pickup="0"/>
+				<event id="5" time="5766666665" vehicle="Vehicle 4" move="Lyon"/>
+				<event id="6" time="5788888888" vehicle="Vehicle 2" move="Strasbourg"/>
+				<event id="7" time="7422222220" vehicle="Vehicle 4" pickup="7"/>
+				<event id="8" time="7722222220" vehicle="Vehicle 4" move="Marseille"/>
+				<event id="9" time="10111111110" vehicle="Vehicle 2" pickup="6"/>
+				<event id="10" time="10411111110" vehicle="Vehicle 2" move="Genève"/>
+				<event id="11" time="11233333330" vehicle="Vehicle 4" deliver="0"/>
+				<event id="12" time="11533333330" vehicle="Vehicle 4" pickup="9"/>
+				<event id="13" time="11833333330" vehicle="Vehicle 4" move="Bordeaux"/>
+				<event id="14" time="14733333331" vehicle="Vehicle 2" move="Lyon"/>
+				<event id="15" time="16388888885" vehicle="Vehicle 2" pickup="2"/>
+				<event id="16" time="16688888885" vehicle="Vehicle 2" move="Bordeaux"/>
+				<event id="17" time="19011111107" vehicle="Vehicle 4" deliver="7"/>
+				<event id="18" time="19311111107" vehicle="Vehicle 4" deliver="8"/>
+				<event id="19" time="19611111107" vehicle="Vehicle 4" deliver="9"/>
+				<event id="20" time="19911111107" vehicle="Vehicle 4" move="Paris"/>
+				<event id="21" time="23222222218" vehicle="Vehicle 2" deliver="6"/>
+				<event id="22" time="23522222218" vehicle="Vehicle 2" move="Paris"/>
+				<event id="23" time="26399999995" vehicle="Vehicle 4" move="Le Havre"/>
+				<event id="24" time="28577777772" vehicle="Vehicle 4" pickup="3"/>
+				<event id="25" time="28877777772" vehicle="Vehicle 4" pickup="5"/>
+				<event id="26" time="29177777771" vehicle="Vehicle 4" pickup="4"/>
+				<event id="27" time="29477777771" vehicle="Vehicle 4" move="Paris"/>
+				<event id="28" time="30011111106" vehicle="Vehicle 2" move="Brest"/>
+				<event id="29" time="31655555548" vehicle="Vehicle 4" deliver="4"/>
+				<event id="30" time="31955555548" vehicle="Vehicle 4" move="Strasbourg"/>
+				<event id="31" time="36577777771" vehicle="Vehicle 2" deliver="2"/>
+				<event id="32" time="37366666658" vehicle="Vehicle 4" pickup="1"/>
+				<event id="33" time="37666666658" vehicle="Vehicle 4" deliver="5"/>
+				<event id="34" time="37966666658" vehicle="Vehicle 4" move="Paris"/>
+				<event id="35" time="43377777768" vehicle="Vehicle 4" move="Brest"/>
+				<event id="36" time="49944444434" vehicle="Vehicle 4" deliver="1"/>
+				<event id="37" time="50244444433" vehicle="Vehicle 4" deliver="3"/>
+			</events>
+		</round>
+	</rounds>
+	<statistics>
+		<stat rank="1" agent="group092">
+			<total-tasks value="2"/>
+			<total-distance value="3211.0"/>
+			<total-cost value="22477"/>
+			<total-reward value="12893"/>
+			<total-profit value="-9584"/>
+		</stat>
+		<stat rank="2" agent="group54">
+			<total-tasks value="8"/>
+			<total-distance value="4117.0"/>
+			<total-cost value="32936"/>
+			<total-reward value="11688"/>
+			<total-profit value="-21248"/>
+		</stat>
+	</statistics>
+</history>

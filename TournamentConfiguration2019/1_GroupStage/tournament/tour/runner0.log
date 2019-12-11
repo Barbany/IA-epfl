@@ -1,0 +1,942 @@
+02:11:27.258 FINE | Run command: java -Xmx1024m -classpath logist/logist.jar logist.LogistPlatform -o tournament/tour/auction-group54-group21.xml -a tournament/tour/agents.xml ./config/auction.xml group54 group21
+02:11:27.353 CONFIG | Reading ./config/auction.xml
+02:11:27.399 CONFIG | Reading config/settings_auction.xml
+02:11:27.589 CONFIG | Reading config/topology/france.xml
+02:11:27.605 CONFIG | Reading tournament/tour/agents.xml
+02:11:27.619 CONFIG | Reading config/settings_auction.xml
+02:11:27.625 CONFIG | Reading config/settings_auction.xml
+02:11:27.642 CONFIG | Case 1. BID 568 cost opp 4298
+02:11:27.642 CONFIG | Ozuna : -----------------
+02:11:27.642 CONFIG | Ozuna : Minimum cost is  : 6902
+02:11:27.642 CONFIG | Ozuna : Min cost opponent: 4298 margin 0
+02:11:27.642 CONFIG | Ozuna : Final bid is     : 568
+02:11:27.642 CONFIG | Ozuna : Number of tasks  : 0
+02:11:27.760 CONFIG | Bid 0 568
+02:11:27.760 CONFIG | Bid 1 7440
+02:11:27.760 CONFIG | Ozuna: got from this 6334
+02:11:27.761 CONFIG | Ozuna total expenses: 6334
+02:11:43.060 CONFIG | Case 1. BID 1591 cost opp 11312
+02:11:43.060 CONFIG | Ozuna : -----------------
+02:11:43.060 CONFIG | Ozuna : Minimum cost is  : 13524
+02:11:43.060 CONFIG | Ozuna : Min cost opponent: 11312 margin 7294
+02:11:43.060 CONFIG | Ozuna : Final bid is     : 1591
+02:11:43.060 CONFIG | Ozuna : Number of tasks  : 1
+02:11:43.111 CONFIG | Bid 0 1591
+02:11:43.111 CONFIG | Bid 1 15456
+02:11:43.111 CONFIG | Ozuna: got from this 11933
+02:11:43.111 CONFIG | Ozuna total expenses: 18267
+02:11:58.835 CONFIG | Case 1. BID 8810 cost opp 7399
+02:11:58.835 CONFIG | Ozuna : -----------------
+02:11:58.835 CONFIG | Ozuna : Minimum cost is  : 0
+02:11:58.835 CONFIG | Ozuna : Min cost opponent: 7399 margin 7294
+02:11:58.835 CONFIG | Ozuna : Final bid is     : 6659
+02:11:58.835 CONFIG | Ozuna : Number of tasks  : 2
+02:11:59.053 CONFIG | Bid 0 6659
+02:11:59.053 CONFIG | Bid 1 10984
+02:11:59.053 CONFIG | Ozuna: got from this -6659
+02:11:59.053 CONFIG | Ozuna total expenses: 11608
+02:12:14.764 CONFIG | Case 5. BID 9128 cost opp 10143
+02:12:14.764 CONFIG | Ozuna : -----------------
+02:12:14.764 CONFIG | Ozuna : Minimum cost is  : 2744
+02:12:14.764 CONFIG | Ozuna : Min cost opponent: 10143 margin 7294
+02:12:14.764 CONFIG | Ozuna : Final bid is     : 9128
+02:12:14.764 CONFIG | Ozuna : Number of tasks  : 3
+02:12:15.359 CONFIG | Bid 0 9128
+02:12:15.359 CONFIG | Bid 1 8901
+02:12:15.359 CONFIG | Ozuna total expenses: 11608
+02:12:34.648 CONFIG | Case 5. BID 1372 cost opp 0
+02:12:34.648 CONFIG | Ozuna : -----------------
+02:12:34.648 CONFIG | Ozuna : Minimum cost is  : 2744
+02:12:34.648 CONFIG | Ozuna : Min cost opponent: 0 margin 7294
+02:12:34.648 CONFIG | Ozuna : Final bid is     : 1372
+02:12:34.648 CONFIG | Ozuna : Number of tasks  : 4
+02:12:34.873 CONFIG | Bid 0 1372
+02:12:34.873 CONFIG | Bid 1 2309
+02:12:34.873 CONFIG | Ozuna: got from this 1372
+02:12:34.873 CONFIG | Ozuna total expenses: 12980
+02:12:54.123 CONFIG | Case 5. BID 6136 cost opp 6818
+02:12:54.123 CONFIG | Ozuna : -----------------
+02:12:54.123 CONFIG | Ozuna : Minimum cost is  : 2905
+02:12:54.123 CONFIG | Ozuna : Min cost opponent: 6818 margin 7294
+02:12:54.123 CONFIG | Ozuna : Final bid is     : 6136
+02:12:54.123 CONFIG | Ozuna : Number of tasks  : 5
+02:12:54.570 CONFIG | Bid 0 6136
+02:12:54.571 CONFIG | Bid 1 2973
+02:12:54.571 CONFIG | Ozuna total expenses: 12980
+02:13:12.313 CONFIG | Case 5. BID 7358 cost opp 8176
+02:13:12.313 CONFIG | Ozuna : -----------------
+02:13:12.313 CONFIG | Ozuna : Minimum cost is  : 6475
+02:13:12.313 CONFIG | Ozuna : Min cost opponent: 8176 margin 7294
+02:13:12.313 CONFIG | Ozuna : Final bid is     : 7358
+02:13:12.313 CONFIG | Ozuna : Number of tasks  : 6
+02:13:12.682 CONFIG | Bid 0 7358
+02:13:12.682 CONFIG | Bid 1 3457
+02:13:12.682 CONFIG | Ozuna total expenses: 12980
+02:13:31.914 CONFIG | Case 5. BID 4830 cost opp 3619
+02:13:31.914 CONFIG | Ozuna : -----------------
+02:13:31.914 CONFIG | Ozuna : Minimum cost is  : 6041
+02:13:31.914 CONFIG | Ozuna : Min cost opponent: 3619 margin 7294
+02:13:31.914 CONFIG | Ozuna : Final bid is     : 4830
+02:13:31.914 CONFIG | Ozuna : Number of tasks  : 7
+02:13:32.320 CONFIG | Bid 0 4830
+02:13:32.321 CONFIG | Bid 1 4189
+02:13:32.321 CONFIG | Ozuna total expenses: 12980
+02:13:51.546 CONFIG | Case 5. BID 1428 cost opp -3185
+02:13:51.546 CONFIG | Ozuna : -----------------
+02:13:51.546 CONFIG | Ozuna : Minimum cost is  : 6041
+02:13:51.546 CONFIG | Ozuna : Min cost opponent: -3185 margin 7294
+02:13:51.546 CONFIG | Ozuna : Final bid is     : 1428
+02:13:51.546 CONFIG | Ozuna : Number of tasks  : 8
+02:13:51.991 CONFIG | Bid 0 1428
+02:13:51.991 CONFIG | Bid 1 4216
+02:13:51.991 CONFIG | Ozuna: got from this 4613
+02:13:51.991 CONFIG | Ozuna total expenses: 17593
+02:14:11.215 CONFIG | Case 4.2 . BID -511 cost opp -567 multip -510.3
+02:14:11.215 CONFIG | Ozuna : -----------------
+02:14:11.215 CONFIG | Ozuna : Minimum cost is  : 0
+02:14:11.215 CONFIG | Ozuna : Min cost opponent: -567 margin 7294
+02:14:11.215 CONFIG | Ozuna : Final bid is     : -511
+02:14:11.215 CONFIG | Ozuna : Number of tasks  : 9
+02:14:11.780 CONFIG | Bid 0 250
+02:14:11.781 CONFIG | Bid 1 3773
+02:14:11.781 CONFIG | Ozuna: got from this -250
+02:14:11.781 CONFIG | Ozuna total expenses: 17343
+02:14:41.273 CONFIG | The plan was generated in 158 milliseconds.
+02:14:41.273 CONFIG | plan x distance 0.0
+02:14:41.273 CONFIG | plan x distance 19535.0
+02:14:41.273 CONFIG | My reward19520
+02:14:41.276 CONFIG | Wrote tournament/tour/auction-group54-group21.xml
+02:14:41.674 INFO | LogistPlatform finished successfully!
+02:14:41.681 FINE | Run command: java -Xmx1024m -classpath logist/logist.jar logist.LogistPlatform -o tournament/tour/auction-group092-group54.xml -a tournament/tour/agents.xml ./config/auction.xml group092 group54
+02:14:41.775 CONFIG | Reading ./config/auction.xml
+02:14:41.820 CONFIG | Reading config/settings_auction.xml
+02:14:41.994 CONFIG | Reading config/topology/france.xml
+02:14:42.011 CONFIG | Reading tournament/tour/agents.xml
+02:14:42.030 CONFIG | Reading config/settings_auction.xml
+02:14:42.052 CONFIG | ask price:0
+02:14:42.053 CONFIG | For the first round, bid= 2279
+02:14:42.055 CONFIG | Case 1. BID 612 cost opp 10208
+02:14:42.055 CONFIG | Ozuna : -----------------
+02:14:42.055 CONFIG | Ozuna : Minimum cost is  : 7440
+02:14:42.055 CONFIG | Ozuna : Min cost opponent: 10208 margin 0
+02:14:42.055 CONFIG | Ozuna : Final bid is     : 612
+02:14:42.055 CONFIG | Ozuna : Number of tasks  : 0
+02:14:42.056 CONFIG | begin auction result, round: 1
+02:14:42.056 CONFIG | ask price:1
+02:14:42.872 CONFIG | marginCost: 13916.0
+02:14:42.872 CONFIG | avgCost: 6872.6
+02:14:43.328 CONFIG | ========================
+02:14:43.329 CONFIG | Round 1
+02:14:43.329 CONFIG | self bid is 7316.582085911357
+02:14:43.329 CONFIG | op bid is 4700.882460851952
+02:14:43.329 CONFIG | 
+02:14:43.329 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:14:43.329 CONFIG | self bid is 5641.0589530223415
+02:14:43.329 CONFIG | growth:0.6598007967749735
+02:14:43.329 CONFIG | periodic:1.06101049646137
+02:14:43.329 CONFIG | update self bid 2
+02:14:43.329 CONFIG | self bid is 3949.054746130943
+02:14:43.329 CONFIG | 
+02:14:43.329 CONFIG | bidderSelf.getNextCost()13916.0
+02:14:43.329 CONFIG | bidderSelf.totalBid0.0
+02:14:43.329 CONFIG | ==========================
+02:14:43.329 CONFIG | Bid 0 2279
+02:14:43.329 CONFIG | Bid 1 612
+02:14:43.329 CONFIG | Ozuna: got from this 6828
+02:14:43.329 CONFIG | Ozuna total expenses: 6828
+02:14:58.621 CONFIG | Case 1. BID 1818 cost opp 14088
+02:14:58.621 CONFIG | Ozuna : -----------------
+02:14:58.621 CONFIG | Ozuna : Minimum cost is  : 15456
+02:14:58.621 CONFIG | Ozuna : Min cost opponent: 14088 margin 6045
+02:14:58.621 CONFIG | Ozuna : Final bid is     : 1818
+02:14:58.621 CONFIG | Ozuna : Number of tasks  : 1
+02:14:58.621 CONFIG | begin auction result, round: 2
+02:14:58.621 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:14:58.622 CONFIG | !bidderOp.getHomecities().contains(previous.pickupCity
+02:14:58.622 CONFIG | add vehicle
+02:14:58.622 CONFIG | (Task 0, 10 kg, 612 CHF, Genève -> Marseille)
+02:14:58.622 CONFIG | begin SLS add vehicle
+02:14:58.622 CONFIG | global cost:4650.0
+02:14:58.622 CONFIG | finish add vehicle
+02:14:58.622 CONFIG | ask price:2
+02:14:59.119 CONFIG | marginCost: 11186.0
+02:14:59.119 CONFIG | avgCost: 8602.3
+02:14:59.377 CONFIG | ========================
+02:14:59.377 CONFIG | Round 2
+02:14:59.377 CONFIG | self bid is 8526.406632076074
+02:14:59.377 CONFIG | op bid is 5451.0
+02:14:59.377 CONFIG | 
+02:14:59.377 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:14:59.377 CONFIG | self bid is 6541.2
+02:14:59.377 CONFIG | growth:0.7184251921349424
+02:14:59.377 CONFIG | periodic:1.1114717238216092
+02:14:59.377 CONFIG | update self bid 2
+02:14:59.377 CONFIG | self bid is 5223.20894641777
+02:14:59.377 CONFIG | 
+02:14:59.377 CONFIG | bidderSelf.getNextCost()11186.0
+02:14:59.377 CONFIG | bidderSelf.totalBid0.0
+02:14:59.377 CONFIG | ==========================
+02:14:59.377 CONFIG | Bid 0 3949
+02:14:59.377 CONFIG | Bid 1 1818
+02:14:59.377 CONFIG | Ozuna: got from this 13638
+02:14:59.377 CONFIG | Ozuna total expenses: 20466
+02:15:14.611 CONFIG | Case 1. BID 9871 cost opp 13752
+02:15:14.611 CONFIG | Ozuna : -----------------
+02:15:14.611 CONFIG | Ozuna : Minimum cost is  : 0
+02:15:14.611 CONFIG | Ozuna : Min cost opponent: 13752 margin 6045
+02:15:14.611 CONFIG | Ozuna : Final bid is     : 9871
+02:15:14.612 CONFIG | Ozuna : Number of tasks  : 2
+02:15:14.612 CONFIG | begin auction result, round: 3
+02:15:14.612 CONFIG | marginCost < bidOp
+02:15:14.612 CONFIG | ask price:3
+02:15:14.867 CONFIG | marginCost: 2744.0
+02:15:14.867 CONFIG | avgCost: 7831.6
+02:15:15.372 CONFIG | ========================
+02:15:15.372 CONFIG | Round 3
+02:15:15.372 CONFIG | self bid is 6252.467308358695
+02:15:15.372 CONFIG | op bid is 5076.0
+02:15:15.372 CONFIG | 
+02:15:15.372 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:15:15.372 CONFIG | self bid is 6091.2
+02:15:15.372 CONFIG | growth:0.7747875674709545
+02:15:15.372 CONFIG | periodic:1.142658477444273
+02:15:15.372 CONFIG | update self bid 2
+02:15:15.372 CONFIG | self bid is 5392.646456630324
+02:15:15.372 CONFIG | 
+02:15:15.372 CONFIG | bidderSelf.getNextCost()13930.0
+02:15:15.372 CONFIG | bidderSelf.totalBid5223.0
+02:15:15.372 CONFIG | ==========================
+02:15:15.372 CONFIG | Bid 0 5223
+02:15:15.372 CONFIG | Bid 1 9871
+02:15:15.372 CONFIG | Ozuna total expenses: 20466
+02:15:34.659 CONFIG | Case 1. BID 368 cost opp 0
+02:15:34.659 CONFIG | Ozuna : -----------------
+02:15:34.659 CONFIG | Ozuna : Minimum cost is  : 3136
+02:15:34.659 CONFIG | Ozuna : Min cost opponent: 0 margin 6045
+02:15:34.659 CONFIG | Ozuna : Final bid is     : 100
+02:15:34.659 CONFIG | Ozuna : Number of tasks  : 3
+02:15:34.659 CONFIG | begin auction result, round: 4
+02:15:34.659 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:15:34.659 CONFIG | ask price:4
+02:15:35.199 CONFIG | marginCost: 2744.0
+02:15:35.199 CONFIG | avgCost: 7689.5
+02:15:35.501 CONFIG | ========================
+02:15:35.502 CONFIG | Round 4
+02:15:35.502 CONFIG | self bid is 5634.933042532406
+02:15:35.502 CONFIG | op bid is 5001.0
+02:15:35.502 CONFIG | 
+02:15:35.502 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:15:35.502 CONFIG | self bid is 5634.933042532406
+02:15:35.502 CONFIG | growth:0.8279693773531349
+02:15:35.502 CONFIG | periodic:1.149178284305241
+02:15:35.502 CONFIG | update self bid 2
+02:15:35.502 CONFIG | self bid is 5361.5510457446935
+02:15:35.502 CONFIG | 
+02:15:35.502 CONFIG | bidderSelf.getNextCost()13930.0
+02:15:35.502 CONFIG | bidderSelf.totalBid5223.0
+02:15:35.502 CONFIG | ==========================
+02:15:35.502 CONFIG | Bid 0 5393
+02:15:35.502 CONFIG | Bid 1 250
+02:15:35.502 CONFIG | Ozuna: got from this 2886
+02:15:35.502 CONFIG | Ozuna total expenses: 23352
+02:15:54.273 CONFIG | Case 4.1 . BID 250 cost opp 0
+02:15:54.273 CONFIG | Ozuna : -----------------
+02:15:54.273 CONFIG | Ozuna : Minimum cost is  : 0
+02:15:54.273 CONFIG | Ozuna : Min cost opponent: 0 margin 6045
+02:15:54.273 CONFIG | Ozuna : Final bid is     : 250
+02:15:54.273 CONFIG | Ozuna : Number of tasks  : 4
+02:15:54.273 CONFIG | begin auction result, round: 5
+02:15:54.273 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:15:54.273 CONFIG | ask price:5
+02:15:54.642 CONFIG | marginCost: 9562.0
+02:15:54.642 CONFIG | avgCost: 5573.4
+02:15:54.906 CONFIG | ========================
+02:15:54.907 CONFIG | Round 5
+02:15:54.907 CONFIG | self bid is 6428.51262960317
+02:15:54.907 CONFIG | op bid is 6975.0
+02:15:54.907 CONFIG | 
+02:15:54.907 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:15:54.907 CONFIG | self bid is 6428.51262960317
+02:15:54.907 CONFIG | growth:0.8772702943560058
+02:15:54.907 CONFIG | periodic:1.1299038105676658
+02:15:54.907 CONFIG | update self bid 2
+02:15:54.907 CONFIG | self bid is 6372.141314077056
+02:15:54.907 CONFIG | 
+02:15:54.907 CONFIG | bidderSelf.getNextCost()20748.0
+02:15:54.907 CONFIG | bidderSelf.totalBid5223.0
+02:15:54.907 CONFIG | ==========================
+02:15:54.907 CONFIG | Bid 0 5362
+02:15:54.907 CONFIG | Bid 1 250
+02:15:54.907 CONFIG | Ozuna: got from this -250
+02:15:54.907 CONFIG | Ozuna total expenses: 23102
+02:16:13.658 CONFIG | Case 5. BID 4024 cost opp 4472
+02:16:13.658 CONFIG | Ozuna : -----------------
+02:16:13.658 CONFIG | Ozuna : Minimum cost is  : 3320
+02:16:13.658 CONFIG | Ozuna : Min cost opponent: 4472 margin 6045
+02:16:13.658 CONFIG | Ozuna : Final bid is     : 4024
+02:16:13.658 CONFIG | Ozuna : Number of tasks  : 5
+02:16:13.658 CONFIG | begin auction result, round: 6
+02:16:13.658 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:16:13.658 CONFIG | ask price:6
+02:16:14.473 CONFIG | marginCost: 11291.0
+02:16:14.473 CONFIG | avgCost: 6725.6
+02:16:14.981 CONFIG | ========================
+02:16:14.981 CONFIG | Round 6
+02:16:14.981 CONFIG | self bid is 7643.346160221408
+02:16:14.981 CONFIG | op bid is 9271.8
+02:16:14.982 CONFIG | 
+02:16:14.982 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:16:14.982 CONFIG | self bid is 7643.346160221408
+02:16:14.982 CONFIG | growth:0.9222297401988212
+02:16:14.982 CONFIG | periodic:1.088167787843871
+02:16:14.982 CONFIG | update self bid 2
+02:16:14.982 CONFIG | self bid is 7670.408927506924
+02:16:14.982 CONFIG | 
+02:16:14.982 CONFIG | bidderSelf.getNextCost()22477.0
+02:16:14.982 CONFIG | bidderSelf.totalBid5223.0
+02:16:14.982 CONFIG | ==========================
+02:16:14.982 CONFIG | Bid 0 6372
+02:16:14.982 CONFIG | Bid 1 4024
+02:16:14.982 CONFIG | Ozuna: got from this -704
+02:16:14.982 CONFIG | Ozuna total expenses: 22398
+02:16:34.238 CONFIG | Case 5. BID 9108 cost opp 10120
+02:16:34.238 CONFIG | Ozuna : -----------------
+02:16:34.238 CONFIG | Ozuna : Minimum cost is  : 8472
+02:16:34.238 CONFIG | Ozuna : Min cost opponent: 10120 margin 6045
+02:16:34.238 CONFIG | Ozuna : Final bid is     : 9108
+02:16:34.238 CONFIG | Ozuna : Number of tasks  : 6
+02:16:34.238 CONFIG | begin auction result, round: 7
+02:16:34.238 CONFIG | bidOp <= marginCost && marginCost * opRatio < bidOp
+02:16:34.238 CONFIG | bidOp > avgCost
+02:16:34.238 CONFIG | ask price:7
+02:16:34.827 CONFIG | marginCost: 0.0
+02:16:34.827 CONFIG | avgCost: 7928.2
+02:16:35.142 CONFIG | ========================
+02:16:35.142 CONFIG | Round 7
+02:16:35.142 CONFIG | self bid is 3503.954568911957
+02:16:35.142 CONFIG | op bid is 7705.799999999999
+02:16:35.142 CONFIG | 
+02:16:35.142 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:16:35.142 CONFIG | self bid is 3503.954568911957
+02:16:35.143 CONFIG | growth:0.9626206662702982
+02:16:35.143 CONFIG | periodic:1.031186753622664
+02:16:35.143 CONFIG | update self bid 2
+02:16:35.143 CONFIG | self bid is 3478.1713493024754
+02:16:35.143 CONFIG | 
+02:16:35.143 CONFIG | bidderSelf.getNextCost()22477.0
+02:16:35.143 CONFIG | bidderSelf.totalBid12893.0
+02:16:35.143 CONFIG | ==========================
+02:16:35.143 CONFIG | Bid 0 7670
+02:16:35.143 CONFIG | Bid 1 9108
+02:16:35.143 CONFIG | Ozuna total expenses: 22398
+02:16:53.884 CONFIG | Case 5. BID 1792 cost opp 0
+02:16:53.884 CONFIG | Ozuna : -----------------
+02:16:53.884 CONFIG | Ozuna : Minimum cost is  : 3584
+02:16:53.884 CONFIG | Ozuna : Min cost opponent: 0 margin 6045
+02:16:53.884 CONFIG | Ozuna : Final bid is     : 1792
+02:16:53.884 CONFIG | Ozuna : Number of tasks  : 7
+02:16:53.884 CONFIG | begin auction result, round: 8
+02:16:53.884 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:16:53.884 CONFIG | !bidderOp.getHomecities().contains(previous.pickupCity
+02:16:53.884 CONFIG | add vehicle
+02:16:53.884 CONFIG | (Task 0, 10 kg, 612 CHF, Genève -> Marseille)
+02:16:53.884 CONFIG | (Task 1, 10 kg, 1818 CHF, Strasbourg -> Brest)
+02:16:53.884 CONFIG | (Task 3, 10 kg, 250 CHF, Le Havre -> Brest)
+02:16:53.884 CONFIG | (Task 4, 10 kg, 250 CHF, Le Havre -> Paris)
+02:16:53.884 CONFIG | (Task 5, 10 kg, 4024 CHF, Le Havre -> Strasbourg)
+02:16:53.884 CONFIG | begin SLS add vehicle
+02:16:53.901 CONFIG | global cost:30070.0
+02:16:53.902 CONFIG | finish add vehicle
+02:16:53.916 CONFIG | ask price:8
+02:16:54.444 CONFIG | marginCost: 0.0
+02:16:54.444 CONFIG | avgCost: 8888.6
+02:16:54.731 CONFIG | ========================
+02:16:54.731 CONFIG | Round 8
+02:16:54.731 CONFIG | self bid is 3434.758670189008
+02:16:54.731 CONFIG | op bid is 10372.199999999999
+02:16:54.731 CONFIG | 
+02:16:54.731 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:16:54.731 CONFIG | self bid is 3434.758670189008
+02:16:54.731 CONFIG | growth:0.9984220621607093
+02:16:54.731 CONFIG | periodic:1.0311867536226638
+02:16:54.731 CONFIG | update self bid 2
+02:16:54.731 CONFIG | self bid is 3536.288779835121
+02:16:54.731 CONFIG | 
+02:16:54.731 CONFIG | bidderSelf.getNextCost()22477.0
+02:16:54.731 CONFIG | bidderSelf.totalBid12893.0
+02:16:54.731 CONFIG | ==========================
+02:16:54.731 CONFIG | Bid 0 3478
+02:16:54.731 CONFIG | Bid 1 1792
+02:16:54.731 CONFIG | Ozuna: got from this 1792
+02:16:54.731 CONFIG | Ozuna total expenses: 24190
+02:17:13.965 CONFIG | Case 4.1 . BID 250 cost opp 0
+02:17:13.965 CONFIG | Ozuna : -----------------
+02:17:13.965 CONFIG | Ozuna : Minimum cost is  : 0
+02:17:13.965 CONFIG | Ozuna : Min cost opponent: 0 margin 6045
+02:17:13.965 CONFIG | Ozuna : Final bid is     : 250
+02:17:13.965 CONFIG | Ozuna : Number of tasks  : 8
+02:17:13.965 CONFIG | begin auction result, round: 9
+02:17:13.965 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:17:13.965 CONFIG | ask price:9
+02:17:14.496 CONFIG | marginCost: 798.0
+02:17:14.496 CONFIG | avgCost: 6564.6
+02:17:14.875 CONFIG | ========================
+02:17:14.876 CONFIG | Round 9
+02:17:14.876 CONFIG | self bid is 2608.295417883915
+02:17:14.876 CONFIG | op bid is 7093.2
+02:17:14.876 CONFIG | 
+02:17:14.876 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:17:14.876 CONFIG | self bid is 2608.295417883915
+02:17:14.876 CONFIG | growth:1.0297787221194148
+02:17:14.876 CONFIG | periodic:1.088167787843871
+02:17:14.876 CONFIG | update self bid 2
+02:17:14.876 CONFIG | self bid is 2922.7829017363697
+02:17:14.876 CONFIG | 
+02:17:14.876 CONFIG | bidderSelf.getNextCost()23275.0
+02:17:14.876 CONFIG | bidderSelf.totalBid12893.0
+02:17:14.876 CONFIG | ==========================
+02:17:14.876 CONFIG | Bid 0 3536
+02:17:14.876 CONFIG | Bid 1 250
+02:17:14.876 CONFIG | Ozuna: got from this -250
+02:17:14.876 CONFIG | Ozuna total expenses: 23940
+02:17:33.603 CONFIG | Case 4.2 . BID 2692 cost opp 2992 multip 2692.8
+02:17:33.603 CONFIG | Ozuna : -----------------
+02:17:33.603 CONFIG | Ozuna : Minimum cost is  : 0
+02:17:33.603 CONFIG | Ozuna : Min cost opponent: 2992 margin 6045
+02:17:33.603 CONFIG | Ozuna : Final bid is     : 2692
+02:17:33.603 CONFIG | Ozuna : Number of tasks  : 9
+02:17:33.603 CONFIG | begin auction result, round: 10
+02:17:33.603 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:17:33.603 CONFIG | !bidderOp.getHomecities().contains(previous.pickupCity
+02:17:33.604 CONFIG | add vehicle
+02:17:33.604 CONFIG | (Task 0, 10 kg, 612 CHF, Genève -> Marseille)
+02:17:33.604 CONFIG | (Task 1, 10 kg, 1818 CHF, Strasbourg -> Brest)
+02:17:33.604 CONFIG | (Task 3, 10 kg, 250 CHF, Le Havre -> Brest)
+02:17:33.604 CONFIG | (Task 4, 10 kg, 250 CHF, Le Havre -> Paris)
+02:17:33.604 CONFIG | (Task 5, 10 kg, 4024 CHF, Le Havre -> Strasbourg)
+02:17:33.604 CONFIG | (Task 7, 10 kg, 1792 CHF, Lyon -> Bordeaux)
+02:17:33.604 CONFIG | (Task 8, 10 kg, 250 CHF, Lyon -> Bordeaux)
+02:17:33.604 CONFIG | begin SLS add vehicle
+02:17:33.659 CONFIG | global cost:28720.0
+02:17:33.659 CONFIG | finish add vehicle
+02:17:33.746 CONFIG | Bid 0 2923
+02:17:33.746 CONFIG | Bid 1 2692
+02:17:33.746 CONFIG | Ozuna: got from this -2692
+02:17:33.746 CONFIG | Ozuna total expenses: 21248
+02:18:03.567 CONFIG | Wrote tournament/tour/auction-group092-group54.xml
+02:18:03.964 INFO | LogistPlatform finished successfully!
+02:18:03.966 FINE | Run command: java -Xmx1024m -classpath logist/logist.jar logist.LogistPlatform -o tournament/tour/auction-group092-group21.xml -a tournament/tour/agents.xml ./config/auction.xml group092 group21
+02:18:04.073 CONFIG | Reading ./config/auction.xml
+02:18:04.130 CONFIG | Reading config/settings_auction.xml
+02:18:04.308 CONFIG | Reading config/topology/france.xml
+02:18:04.323 CONFIG | Reading tournament/tour/agents.xml
+02:18:04.341 CONFIG | Reading config/settings_auction.xml
+02:18:04.354 CONFIG | ask price:0
+02:18:04.355 CONFIG | For the first round, bid= 2279
+02:18:04.472 CONFIG | begin auction result, round: 1
+02:18:04.472 CONFIG | ask price:1
+02:18:04.915 CONFIG | marginCost: 13524.0
+02:18:04.915 CONFIG | avgCost: 8386.0
+02:18:05.584 CONFIG | ========================
+02:18:05.584 CONFIG | Round 1
+02:18:05.585 CONFIG | self bid is 9584.94097382174
+02:18:05.585 CONFIG | op bid is 5283.0
+02:18:05.585 CONFIG | 
+02:18:05.585 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:18:05.585 CONFIG | self bid is 6339.599999999999
+02:18:05.585 CONFIG | growth:0.6598007967749735
+02:18:05.585 CONFIG | periodic:1.06101049646137
+02:18:05.585 CONFIG | update self bid 2
+02:18:05.585 CONFIG | self bid is 4438.072297606172
+02:18:05.585 CONFIG | 
+02:18:05.585 CONFIG | bidderSelf.getNextCost()20426.0
+02:18:05.585 CONFIG | bidderSelf.totalBid2279.0
+02:18:05.585 CONFIG | ==========================
+02:18:05.649 CONFIG | begin auction result, round: 2
+02:18:05.649 CONFIG | marginCost < bidOp
+02:18:05.649 CONFIG | ask price:2
+02:18:05.932 CONFIG | marginCost: 0.0
+02:18:05.932 CONFIG | avgCost: 8618.4
+02:18:06.338 CONFIG | ========================
+02:18:06.338 CONFIG | Round 2
+02:18:06.338 CONFIG | self bid is 8185.132981899644
+02:18:06.338 CONFIG | op bid is 6535.904699241328
+02:18:06.338 CONFIG | 
+02:18:06.338 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:18:06.338 CONFIG | self bid is 7843.085639089593
+02:18:06.338 CONFIG | growth:0.7184251921349424
+02:18:06.338 CONFIG | periodic:1.1114717238216092
+02:18:06.338 CONFIG | update self bid 2
+02:18:06.338 CONFIG | self bid is 6262.776719503071
+02:18:06.338 CONFIG | 
+02:18:06.338 CONFIG | bidderSelf.getNextCost()20426.0
+02:18:06.338 CONFIG | bidderSelf.totalBid6717.0
+02:18:06.338 CONFIG | ==========================
+02:18:06.571 CONFIG | begin auction result, round: 3
+02:18:06.572 CONFIG | marginCost < bidOp
+02:18:06.572 CONFIG | ask price:3
+02:18:06.921 CONFIG | marginCost: 2744.0
+02:18:06.921 CONFIG | avgCost: 7863.8
+02:18:07.430 CONFIG | ========================
+02:18:07.430 CONFIG | Round 3
+02:18:07.430 CONFIG | self bid is 8105.682996545363
+02:18:07.430 CONFIG | op bid is 7176.103672492943
+02:18:07.430 CONFIG | 
+02:18:07.430 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:18:07.430 CONFIG | self bid is 8105.682996545363
+02:18:07.430 CONFIG | growth:0.7747875674709545
+02:18:07.430 CONFIG | periodic:1.142658477444273
+02:18:07.430 CONFIG | update self bid 2
+02:18:07.430 CONFIG | self bid is 7176.103672492943
+02:18:07.430 CONFIG | 
+02:18:07.430 CONFIG | bidderSelf.getNextCost()23170.0
+02:18:07.430 CONFIG | bidderSelf.totalBid12980.0
+02:18:07.430 CONFIG | ==========================
+02:18:08.052 CONFIG | begin auction result, round: 4
+02:18:08.052 CONFIG | marginCost < bidOp
+02:18:08.052 CONFIG | ask price:4
+02:18:08.427 CONFIG | marginCost: 2744.0
+02:18:08.427 CONFIG | avgCost: 4979.1
+02:18:08.938 CONFIG | ========================
+02:18:08.938 CONFIG | Round 4
+02:18:08.938 CONFIG | self bid is 5599.74668206042
+02:18:08.938 CONFIG | op bid is 5328.071771659168
+02:18:08.939 CONFIG | 
+02:18:08.939 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:18:08.939 CONFIG | self bid is 5599.74668206042
+02:18:08.939 CONFIG | growth:0.8279693773531349
+02:18:08.939 CONFIG | periodic:1.149178284305241
+02:18:08.939 CONFIG | update self bid 2
+02:18:08.939 CONFIG | self bid is 5328.071771659168
+02:18:08.939 CONFIG | 
+02:18:08.939 CONFIG | bidderSelf.getNextCost()25914.0
+02:18:08.939 CONFIG | bidderSelf.totalBid20156.0
+02:18:08.939 CONFIG | ==========================
+02:18:09.793 CONFIG | begin auction result, round: 5
+02:18:09.794 CONFIG | marginCost < bidOp
+02:18:09.794 CONFIG | ask price:5
+02:18:10.176 CONFIG | marginCost: 2877.0
+02:18:10.176 CONFIG | avgCost: 4914.7
+02:18:10.682 CONFIG | ========================
+02:18:10.682 CONFIG | Round 5
+02:18:10.682 CONFIG | self bid is 5758.098535415007
+02:18:10.682 CONFIG | op bid is 5707.606048572002
+02:18:10.682 CONFIG | 
+02:18:10.682 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:18:10.682 CONFIG | self bid is 5758.098535415007
+02:18:10.682 CONFIG | growth:0.8772702943560058
+02:18:10.682 CONFIG | periodic:1.1299038105676658
+02:18:10.682 CONFIG | update self bid 2
+02:18:10.682 CONFIG | self bid is 5707.606048572002
+02:18:10.682 CONFIG | 
+02:18:10.682 CONFIG | bidderSelf.getNextCost()28791.0
+02:18:10.683 CONFIG | bidderSelf.totalBid25484.0
+02:18:10.683 CONFIG | ==========================
+02:18:11.870 CONFIG | begin auction result, round: 6
+02:18:11.870 CONFIG | marginCost < bidOp
+02:18:11.871 CONFIG | ask price:6
+02:18:12.166 CONFIG | marginCost: 9933.0
+02:18:12.166 CONFIG | avgCost: 6076.7
+02:18:12.665 CONFIG | ========================
+02:18:12.665 CONFIG | Round 6
+02:18:12.665 CONFIG | self bid is 11568.5941778413
+02:18:12.665 CONFIG | op bid is 11609.555056165096
+02:18:12.665 CONFIG | 
+02:18:12.665 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:18:12.665 CONFIG | self bid is 11568.5941778413
+02:18:12.665 CONFIG | growth:0.9222297401988212
+02:18:12.665 CONFIG | periodic:1.088167787843871
+02:18:12.665 CONFIG | update self bid 2
+02:18:12.665 CONFIG | self bid is 11609.555056165096
+02:18:12.665 CONFIG | 
+02:18:12.665 CONFIG | bidderSelf.getNextCost()38724.0
+02:18:12.665 CONFIG | bidderSelf.totalBid31192.0
+02:18:12.665 CONFIG | ==========================
+02:18:14.373 CONFIG | begin auction result, round: 7
+02:18:14.373 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:18:14.373 CONFIG | ask price:7
+02:18:14.825 CONFIG | marginCost: 3164.0
+02:18:14.825 CONFIG | avgCost: 5394.9
+02:18:15.229 CONFIG | ========================
+02:18:15.229 CONFIG | Round 7
+02:18:15.229 CONFIG | self bid is 6407.748231342383
+02:18:15.229 CONFIG | op bid is 6360.597968232018
+02:18:15.229 CONFIG | 
+02:18:15.229 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:18:15.229 CONFIG | self bid is 6407.748231342383
+02:18:15.229 CONFIG | growth:0.9626206662702982
+02:18:15.229 CONFIG | periodic:1.031186753622664
+02:18:15.229 CONFIG | update self bid 2
+02:18:15.229 CONFIG | self bid is 6360.597968232018
+02:18:15.229 CONFIG | 
+02:18:15.229 CONFIG | bidderSelf.getNextCost()31955.0
+02:18:15.229 CONFIG | bidderSelf.totalBid31192.0
+02:18:15.229 CONFIG | ==========================
+02:18:16.794 CONFIG | begin auction result, round: 8
+02:18:16.795 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:18:16.795 CONFIG | !bidderOp.getHomecities().contains(previous.pickupCity
+02:18:16.795 CONFIG | add vehicle
+02:18:16.795 CONFIG | (Task 6, 10 kg, 9455 CHF, Strasbourg -> Bordeaux)
+02:18:16.795 CONFIG | begin SLS add vehicle
+02:18:16.795 CONFIG | global cost:10710.0
+02:18:16.795 CONFIG | finish add vehicle
+02:18:16.795 CONFIG | ask price:8
+02:18:17.073 CONFIG | marginCost: 3164.0
+02:18:17.074 CONFIG | avgCost: 6076.7
+02:18:17.407 CONFIG | ========================
+02:18:17.407 CONFIG | Round 8
+02:18:17.407 CONFIG | self bid is 6709.140710676347
+02:18:17.407 CONFIG | op bid is 17.416806732785805
+02:18:17.407 CONFIG | 
+02:18:17.407 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:18:17.407 CONFIG | self bid is 20.900168079342965
+02:18:17.407 CONFIG | growth:0.9984220621607093
+02:18:17.407 CONFIG | periodic:1.0311867536226638
+02:18:17.407 CONFIG | update self bid 2
+02:18:17.407 CONFIG | self bid is 21.517968792719174
+02:18:17.407 CONFIG | 
+02:18:17.407 CONFIG | bidderSelf.getNextCost()31955.0
+02:18:17.407 CONFIG | bidderSelf.totalBid31192.0
+02:18:17.407 CONFIG | ==========================
+02:18:18.895 CONFIG | begin auction result, round: 9
+02:18:18.895 CONFIG | marginCost < bidOp
+02:18:18.895 CONFIG | ask price:9
+02:18:19.461 CONFIG | marginCost: 0.0
+02:18:19.461 CONFIG | avgCost: 4881.1
+02:18:19.742 CONFIG | ========================
+02:18:19.742 CONFIG | Round 9
+02:18:19.742 CONFIG | self bid is 2976.760749239758
+02:18:19.743 CONFIG | op bid is 3335.6748475586714
+02:18:19.743 CONFIG | 
+02:18:19.743 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:18:19.743 CONFIG | self bid is 2976.760749239758
+02:18:19.743 CONFIG | growth:1.0297787221194148
+02:18:19.743 CONFIG | periodic:1.088167787843871
+02:18:19.743 CONFIG | update self bid 2
+02:18:19.743 CONFIG | self bid is 3335.6748475586714
+02:18:19.743 CONFIG | 
+02:18:19.743 CONFIG | bidderSelf.getNextCost()31955.0
+02:18:19.743 CONFIG | bidderSelf.totalBid31345.0
+02:18:19.743 CONFIG | ==========================
+02:18:21.799 CONFIG | begin auction result, round: 10
+02:18:21.799 CONFIG | marginCost < bidOp
+02:18:23.855 CONFIG | The plan was generated in 43 milliseconds.
+02:18:23.855 CONFIG | plan x distance 0.0
+02:18:23.855 CONFIG | plan x distance 9625.0
+02:18:23.855 CONFIG | My reward14255
+02:18:23.858 CONFIG | Wrote tournament/tour/auction-group092-group21.xml
+02:18:24.261 INFO | LogistPlatform finished successfully!
+02:18:24.262 FINE | Run command: java -Xmx1024m -classpath logist/logist.jar logist.LogistPlatform -o tournament/tour/auction-group21-group54.xml -a tournament/tour/agents.xml ./config/auction.xml group21 group54
+02:18:24.361 CONFIG | Reading ./config/auction.xml
+02:18:24.410 CONFIG | Reading config/settings_auction.xml
+02:18:24.584 CONFIG | Reading config/topology/france.xml
+02:18:24.600 CONFIG | Reading tournament/tour/agents.xml
+02:18:24.614 CONFIG | Reading config/settings_auction.xml
+02:18:24.617 CONFIG | Reading config/settings_auction.xml
+02:18:24.752 CONFIG | Case 1. BID 612 cost opp 6832
+02:18:24.752 CONFIG | Ozuna : -----------------
+02:18:24.752 CONFIG | Ozuna : Minimum cost is  : 7440
+02:18:24.752 CONFIG | Ozuna : Min cost opponent: 6832 margin 0
+02:18:24.753 CONFIG | Ozuna : Final bid is     : 612
+02:18:24.753 CONFIG | Ozuna : Number of tasks  : 0
+02:18:24.839 CONFIG | Bid 0 6902
+02:18:24.839 CONFIG | Bid 1 612
+02:18:24.839 CONFIG | Ozuna: got from this 6828
+02:18:24.839 CONFIG | Ozuna total expenses: 6828
+02:18:40.661 CONFIG | Case 1. BID 1818 cost opp 8624
+02:18:40.661 CONFIG | Ozuna : -----------------
+02:18:40.661 CONFIG | Ozuna : Minimum cost is  : 15456
+02:18:40.661 CONFIG | Ozuna : Min cost opponent: 8624 margin 6045
+02:18:40.661 CONFIG | Ozuna : Final bid is     : 1818
+02:18:40.661 CONFIG | Ozuna : Number of tasks  : 1
+02:18:40.919 CONFIG | Bid 0 13916
+02:18:40.919 CONFIG | Bid 1 1818
+02:18:40.919 CONFIG | Ozuna: got from this 13638
+02:18:40.919 CONFIG | Ozuna total expenses: 20466
+02:18:56.652 CONFIG | Case 1. BID 9871 cost opp 12760
+02:18:56.652 CONFIG | Ozuna : -----------------
+02:18:56.652 CONFIG | Ozuna : Minimum cost is  : 0
+02:18:56.652 CONFIG | Ozuna : Min cost opponent: 12760 margin 6045
+02:18:56.652 CONFIG | Ozuna : Final bid is     : 9871
+02:18:56.652 CONFIG | Ozuna : Number of tasks  : 2
+02:18:57.256 CONFIG | Bid 0 11186
+02:18:57.256 CONFIG | Bid 1 9871
+02:18:57.256 CONFIG | Ozuna: got from this -9871
+02:18:57.256 CONFIG | Ozuna total expenses: 10595
+02:19:12.952 CONFIG | Case 5. BID 10584 cost opp 11760
+02:19:12.952 CONFIG | Ozuna : -----------------
+02:19:12.952 CONFIG | Ozuna : Minimum cost is  : 3136
+02:19:12.952 CONFIG | Ozuna : Min cost opponent: 11760 margin 6045
+02:19:12.952 CONFIG | Ozuna : Final bid is     : 10584
+02:19:12.952 CONFIG | Ozuna : Number of tasks  : 3
+02:19:13.837 CONFIG | Bid 0 10712
+02:19:13.837 CONFIG | Bid 1 10584
+02:19:13.837 CONFIG | Ozuna: got from this -7448
+02:19:13.837 CONFIG | Ozuna total expenses: 3147
+02:19:29.026 CONFIG | Case 5. BID 4586 cost opp 5096
+02:19:29.026 CONFIG | Ozuna : -----------------
+02:19:29.026 CONFIG | Ozuna : Minimum cost is  : 3136
+02:19:29.026 CONFIG | Ozuna : Min cost opponent: 5096 margin 6045
+02:19:29.026 CONFIG | Ozuna : Final bid is     : 4586
+02:19:29.026 CONFIG | Ozuna : Number of tasks  : 4
+02:19:30.353 CONFIG | Bid 0 9152
+02:19:30.353 CONFIG | Bid 1 4586
+02:19:30.353 CONFIG | Ozuna: got from this -1450
+02:19:30.353 CONFIG | Ozuna total expenses: 1697
+02:19:46.032 CONFIG | Case 5. BID 9835 cost opp 10928
+02:19:46.032 CONFIG | Ozuna : -----------------
+02:19:46.032 CONFIG | Ozuna : Minimum cost is  : 1936
+02:19:46.032 CONFIG | Ozuna : Min cost opponent: 10928 margin 6045
+02:19:46.032 CONFIG | Ozuna : Final bid is     : 9835
+02:19:46.032 CONFIG | Ozuna : Number of tasks  : 5
+02:19:47.671 CONFIG | Bid 0 10114
+02:19:47.672 CONFIG | Bid 1 9835
+02:19:47.672 CONFIG | Ozuna: got from this -7899
+02:19:47.672 CONFIG | Ozuna total expenses: -6202
+02:20:03.352 CONFIG | Case 2. BID 8460 cost opp 8568
+02:20:03.352 CONFIG | Ozuna : -----------------
+02:20:03.352 CONFIG | Ozuna : Minimum cost is  : 8784
+02:20:03.352 CONFIG | Ozuna : Min cost opponent: 8568 margin 6045
+02:20:03.352 CONFIG | Ozuna : Final bid is     : 8460
+02:20:03.352 CONFIG | Ozuna : Number of tasks  : 6
+02:20:04.991 CONFIG | Bid 0 8586
+02:20:04.991 CONFIG | Bid 1 8460
+02:20:04.991 CONFIG | Ozuna: got from this 324
+02:20:04.991 CONFIG | Ozuna total expenses: -5878
+02:20:20.665 CONFIG | Case 2. BID 8107 cost opp 9008
+02:20:20.665 CONFIG | Ozuna : -----------------
+02:20:20.665 CONFIG | Ozuna : Minimum cost is  : 2464
+02:20:20.665 CONFIG | Ozuna : Min cost opponent: 9008 margin 6045
+02:20:20.665 CONFIG | Ozuna : Final bid is     : 8107
+02:20:20.665 CONFIG | Ozuna : Number of tasks  : 7
+02:20:22.481 CONFIG | Bid 0 9341
+02:20:22.481 CONFIG | Bid 1 8107
+02:20:22.481 CONFIG | Ozuna: got from this -5643
+02:20:22.481 CONFIG | Ozuna total expenses: -11521
+02:20:37.823 CONFIG | Case 2. BID 8107 cost opp 9008
+02:20:37.823 CONFIG | Ozuna : -----------------
+02:20:37.823 CONFIG | Ozuna : Minimum cost is  : 2064
+02:20:37.823 CONFIG | Ozuna : Min cost opponent: 9008 margin 6045
+02:20:37.823 CONFIG | Ozuna : Final bid is     : 8107
+02:20:37.823 CONFIG | Ozuna : Number of tasks  : 8
+02:20:39.436 CONFIG | Bid 0 7239
+02:20:39.436 CONFIG | Bid 1 8107
+02:20:39.436 CONFIG | Ozuna total expenses: -11521
+02:20:57.684 CONFIG | Case 2. BID 2692 cost opp 2992
+02:20:57.684 CONFIG | Ozuna : -----------------
+02:20:57.684 CONFIG | Ozuna : Minimum cost is  : 0
+02:20:57.684 CONFIG | Ozuna : Min cost opponent: 2992 margin 6045
+02:20:57.684 CONFIG | Ozuna : Final bid is     : 2692
+02:20:57.684 CONFIG | Ozuna : Number of tasks  : 9
+02:20:57.708 CONFIG | The plan was generated in 24 milliseconds.
+02:20:57.708 CONFIG | plan x distance 0.0
+02:20:57.709 CONFIG | plan x distance 5645.0
+02:20:57.709 CONFIG | My reward7239
+02:20:57.711 CONFIG | Bid 0 6131
+02:20:57.711 CONFIG | Bid 1 2692
+02:20:57.711 CONFIG | Ozuna: got from this -2692
+02:20:57.711 CONFIG | Ozuna total expenses: -14213
+02:21:27.038 CONFIG | Wrote tournament/tour/auction-group21-group54.xml
+02:21:27.428 INFO | LogistPlatform finished successfully!
+02:21:27.429 FINE | Run command: java -Xmx1024m -classpath logist/logist.jar logist.LogistPlatform -o tournament/tour/auction-group21-group092.xml -a tournament/tour/agents.xml ./config/auction.xml group21 group092
+02:21:27.520 CONFIG | Reading ./config/auction.xml
+02:21:27.565 CONFIG | Reading config/settings_auction.xml
+02:21:27.743 CONFIG | Reading config/topology/france.xml
+02:21:27.759 CONFIG | Reading tournament/tour/agents.xml
+02:21:27.775 CONFIG | Reading config/settings_auction.xml
+02:21:27.917 CONFIG | ask price:0
+02:21:27.918 CONFIG | For the first round, bid= 2604
+02:21:28.004 CONFIG | begin auction result, round: 1
+02:21:28.004 CONFIG | ask price:1
+02:21:28.409 CONFIG | marginCost: 21008.0
+02:21:28.409 CONFIG | avgCost: 9035.4
+02:21:29.063 CONFIG | ========================
+02:21:29.063 CONFIG | Round 1
+02:21:29.063 CONFIG | self bid is 10988.723011128484
+02:21:29.063 CONFIG | op bid is 5265.804574299438
+02:21:29.063 CONFIG | 
+02:21:29.063 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:21:29.063 CONFIG | self bid is 6318.965489159325
+02:21:29.063 CONFIG | growth:0.6598007967749735
+02:21:29.063 CONFIG | periodic:1.06101049646137
+02:21:29.063 CONFIG | update self bid 2
+02:21:29.063 CONFIG | self bid is 4423.626993338292
+02:21:29.063 CONFIG | 
+02:21:29.063 CONFIG | bidderSelf.getNextCost()28448.0
+02:21:29.063 CONFIG | bidderSelf.totalBid2604.0
+02:21:29.063 CONFIG | ==========================
+02:21:29.307 CONFIG | begin auction result, round: 2
+02:21:29.308 CONFIG | marginCost < bidOp
+02:21:29.308 CONFIG | ask price:2
+02:21:29.597 CONFIG | marginCost: -5552.0
+02:21:29.597 CONFIG | avgCost: 8217.7
+02:21:30.144 CONFIG | ========================
+02:21:30.144 CONFIG | Round 2
+02:21:30.144 CONFIG | self bid is 6637.1451467631505
+02:21:30.144 CONFIG | op bid is 5299.822037125691
+02:21:30.144 CONFIG | 
+02:21:30.144 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:21:30.144 CONFIG | self bid is 6359.786444550829
+02:21:30.144 CONFIG | growth:0.7184251921349424
+02:21:30.144 CONFIG | periodic:1.1114717238216092
+02:21:30.144 CONFIG | update self bid 2
+02:21:30.144 CONFIG | self bid is 5078.34853765125
+02:21:30.144 CONFIG | 
+02:21:30.144 CONFIG | bidderSelf.getNextCost()22896.0
+02:21:30.144 CONFIG | bidderSelf.totalBid7773.0
+02:21:30.144 CONFIG | ==========================
+02:21:30.771 CONFIG | begin auction result, round: 3
+02:21:30.771 CONFIG | marginCost < bidOp
+02:21:30.771 CONFIG | ask price:3
+02:21:31.091 CONFIG | marginCost: 3136.0
+02:21:31.091 CONFIG | avgCost: 6361.3
+02:21:31.553 CONFIG | ========================
+02:21:31.553 CONFIG | Round 3
+02:21:31.553 CONFIG | self bid is 6851.447648884285
+02:21:31.553 CONFIG | op bid is 6065.707067005516
+02:21:31.553 CONFIG | 
+02:21:31.553 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:21:31.553 CONFIG | self bid is 6851.447648884285
+02:21:31.553 CONFIG | growth:0.7747875674709545
+02:21:31.553 CONFIG | periodic:1.142658477444273
+02:21:31.553 CONFIG | update self bid 2
+02:21:31.553 CONFIG | self bid is 6065.707067005516
+02:21:31.553 CONFIG | 
+02:21:31.553 CONFIG | bidderSelf.getNextCost()26032.0
+02:21:31.553 CONFIG | bidderSelf.totalBid12851.0
+02:21:31.553 CONFIG | ==========================
+02:21:32.462 CONFIG | begin auction result, round: 4
+02:21:32.462 CONFIG | marginCost < bidOp
+02:21:32.462 CONFIG | ask price:4
+02:21:32.722 CONFIG | marginCost: 3136.0
+02:21:32.722 CONFIG | avgCost: 7675.6
+02:21:33.136 CONFIG | ========================
+02:21:33.136 CONFIG | Round 4
+02:21:33.136 CONFIG | self bid is 8156.260042898074
+02:21:33.136 CONFIG | op bid is 6809.527758936249
+02:21:33.136 CONFIG | 
+02:21:33.136 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:21:33.136 CONFIG | self bid is 8156.260042898074
+02:21:33.136 CONFIG | growth:0.8279693773531349
+02:21:33.136 CONFIG | periodic:1.149178284305241
+02:21:33.136 CONFIG | update self bid 2
+02:21:33.136 CONFIG | self bid is 7760.554425809637
+02:21:33.136 CONFIG | 
+02:21:33.136 CONFIG | bidderSelf.getNextCost()29168.0
+02:21:33.136 CONFIG | bidderSelf.totalBid18917.0
+02:21:33.136 CONFIG | ==========================
+02:21:34.035 CONFIG | begin auction result, round: 5
+02:21:34.035 CONFIG | marginCost < bidOp
+02:21:34.035 CONFIG | ask price:5
+02:21:34.325 CONFIG | marginCost: 3320.0
+02:21:34.325 CONFIG | avgCost: 6543.7
+02:21:34.584 CONFIG | ========================
+02:21:34.584 CONFIG | Round 5
+02:21:34.584 CONFIG | self bid is 7121.618398416084
+02:21:34.584 CONFIG | op bid is 6701.681202531454
+02:21:34.584 CONFIG | 
+02:21:34.584 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:21:34.584 CONFIG | self bid is 7121.618398416084
+02:21:34.584 CONFIG | growth:0.8772702943560058
+02:21:34.584 CONFIG | periodic:1.1299038105676658
+02:21:34.584 CONFIG | update self bid 2
+02:21:34.584 CONFIG | self bid is 7059.169272012413
+02:21:34.584 CONFIG | 
+02:21:34.584 CONFIG | bidderSelf.getNextCost()29352.0
+02:21:34.584 CONFIG | bidderSelf.totalBid18917.0
+02:21:34.584 CONFIG | ==========================
+02:21:35.792 CONFIG | begin auction result, round: 6
+02:21:35.792 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:21:35.792 CONFIG | ask price:6
+02:21:36.082 CONFIG | marginCost: 7400.0
+02:21:36.082 CONFIG | avgCost: 6611.8
+02:21:36.547 CONFIG | ========================
+02:21:36.548 CONFIG | Round 6
+02:21:36.548 CONFIG | self bid is 9615.048802434352
+02:21:36.548 CONFIG | op bid is 9649.092769922489
+02:21:36.548 CONFIG | 
+02:21:36.548 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:21:36.548 CONFIG | self bid is 9615.048802434352
+02:21:36.548 CONFIG | growth:0.9222297401988212
+02:21:36.548 CONFIG | periodic:1.088167787843871
+02:21:36.548 CONFIG | update self bid 2
+02:21:36.548 CONFIG | self bid is 9649.092769922489
+02:21:36.548 CONFIG | 
+02:21:36.548 CONFIG | bidderSelf.getNextCost()33432.0
+02:21:36.548 CONFIG | bidderSelf.totalBid18917.0
+02:21:36.548 CONFIG | ==========================
+02:21:37.611 CONFIG | begin auction result, round: 7
+02:21:37.611 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:21:37.611 CONFIG | !bidderOp.getHomecities().contains(previous.pickupCity
+02:21:37.611 CONFIG | add vehicle
+02:21:37.611 CONFIG | (Task 4, 10 kg, 7332 CHF, Le Havre -> Paris)
+02:21:37.611 CONFIG | (Task 5, 10 kg, 4945 CHF, Le Havre -> Strasbourg)
+02:21:37.611 CONFIG | begin SLS add vehicle
+02:21:37.612 CONFIG | global cost:6830.0
+02:21:37.612 CONFIG | finish add vehicle
+02:21:37.613 CONFIG | ask price:7
+02:21:37.863 CONFIG | marginCost: 6904.0
+02:21:37.863 CONFIG | avgCost: 6071.2
+02:21:38.248 CONFIG | ========================
+02:21:38.248 CONFIG | Round 7
+02:21:38.248 CONFIG | self bid is 9151.525700193546
+02:21:38.248 CONFIG | op bid is 7959.2209047419465
+02:21:38.248 CONFIG | 
+02:21:38.248 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:21:38.248 CONFIG | self bid is 9151.525700193546
+02:21:38.248 CONFIG | growth:0.9626206662702982
+02:21:38.248 CONFIG | periodic:1.031186753622664
+02:21:38.248 CONFIG | update self bid 2
+02:21:38.248 CONFIG | self bid is 9084.18584396842
+02:21:38.248 CONFIG | 
+02:21:38.248 CONFIG | bidderSelf.getNextCost()32936.0
+02:21:38.248 CONFIG | bidderSelf.totalBid18917.0
+02:21:38.248 CONFIG | ==========================
+02:21:39.535 CONFIG | begin auction result, round: 8
+02:21:39.535 CONFIG | if our prediction of op is far from the true case, we need to re-predict
+02:21:39.535 CONFIG | ask price:8
+02:21:39.797 CONFIG | marginCost: 6904.0
+02:21:39.797 CONFIG | avgCost: 7756.2
+02:21:40.084 CONFIG | ========================
+02:21:40.084 CONFIG | Round 8
+02:21:40.084 CONFIG | self bid is 10055.947037644562
+02:21:40.084 CONFIG | op bid is 3814.919355515637
+02:21:40.084 CONFIG | 
+02:21:40.084 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:21:40.084 CONFIG | self bid is 4577.903226618764
+02:21:40.084 CONFIG | growth:0.9984220621607093
+02:21:40.084 CONFIG | periodic:1.0311867536226638
+02:21:40.084 CONFIG | update self bid 2
+02:21:40.084 CONFIG | self bid is 4713.224237839131
+02:21:40.084 CONFIG | 
+02:21:40.084 CONFIG | bidderSelf.getNextCost()32936.0
+02:21:40.084 CONFIG | bidderSelf.totalBid18917.0
+02:21:40.084 CONFIG | ==========================
+02:21:41.541 CONFIG | begin auction result, round: 9
+02:21:41.541 CONFIG | marginCost < bidOp
+02:21:41.541 CONFIG | ask price:9
+02:21:41.797 CONFIG | marginCost: 0.0
+02:21:41.797 CONFIG | avgCost: 8121.0
+02:21:42.025 CONFIG | ========================
+02:21:42.025 CONFIG | Round 9
+02:21:42.025 CONFIG | self bid is 4820.558221859974
+02:21:42.025 CONFIG | op bid is 5401.782731768796
+02:21:42.025 CONFIG | 
+02:21:42.025 CONFIG | Math.min(bidSelf, bidOp*1.2)
+02:21:42.025 CONFIG | self bid is 4820.558221859974
+02:21:42.025 CONFIG | growth:1.0297787221194148
+02:21:42.025 CONFIG | periodic:1.088167787843871
+02:21:42.025 CONFIG | update self bid 2
+02:21:42.025 CONFIG | self bid is 5401.782731768796
+02:21:42.025 CONFIG | 
+02:21:42.025 CONFIG | bidderSelf.getNextCost()32936.0
+02:21:42.025 CONFIG | bidderSelf.totalBid23630.0
+02:21:42.025 CONFIG | ==========================
+02:21:43.371 CONFIG | The plan was generated in 164 milliseconds.
+02:21:43.371 CONFIG | plan x distance 0.0
+02:21:43.371 CONFIG | plan x distance 14785.0
+02:21:43.371 CONFIG | My reward23410
+02:21:43.373 CONFIG | begin auction result, round: 10
+02:21:43.373 CONFIG | marginCost < bidOp
+02:21:43.451 CONFIG | Wrote tournament/tour/auction-group21-group092.xml
+02:21:43.817 INFO | LogistPlatform finished successfully!

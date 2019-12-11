@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<agents>
+	<!-- An auto-generated list of agents and their behavior classes -->
+	<!--  - jar directory : ./agents/ -->
+	<!--  - generated on  : Thu Dec 05 14:09:35 CET 2019 -->
+	<agent name="group54">
+		<set class-path="./agents/group54.jar"/>
+		<set class-name="main.OppModel"/>
+	</agent>
+
+	<agent name="group092">
+		<set class-path="./agents/group09.jar"/>
+		<set class-name="template.AuctionTrained"/>
+	</agent>
+	<agent name="group21">
+		<set class-path="./agents/group21.jar"/>
+		<set class-name="auction.AuctionAgent"/>
+	</agent>
+</agents>

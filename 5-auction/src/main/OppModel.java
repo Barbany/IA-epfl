@@ -253,8 +253,9 @@ public class OppModel implements AuctionBehavior {
 		// Initial bids allow losing money
 		if (winTasks < 3) {
 			if (minCost > 0) {
+				bid = (long) Math.floor(minCost*(0.6 - pmf[task.pickupCity.id][task.deliveryCity.id]));
 				
-				bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * savings);
+				//bid = (long) Math.floor(minCost - (pmf[task.pickupCity.id][task.deliveryCity.id]) * savings);
 			} else {
 				// If the cost is zero, start recovering loses
 				bid = (long) Math.floor(minCost + (pmf[task.pickupCity.id][task.deliveryCity.id]) * expenses);
@@ -288,7 +289,7 @@ public class OppModel implements AuctionBehavior {
 				} else if (minCost == 0){
 					// If our cost is zero and so it is the opponent, try to decrease the margin to win
 					if (minCostOpp == 0) {
-						bid = (long) Math.max(0.6f *(savingsOpp -expenses), 100);
+						bid = (long) Math.max(0.6f *(savingsOpp -expenses), 250);
 						System.out.println("Case 4.1 . BID " + bid + " cost opp " + minCostOpp);
 					} else {
 						// Bid slightly lower than min opponent
@@ -316,7 +317,7 @@ public class OppModel implements AuctionBehavior {
 		System.out.println("Ozuna : Min cost opponent: " + minCostOpp + " margin " + margin);
 		System.out.println("Ozuna : Final bid is     : " + bid);
 		System.out.println("Ozuna : Number of tasks  : " + numTasks);
-		return Math.max(100, bid);
+		return Math.max(250, bid);
 	}
 
 	/**
